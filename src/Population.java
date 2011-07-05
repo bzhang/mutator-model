@@ -23,6 +23,7 @@ public class Population {
 
         while(nextGeneration.getSize() < getSize()) {
             IndividualPair offspringPair = reproduce();
+            // TODO: add mutation
             nextGeneration.addIndividualPairs(offspringPair);
         }
 
@@ -44,6 +45,8 @@ public class Population {
         Individual parentA = parentPair.getIndividualA();
         Individual parentB = parentPair.getIndividualB();
 
+        // TODO: add sex reproduction
+
         Individual offspringA = parentA;
         Individual offspringB = parentB;
         IndividualPair offspringPair = new IndividualPair(offspringA, offspringB);
@@ -51,6 +54,7 @@ public class Population {
     }
 
     private IndividualPair getTwoRandomIndividuals() {
+        // TODO: add randomization
         return new IndividualPair(getIndividuals().get(0), getIndividuals().get(1));
     }
 
