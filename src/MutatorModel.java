@@ -9,8 +9,8 @@ public class MutatorModel {
     public static void main(String[] args) {
 
         Population population;
-        int nGenerations = 1000;
-        int populationSize = 500;
+        int nGenerations = 1;
+        int populationSize = 2;
 
         population = new Population(populationSize);
 

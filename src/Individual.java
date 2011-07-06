@@ -3,7 +3,7 @@
 */
 public class Individual {
     // TODO: initiate individual.
-    private float fitness;
+    private float fitness = 0;
 
     public float getFitness() {
         return fitness;

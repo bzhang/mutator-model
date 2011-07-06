@@ -6,12 +6,18 @@ import java.util.ArrayList;
 
 public class Population {
 
-    private ArrayList<Individual> individuals = new ArrayList<Individual>();
+    private ArrayList<Individual> individuals;
 
     public Population(int size) {
+        individuals = new ArrayList<Individual>();
+
         for (int i = 0; i < size; i++) {
             individuals.add(new Individual());
         }
+    }
+
+    public Population() {
+        this(0);
     }
 
     public ArrayList<Individual> getIndividuals() {
@@ -19,7 +25,7 @@ public class Population {
     }
 
     public Population createNextGeneration() {
-        Population nextGeneration = new Population(getSize());
+        Population nextGeneration = new Population();
 
         while(nextGeneration.getSize() < getSize()) {
             IndividualPair offspringPair = reproduce();
@@ -54,8 +60,24 @@ public class Population {
     }
 
     private IndividualPair getTwoRandomIndividuals() {
-        // TODO: add randomization
-        return new IndividualPair(getIndividuals().get(0), getIndividuals().get(1));
+        WeightedRandomGenerator wrg = new WeightedRandomGenerator(getAllFitness());
+        int indexA = wrg.nextInt();
+        int indexB = wrg.nextInt();
+        while (indexA == indexB) {
+            indexB = wrg.nextInt();
+        }
+        Individual individualA = getIndividuals().get(indexA);
+        Individual individualB = getIndividuals().get(indexB);
+        return new IndividualPair(individualA, individualB);
+    }
+
+    private float[] getAllFitness() {
+        float[] allFitness = new float[getSize()];
+        int i = 0;
+        for (Individual individual : getIndividuals()) {
+            allFitness[i++] = individual.getFitness();
+        }
+        return allFitness;
     }
 
     public int getSize() {
