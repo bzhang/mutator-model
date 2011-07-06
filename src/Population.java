@@ -1,7 +1,8 @@
 import java.util.ArrayList;
 
 /**
- * Created by Bingjun at 5/16/11 12:32 AM
+ * @author Bingjun
+ * 5/16/11 12:32 AM
  */
 
 public class Population {
@@ -33,17 +34,21 @@ public class Population {
 
         // Loop until next generation reach the pop size limit
         while(nextGeneration.getSize() < getSize()) {
-            // Reproduce and return two offsprings
+            // Reproduce and return two offspring
             IndividualPair offspringPair = reproduce();
-            // TODO: add mutation
-//            offspringPair = mutate(IndividualPair offspringPair);
-            // Add new offsprings into next generation
-            nextGeneration.addIndividualPairs(offspringPair);
+            IndividualPair mutatedOffspringPair = mutate(offspringPair);
+            // Add new offspring into next generation
+            nextGeneration.addIndividualPairs(mutatedOffspringPair);
         }
 
         return nextGeneration;
     }
 
+    private IndividualPair mutate(IndividualPair individualPair) {
+        return individualPair;  //To change body of created methods use File | Settings | File Templates.
+    }
+
+    // Add two individuals into the individuals array
     private void addIndividualPairs(IndividualPair offspringPair) {
         addIndividual(offspringPair.getIndividualA());
         addIndividual(offspringPair.getIndividualB());
@@ -54,19 +59,21 @@ public class Population {
     }
 
     public IndividualPair reproduce() {
-
+        // Get two parent individuals randomly
         IndividualPair parentPair = getTwoRandomIndividuals();
         Individual parentA = parentPair.getIndividualA();
         Individual parentB = parentPair.getIndividualB();
 
         // TODO: add sex reproduction
 
+        // Asexual reproduction: copy the parent genome to offspring
         Individual offspringA = parentA;
         Individual offspringB = parentB;
         IndividualPair offspringPair = new IndividualPair(offspringA, offspringB);
         return offspringPair;
     }
 
+    // Get two random individuals to reproduce according to their fitness
     private IndividualPair getTwoRandomIndividuals() {
         WeightedRandomGenerator wrg = new WeightedRandomGenerator(getAllFitness());
         int indexA = wrg.nextInt();
