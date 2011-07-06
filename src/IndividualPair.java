@@ -1,5 +1,6 @@
 /**
- * User: bingjun
+ * @author Bingjun
+ * Generate a pair of individuals to reproduce
  */
 
 public class IndividualPair {

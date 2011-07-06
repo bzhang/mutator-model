@@ -1,5 +1,5 @@
 /**
- * Bingjun Zhang
+ * @author Bingjun
  */
 
 public class MutatorModel {

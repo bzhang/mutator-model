@@ -5,9 +5,10 @@ import java.util.ArrayList;
  */
 
 public class Population {
-
+    // Initialization. Create a new population which is a ArrayList, the elements are individuals    
     private ArrayList<Individual> individuals;
 
+    // Add new individuals into the population (individuals) until reach the size limit (size)
     public Population(int size) {
         individuals = new ArrayList<Individual>();
 
@@ -16,6 +17,7 @@ public class Population {
         }
     }
 
+    //
     public Population() {
         this(0);
     }
@@ -24,12 +26,18 @@ public class Population {
         return individuals;
     }
 
+    // Create next generation by reproducing and mutating
     public Population createNextGeneration() {
+        // Initialize next generation with the 0 pop size as current one
         Population nextGeneration = new Population();
 
+        // Loop until next generation reach the pop size limit
         while(nextGeneration.getSize() < getSize()) {
+            // Reproduce and return two offsprings
             IndividualPair offspringPair = reproduce();
             // TODO: add mutation
+//            offspringPair = mutate(IndividualPair offspringPair);
+            // Add new offsprings into next generation
             nextGeneration.addIndividualPairs(offspringPair);
         }
 
