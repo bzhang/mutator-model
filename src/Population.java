@@ -79,8 +79,8 @@ public class Population {
         return new IndividualPair(individualA, individualB);
     }
 
-    private float[] getAllFitness() {
-        float[] allFitness = new float[getSize()];
+    private double[] getAllFitness() {
+        double[] allFitness = new double[getSize()];
         int i = 0;
         for (Individual individual : getIndividuals()) {
             allFitness[i++] = individual.getFitness();
