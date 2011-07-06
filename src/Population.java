@@ -45,6 +45,7 @@ public class Population {
     }
 
     private IndividualPair mutate(IndividualPair individualPair) {
+        // TODO: extend mutate method
         return individualPair;  //To change body of created methods use File | Settings | File Templates.
     }
 
@@ -64,13 +65,42 @@ public class Population {
         Individual parentA = parentPair.getIndividualA();
         Individual parentB = parentPair.getIndividualB();
 
-        // TODO: add sex reproduction
+        IndividualPair offspringPair;
+        if (areSexualHomozygotes(parentA, parentB)) {
+            offspringPair = sexuallyReproduce(parentA, parentB);
+        } else if (areAsexualHomozygotes(parentA, parentB)) {
+            offspringPair = asexuallyReproduce(parentA, parentB);
+        } else { // Heterozygotes
+            // Sexual reproduction is dominant
+            offspringPair = sexuallyReproduce(parentA, parentB);
+        }
+        return offspringPair;
+    }
 
+    private IndividualPair asexuallyReproduce(Individual parentA, Individual parentB) {
         // Asexual reproduction: copy the parent genome to offspring
         Individual offspringA = parentA;
         Individual offspringB = parentB;
         IndividualPair offspringPair = new IndividualPair(offspringA, offspringB);
         return offspringPair;
+    }
+
+    private boolean areAsexualHomozygotes(Individual parentA, Individual parentB) {
+        return true;
+    }
+
+    private IndividualPair sexuallyReproduce(Individual parentA, Individual parentB) {
+        // Sexual reproduction: recombine parents' genomes
+        // TODO: implement sexual reproduction
+        Individual offspringA = parentA;
+        Individual offspringB = parentB;
+        IndividualPair offspringPair = new IndividualPair(offspringA, offspringB);
+        return offspringPair;
+
+    }
+
+    private boolean areSexualHomozygotes(Individual parentA, Individual parentB) {
+        return false;
     }
 
     // Get two random individuals to reproduce according to their fitness
