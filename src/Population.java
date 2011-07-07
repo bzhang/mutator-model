@@ -49,6 +49,7 @@ public class Population {
         return individualPair;  //To change body of created methods use File | Settings | File Templates.
     }
 
+
     // Add two individuals into the individuals array
     private void addIndividualPairs(IndividualPair offspringPair) {
         addIndividual(offspringPair.getIndividualA());
@@ -86,6 +87,7 @@ public class Population {
     }
 
     private boolean areAsexualHomozygotes(Individual parentA, Individual parentB) {
+//        parentA.
         return true;
     }
 
