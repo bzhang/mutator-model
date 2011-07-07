@@ -9,25 +9,25 @@ import java.util.Random;
 public class WeightedRandomGenerator {
 
     private Random random = new Random(System.nanoTime());
-    private double[] totals;
+    private float[] totals;
 
-    public WeightedRandomGenerator(double[] weights) {
-        totals = new double[weights.length];
+    public WeightedRandomGenerator(float[] weights) {
+        totals = new float[weights.length];
         initTotals(weights);
     }
 
     public int nextInt() {
-        double sumOfWeights = totals[totals.length - 1];
-        double randomNumber = random.nextFloat() * sumOfWeights;
+        float sumOfWeights = totals[totals.length - 1];
+        float randomNumber = random.nextFloat() * sumOfWeights;
         int index = Arrays.binarySearch(totals, randomNumber);
         index = (index >= 0) ? index : - index - 1;
         return index;
     }
 
-    private void initTotals(double[] weights) {
+    private void initTotals(float[] weights) {
         float runningTotal = 0;
         int i = 0;
-        for (double weight: weights) {
+        for (float weight: weights) {
             runningTotal += weight;
             totals[i++] = runningTotal;
         }

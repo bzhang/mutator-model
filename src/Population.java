@@ -116,8 +116,8 @@ public class Population {
         return new IndividualPair(individualA, individualB);
     }
 
-    private double[] getAllFitness() {
-        double[] allFitness = new double[getSize()];
+    private float[] getAllFitness() {
+        float[] allFitness = new float[getSize()];
         int i = 0;
         for (Individual individual : getIndividuals()) {
             allFitness[i++] = individual.getFitness();

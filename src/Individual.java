@@ -10,14 +10,14 @@ public class Individual {
     int genomeSize = NUM_OF_MUATOR_LOCI + NUM_OF_FITNESS_LOCI + NUM_OF_RECOMBINATION_LOCI;
 
     // TODO: initiate individual.
-    private double fitness;
+    private float fitness;
 
     public Individual() {
-        fitness = 0.5;
+        fitness = 1.5f;
     }
 
 
-    public double getFitness() {
+    public float getFitness() {
         return fitness;
     }
 
