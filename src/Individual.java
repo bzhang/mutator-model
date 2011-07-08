@@ -17,6 +17,8 @@ public class Individual {
     private int mutatorPosition;
 
     private ArrayList<MutatorLocus> mutatorLoci;
+    private ArrayList<FitnessLocus> fitnessLoci;
+    private ArrayList<RecombinationLocus> recombinationLoci;
 
     // TODO: initiate individual
     MutatorLocus mutator = new MutatorLocus();

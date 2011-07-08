@@ -2,7 +2,7 @@
  * @author Bingjun
  *         7/8/11 9:50 AM
  */
-public class RecombinationLocus {
+public class RecombinationLocus implements Locus {
 
     private float recombinationModifierStrength;
     private int recombinationModifierPosition;
