@@ -3,8 +3,6 @@
  * 7/7/11 11:52 AM
  */
 public class MutationRateModifier {
-    static final int NUM_OF_MUATOR_LOCI = 1;
-
     private float mutatorStrength;
     private int mutatorPosition;
 
