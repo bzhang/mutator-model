@@ -15,8 +15,11 @@ public class MutatorModel {
         int populationSize = 10;
         Population population = new Population(populationSize);
 
-        // TODO: mutatorLocusStrentgh ranges from 1 to 1000
-        int mutatorLocusStrength = getRandomInt(1000);
+        // mutatorLocusStrentgh ranges from 1 to 1000
+        // !! In founder population,
+        // !! 50/50 mutator(mutatorLocusStrength = 2-1000)/nonmutator(mutatorLocusStrength = 1)
+        // TODO: modifiy the mutator initiation
+        int mutatorLocusStrength = getRandomInt(1000) + 1;
         // populationSize - 1?
         int mutatorLocusPosition = getRandomInt(populationSize);
         population.addMutatorLocus(mutatorLocusPosition, mutatorLocusStrength);
