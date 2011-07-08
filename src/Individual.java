@@ -12,8 +12,6 @@ public class Individual {
 
     private int genomeSize;
     private float fitness;
-    private float mutatorStrength;
-    private int mutatorPosition;
 
     private Locus[] loci;
 
@@ -23,11 +21,11 @@ public class Individual {
         loci = new Locus[genomeSize];
 
         // TODO: initiate individual
+        addMutatorLocus(0, 10);
     }
 
     public void addMutatorLocus(int position, float strength) {
         MutatorLocus mutator = new MutatorLocus(strength);
-        mutatorStrength = mutator.getMutatorStrength();
     }
 
     public float getFitness() {
