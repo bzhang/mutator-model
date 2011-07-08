@@ -20,9 +20,13 @@ public class Individual {
     public Individual() {
         fitness = 1.5f;
         genomeSize = NUM_OF_MUTATOR_LOCI + NUM_OF_FITNESS_LOCI + NUM_OF_RECOMBINATION_LOCI;
+        loci = new Locus[genomeSize];
 
         // TODO: initiate individual
-        MutatorLocus mutator = new MutatorLocus();
+    }
+
+    public void addMutatorLocus(int position, float strength) {
+        MutatorLocus mutator = new MutatorLocus(strength);
         mutatorStrength = mutator.getMutatorStrength();
     }
 
