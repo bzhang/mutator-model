@@ -6,13 +6,12 @@ public class MutatorModel {
 
     public static final String VERSION = "0.1";
 
+    private static int nGenerations = 10;
+
     public static void main(String[] args) {
 
-        Population population;
-        int nGenerations = 1;
-        int populationSize = 2;
-
-        population = new Population(populationSize);
+        int populationSize = 10;
+        Population population = new Population(populationSize);
 
         for (int i = 0; i < nGenerations; i++ ) {
             Population nextGeneration = population.createNextGeneration();

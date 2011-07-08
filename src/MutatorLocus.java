@@ -2,11 +2,11 @@
  * @author Bingjun
  * 7/7/11 11:52 AM
  */
-public class MutationRateModifier {
+public class MutatorLocus {
     private float mutatorStrength;
     private int mutatorPosition;
 
-    public MutationRateModifier(){
+    public MutatorLocus(){
         mutatorStrength = 10;
         mutatorPosition = 1;
     }

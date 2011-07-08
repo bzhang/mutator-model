@@ -2,14 +2,16 @@
  * @author Bingjun
  *         7/8/11 9:50 AM
  */
-public class RecombinationModifier {
+public class RecombinationLocus {
+
     private float recombinationModifierStrength;
     private int recombinationModifierPosition;
 
-    public RecombinationModifier (){
+    public RecombinationLocus(){
         recombinationModifierStrength = 10;
         recombinationModifierPosition = 3;
     }
+
 // A setter necessary?
 //    public void setRecombinationModifierPosition(int recombinationModifierPosition) {
 //        this.recombinationModifierPosition = recombinationModifierPosition;
