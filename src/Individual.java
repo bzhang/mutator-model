@@ -19,9 +19,6 @@ public class Individual {
         fitness = 1.5f;
         genomeSize = NUM_OF_MUTATOR_LOCI + NUM_OF_FITNESS_LOCI + NUM_OF_RECOMBINATION_LOCI;
         loci = new Locus[genomeSize];
-
-        // TODO: initiate individual
-        addMutatorLocus(0, 10);
     }
 
     public void addMutatorLocus(int position, float strength) {

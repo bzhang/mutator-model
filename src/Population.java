@@ -130,4 +130,10 @@ public class Population {
     public int getSize() {
         return individuals.size();
     }
+
+    public void addMutatorLocus(int position, int strength) {
+        for (Individual individual : getIndividuals()) {
+            individual.addMutatorLocus(position, strength);
+        }
+    }
 }

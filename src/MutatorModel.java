@@ -1,3 +1,5 @@
+import java.util.Random;
+
 /**
  * @author Bingjun
  */
@@ -13,11 +15,20 @@ public class MutatorModel {
         int populationSize = 10;
         Population population = new Population(populationSize);
 
+        int mutatorLocusStrength = getRandomInt(1000);
+        int mutatorLocusPosition = getRandomInt(populationSize);
+        population.addMutatorLocus(mutatorLocusPosition, mutatorLocusStrength);
+
         for (int i = 0; i < nGenerations; i++ ) {
             Population nextGeneration = population.createNextGeneration();
             population = nextGeneration;
         }
 
+    }
+
+    private static int getRandomInt(int length) {
+        Random random = new Random(System.nanoTime());
+        return random.nextInt(length);
     }
 
 
