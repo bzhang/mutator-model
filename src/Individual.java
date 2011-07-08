@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
  * @author Bingjun
  * Created by bingjun at 5/16/11 9:42 AM
@@ -13,6 +15,8 @@ public class Individual {
     private float fitness;
     private float mutatorStrength;
     private int mutatorPosition;
+
+    private ArrayList<MutatorLocus> mutatorLoci;
 
     // TODO: initiate individual
     MutatorLocus mutator = new MutatorLocus();
