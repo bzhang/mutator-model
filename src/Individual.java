@@ -1,9 +1,8 @@
-import java.util.ArrayList;
-
 /**
  * @author Bingjun
  * Created by bingjun at 5/16/11 9:42 AM
 */
+
 public class Individual {
 
     // TODO: read parameters from properties file
@@ -18,13 +17,13 @@ public class Individual {
 
     private Locus[] loci;
 
-    // TODO: initiate individual
-    MutatorLocus mutator = new MutatorLocus();
-
     public Individual() {
         fitness = 1.5f;
-        mutatorStrength = mutator.getMutatorStrength();
         genomeSize = NUM_OF_MUTATOR_LOCI + NUM_OF_FITNESS_LOCI + NUM_OF_RECOMBINATION_LOCI;
+
+        // TODO: initiate individual
+        MutatorLocus mutator = new MutatorLocus();
+        mutatorStrength = mutator.getMutatorStrength();
     }
 
     public float getFitness() {
