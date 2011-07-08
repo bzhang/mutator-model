@@ -21,7 +21,7 @@ public class Individual {
         loci = new Locus[genomeSize];
     }
 
-    public void addMutatorLocus(int position, float strength) {
+    public void addMutatorLocus(int position, int strength) {
         MutatorLocus mutator = new MutatorLocus(strength);
     }
 
