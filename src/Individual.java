@@ -6,9 +6,6 @@
 public class Individual {
 
     // TODO: read parameters from properties file
-    static final int NUM_OF_MUTATOR_LOCI = 1;
-    static final int NUM_OF_FITNESS_LOCI = 1000;
-    static final int NUM_OF_RECOMBINATION_LOCI = 1;
 
     private int genomeSize;
     private float fitness;

@@ -8,27 +8,38 @@ public class MutatorModel {
 
     public static final String VERSION = "0.1";
 
-    private static int nGenerations = 10;
+    private static final int N_GENERATIONS = 10;
+    private static final int POPULATION_SIZE = 10;
+    private static final int N_FITNESS_LOCI = 1000;
+    private static final int N_MUTATOR_LOCI = 1;
+    private static final int N_RECOMBINATION_LOCI = 1;
+    private static final int GENOME_SIZE = N_FITNESS_LOCI + N_MUTATOR_LOCI + N_RECOMBINATION_LOCI;
+    private static final int MUTATOR_STRENGTH_MAX = 1000;
+
+
+    private static int mutatorLocusStrength;
+    private static int mutatorLocusPosition;
 
     public static void main(String[] args) {
 
-        int populationSize = 10;
-        Population population = new Population(populationSize);
+        Population population = new Population(POPULATION_SIZE);
 
-        // mutatorLocusStrentgh ranges from 1 to 1000
-        // !! In founder population,
-        // !! 50/50 mutator(mutatorLocusStrength = 2-1000)/nonmutator(mutatorLocusStrength = 1)
-        // TODO: modifiy the mutator initiation
-        int mutatorLocusStrength = getRandomInt(1000) + 1;
-        // populationSize - 1?
-        int mutatorLocusPosition = getRandomInt(populationSize);
-        population.addMutatorLocus(mutatorLocusPosition, mutatorLocusStrength);
+        initFounderPopulation(population);
 
-        for (int i = 0; i < nGenerations; i++ ) {
+        for (int i = 0; i < N_GENERATIONS; i++ ) {
             Population nextGeneration = population.createNextGeneration();
             population = nextGeneration;
         }
 
+    }
+
+    private static void initFounderPopulation(Population population) {
+        // TODO: modify the mutator initiation
+        // !! In founder population,
+        // !! 50/50 mutator(mutatorLocusStrength = 2-1000)/nonmutator(mutatorLocusStrength = 1)
+        mutatorLocusStrength = getRandomInt(MUTATOR_STRENGTH_MAX) + 1;
+        mutatorLocusPosition = getRandomInt(GENOME_SIZE);
+        population.addMutatorLocus(mutatorLocusPosition, mutatorLocusStrength);
     }
 
     private static int getRandomInt(int length) {
