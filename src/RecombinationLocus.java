@@ -4,24 +4,24 @@
  */
 public class RecombinationLocus implements Locus {
 
-    private float recombinationModifierStrength;
-    private int recombinationModifierPosition;
+    private float recombinationLocusStrength;
+    private int recombinationLocusPosition;
 
     public RecombinationLocus(){
-        recombinationModifierStrength = 10;
-        recombinationModifierPosition = 3;
+        recombinationLocusStrength = 10;
+        recombinationLocusPosition = 3;
     }
 
 // A setter necessary?
-//    public void setRecombinationModifierPosition(int recombinationModifierPosition) {
-//        this.recombinationModifierPosition = recombinationModifierPosition;
+//    public void setRecombinationModifierPosition(int recombinationLocusPosition) {
+//        this.recombinationLocusPosition = recombinationLocusPosition;
 //    }
 
-    public float getRecombinationModifierStrength() {
-        return recombinationModifierStrength;
+    public float getRecombinationLocusStrength() {
+        return recombinationLocusStrength;
     }
 
-    public int getRecombinationModifierPosition() {
-        return recombinationModifierPosition;
+    public int getRecombinationLocusPosition() {
+        return recombinationLocusPosition;
     }
 }

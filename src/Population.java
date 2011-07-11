@@ -131,7 +131,7 @@ public class Population {
         return individuals.size();
     }
 
-    public void addMutatorLocus(int position, int strength) {
+    public void addMutatorLoci(int position, int strength) {
         for (Individual individual : getIndividuals()) {
             individual.addMutatorLocus(position, strength);
         }
