@@ -5,25 +5,31 @@
 
 public class Individual {
 
-    // TODO: read parameters from properties file
-
-    private int genomeSize;
-    private float fitness;
-
     private Locus[] loci;
 
-    public Individual() {
-        fitness = 1.5f;
-        genomeSize = NUM_OF_MUTATOR_LOCI + NUM_OF_FITNESS_LOCI + NUM_OF_RECOMBINATION_LOCI;
+    public Individual(int genomeSize) {
         loci = new Locus[genomeSize];
     }
 
-    public void addMutatorLocus(int position, int strength) {
-        MutatorLocus mutator = new MutatorLocus(strength);
+    public void setFitnessLocus(int position, float fitnessEffect) {
+        FitnessLocus fitnessLocus = new FitnessLocus(fitnessEffect);
+        loci[position] = fitnessLocus;
+    }
+    public void setMutatorLocus(int position, int strength) {
+        MutatorLocus mutatorLocus = new MutatorLocus(strength);
+        loci[position] = mutatorLocus;
+    }
+    public void setRecombinationLocus(int position, int strength) {
+        RecombinationLocus recombinationLocus = new RecombinationLocus(strength);
+        loci[position] = recombinationLocus;
     }
 
     public float getFitness() {
-        return fitness;
+        return 1.5f;
+    }
+
+    public int getGenomeSize() {
+        return loci.length;
     }
 
 }

@@ -1,6 +1,6 @@
 /**
  * @author Bingjun
- * Generate a pair of individuals to reproduce
+ * Generate a pair of individuals to reproducePair
  */
 
 public class IndividualPair {
@@ -18,5 +18,11 @@ public class IndividualPair {
 
     public Individual getIndividualB() {
         return individualB;
+    }
+
+    public void mutate() {}
+
+    public IndividualPair reproduce() {
+        return new IndividualPair(individualA, individualB);
     }
 }

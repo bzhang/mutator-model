@@ -5,19 +5,13 @@
 
 public class MutatorLocus implements Locus {
 
-    private static final int DEFAULT_MUTATOR_STRENGTH = 10;
-
-    private float mutatorStrength;
-
-    public MutatorLocus(){
-        this(DEFAULT_MUTATOR_STRENGTH);
-    }
+    private float strength;
 
     public MutatorLocus(float strength) {
-        mutatorStrength = strength;
+        this.strength = strength;
     }
 
-    public float getMutatorStrength() {
-        return mutatorStrength;
+    public float getStrength() {
+        return strength;
     }
 }

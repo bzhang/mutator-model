@@ -6,51 +6,50 @@ import java.util.ArrayList;
  */
 
 public class Population {
-    // Initialization. Create a new population which is a ArrayList, the elements are individuals    
+
+    // TODO: read parameters from properties file
+    private static final int N_FITNESS_LOCI = 1000;
+    private static final int N_MUTATOR_LOCI = 1;
+    private static final int N_RECOMBINATION_LOCI = 1;
+    private static final int MUTATOR_STRENGTH_MAX = 1000;
+    private static final float MUTATOR_RATIO = 0.5f;
+
     private ArrayList<Individual> individuals;
 
-    // Add new individuals into the population (individuals) until reach the size limit (size)
-    public Population(int size) {
-        individuals = new ArrayList<Individual>();
+    public Population(int nIndividuals) {
 
-        for (int i = 0; i < size; i++) {
+        // Create a population with n individuals
+        individuals = new ArrayList<Individual>();
+        int genomeSize = N_MUTATOR_LOCI + N_FITNESS_LOCI + N_RECOMBINATION_LOCI;
+
+        for (int i = 0; i < nIndividuals; i++) {
             individuals.add(new Individual());
         }
     }
 
-    //
-    public Population() {
-        this(0);
+    public void initAsFounder() {
     }
 
-    public ArrayList<Individual> getIndividuals() {
-        return individuals;
-    }
+    public Population generate() {
 
-    // Create next generation by reproducing and mutating
-    public Population createNextGeneration() {
-        // Initialize next generation with the 0 pop size as current one
-        Population nextGeneration = new Population();
+        Population nextGeneration = new Population(0);
 
-        // Loop until next generation reach the pop size limit
         while(nextGeneration.getSize() < getSize()) {
-            // Reproduce and return two offspring
-            IndividualPair offspringPair = reproduce();
-            IndividualPair mutatedOffspringPair = mutate(offspringPair);
-            // Add new offspring into next generation
-            nextGeneration.addIndividualPairs(mutatedOffspringPair);
+            IndividualPair offspringPair = reproducePair();
+            offspringPair.mutate();
+            nextGeneration.addIndividualPairs(offspringPair);
+            // TODO: What if the population only needs one individual instead of two?
         }
 
         return nextGeneration;
     }
 
-    private IndividualPair mutate(IndividualPair individualPair) {
-        // TODO: extend mutate method
-        return individualPair;  //To change body of created methods use File | Settings | File Templates.
+    public IndividualPair reproducePair() {
+        IndividualPair parentPair = getTwoRandomIndividuals();
+        IndividualPair offspringPair = parentPair.reproduce();
+        return offspringPair;
     }
 
-
-    // Add two individuals into the individuals array
     private void addIndividualPairs(IndividualPair offspringPair) {
         addIndividual(offspringPair.getIndividualA());
         addIndividual(offspringPair.getIndividualB());
@@ -60,80 +59,33 @@ public class Population {
         individuals.add(individual);
     }
 
-    public IndividualPair reproduce() {
-        // Get two parent individuals randomly
-        IndividualPair parentPair = getTwoRandomIndividuals();
-        Individual parentA = parentPair.getIndividualA();
-        Individual parentB = parentPair.getIndividualB();
-
-        IndividualPair offspringPair;
-        if (areSexualHomozygotes(parentA, parentB)) {
-            offspringPair = sexuallyReproduce(parentA, parentB);
-        } else if (areAsexualHomozygotes(parentA, parentB)) {
-            offspringPair = asexuallyReproduce(parentA, parentB);
-        } else { // Heterozygotes
-            // Sexual reproduction is dominant
-            offspringPair = sexuallyReproduce(parentA, parentB);
-        }
-        return offspringPair;
-    }
-
-    private IndividualPair asexuallyReproduce(Individual parentA, Individual parentB) {
-        // Asexual reproduction: copy the parent genome to offspring
-        Individual offspringA = parentA;
-        Individual offspringB = parentB;
-        IndividualPair offspringPair = new IndividualPair(offspringA, offspringB);
-        return offspringPair;
-    }
-
-    private boolean areAsexualHomozygotes(Individual parentA, Individual parentB) {
-//        parentA.
-        return true;
-    }
-
-    private IndividualPair sexuallyReproduce(Individual parentA, Individual parentB) {
-        // Sexual reproduction: recombine parents' genomes
-        // TODO: implement sexual reproduction
-        Individual offspringA = parentA;
-        Individual offspringB = parentB;
-        IndividualPair offspringPair = new IndividualPair(offspringA, offspringB);
-        return offspringPair;
-
-    }
-
-    private boolean areSexualHomozygotes(Individual parentA, Individual parentB) {
-        return false;
-    }
-
-    // Get two random individuals to reproduce according to their fitness
     private IndividualPair getTwoRandomIndividuals() {
-        WeightedRandomGenerator wrg = new WeightedRandomGenerator(getAllFitness());
+        float[] randomWeights = getFitnessArray();
+        WeightedRandomGenerator wrg = new WeightedRandomGenerator(randomWeights);
         int indexA = wrg.nextInt();
         int indexB = wrg.nextInt();
         while (indexA == indexB) {
             indexB = wrg.nextInt();
         }
-        Individual individualA = getIndividuals().get(indexA);
-        Individual individualB = getIndividuals().get(indexB);
+        Individual individualA = getIndividualArray().get(indexA);
+        Individual individualB = getIndividualArray().get(indexB);
         return new IndividualPair(individualA, individualB);
     }
 
-    private float[] getAllFitness() {
-        float[] allFitness = new float[getSize()];
-        int i = 0;
-        for (Individual individual : getIndividuals()) {
-            allFitness[i++] = individual.getFitness();
-        }
-        return allFitness;
+    public ArrayList<Individual> getIndividualArray() {
+        return individuals;
     }
 
     public int getSize() {
         return individuals.size();
     }
 
-    public void addMutatorLoci(int position, int strength) {
-        for (Individual individual : getIndividuals()) {
-            individual.addMutatorLocus(position, strength);
+    private float[] getFitnessArray() {
+        float[] fitnessArray = new float[getSize()];
+        int i = 0;
+        for (Individual individual : getIndividualArray()) {
+            fitnessArray[i++] = individual.getFitness();
         }
+        return fitnessArray;
     }
 }

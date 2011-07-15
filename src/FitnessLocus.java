@@ -3,4 +3,14 @@
  */
 
 public class FitnessLocus implements Locus {
+
+    private float fitnessEffect;
+
+    public FitnessLocus(float fitnessEffect) {
+        this.fitnessEffect = fitnessEffect;
+    }
+
+    public float getFitnessEffect() {
+        return fitnessEffect;
+    }
 }
