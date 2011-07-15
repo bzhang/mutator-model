@@ -15,11 +15,17 @@ public class Individual {
         FitnessLocus fitnessLocus = new FitnessLocus(fitnessEffect);
         loci[position] = fitnessLocus;
     }
+
+    public void setFitnessLocus(int position) {
+        setFitnessLocus(position, 0);
+    }
+
     public void setMutatorLocus(int position, int strength) {
         MutatorLocus mutatorLocus = new MutatorLocus(strength);
         loci[position] = mutatorLocus;
     }
-    public void setRecombinationLocus(int position, int strength) {
+
+    public void setRecombinationLocus(int position, float strength) {
         RecombinationLocus recombinationLocus = new RecombinationLocus(strength);
         loci[position] = recombinationLocus;
     }

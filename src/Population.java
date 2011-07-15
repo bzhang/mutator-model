@@ -4,6 +4,7 @@
  */
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Population {
 
@@ -17,14 +18,41 @@ public class Population {
 
     private ArrayList<Individual> individuals;
     private LociPattern lociPattern;
+    private Random random = new Random(System.nanoTime());
 
     public Population(int nIndividuals) {
         // Founder population
+        lociPattern = new LociPattern(N_FITNESS_LOCI, N_MUTATOR_LOCI, N_RECOMBINATION_LOCI);
         individuals = new ArrayList<Individual>();
 
         for (int i = 0; i < nIndividuals; i++) {
-            individuals.add(new Individual(GENOME_SIZE));
+            Individual individual = new Individual(GENOME_SIZE);
+            individuals.add(individual);
+
+            for (int location = 0; location < GENOME_SIZE; location++) {
+                if (lociPattern.getLocusType(location) == LociPattern.LocusType.Fitness) {
+                    individual.setFitnessLocus(location);
+                }
+                else if (lociPattern.getLocusType(location) == LociPattern.LocusType.Mutator) {
+                    individual.setMutatorLocus(location, getRandomMutatorStrength());
+                }
+                else {
+                    individual.setRecombinationLocus(location, getRandomRecombinationStrength());
+                }
+            }
         }
+    }
+
+    private int getRandomMutatorStrength() {
+        int strength = 1;
+        if (random.nextFloat() < MUTATOR_RATIO) {
+            strength = random.nextInt(MUTATOR_STRENGTH_MAX - 1) + 2;
+        }
+        return strength;
+    }
+
+    private float getRandomRecombinationStrength() {
+        return random.nextFloat();
     }
 
     public Population(Population parent) {
