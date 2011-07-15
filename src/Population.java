@@ -4,7 +4,6 @@
  */
 
 import java.util.ArrayList;
-import LociPattern;
 
 public class Population {
 
@@ -20,8 +19,7 @@ public class Population {
     private LociPattern lociPattern;
 
     public Population(int nIndividuals) {
-
-        // Create a population with n individuals
+        // Founder population
         individuals = new ArrayList<Individual>();
 
         for (int i = 0; i < nIndividuals; i++) {
@@ -29,26 +27,21 @@ public class Population {
         }
     }
 
-    public void initAsFounder() {
+    public Population(Population parent) {
+        // Create next generation
+        lociPattern = parent.lociPattern;
+        individuals = new ArrayList<Individual>();
 
-    }
-
-    public Population generate() {
-
-        Population nextGeneration = new Population(0);
-
-        while(nextGeneration.getSize() < getSize()) {
-            IndividualPair offspringPair = reproducePair();
+        while (getSize() < parent.getSize()) {
+            IndividualPair offspringPair = reproduceOffspringPair();
             offspringPair.mutate();
-            nextGeneration.addIndividualPairs(offspringPair);
+            addIndividualPairs(offspringPair);
             // TODO: What if the population only needs one individual instead of two?
         }
-
-        return nextGeneration;
     }
 
-    public IndividualPair reproducePair() {
-        IndividualPair parentPair = getTwoRandomIndividuals();
+    public IndividualPair reproduceOffspringPair() {
+        IndividualPair parentPair = getRandomIndividualPair();
         IndividualPair offspringPair = parentPair.reproduce();
         return offspringPair;
     }
@@ -62,7 +55,7 @@ public class Population {
         individuals.add(individual);
     }
 
-    private IndividualPair getTwoRandomIndividuals() {
+    private IndividualPair getRandomIndividualPair() {
         float[] randomWeights = getFitnessArray();
         WeightedRandomGenerator wrg = new WeightedRandomGenerator(randomWeights);
         int indexA = wrg.nextInt();

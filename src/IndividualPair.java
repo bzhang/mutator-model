@@ -1,6 +1,6 @@
 /**
  * @author Bingjun
- * Generate a pair of individuals to reproducePair
+ * A pair of individuals
  */
 
 public class IndividualPair {
