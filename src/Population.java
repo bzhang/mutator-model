@@ -23,7 +23,7 @@ public class Population {
         int genomeSize = N_MUTATOR_LOCI + N_FITNESS_LOCI + N_RECOMBINATION_LOCI;
 
         for (int i = 0; i < nIndividuals; i++) {
-            individuals.add(new Individual());
+            individuals.add(new Individual(genomeSize));
         }
     }
 
