@@ -1,5 +1,3 @@
-import java.util.Random;
-
 /**
  * @author Bingjun
  */
@@ -10,8 +8,6 @@ public class MutatorModel {
 
     private static final int N_GENERATIONS = 10;
     private static final int POPULATION_SIZE = 10;
-
-    private static Random random = new Random(System.nanoTime());
 
     public static void main(String[] args) {
 

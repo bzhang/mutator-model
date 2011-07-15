@@ -1,9 +1,10 @@
-import java.util.ArrayList;
-
 /**
  * @author Bingjun
  * 5/16/11 12:32 AM
  */
+
+import java.util.ArrayList;
+import LociPattern;
 
 public class Population {
 
@@ -11,23 +12,25 @@ public class Population {
     private static final int N_FITNESS_LOCI = 1000;
     private static final int N_MUTATOR_LOCI = 1;
     private static final int N_RECOMBINATION_LOCI = 1;
+    private static final int GENOME_SIZE = N_MUTATOR_LOCI + N_FITNESS_LOCI + N_RECOMBINATION_LOCI;
     private static final int MUTATOR_STRENGTH_MAX = 1000;
     private static final float MUTATOR_RATIO = 0.5f;
 
     private ArrayList<Individual> individuals;
+    private LociPattern lociPattern;
 
     public Population(int nIndividuals) {
 
         // Create a population with n individuals
         individuals = new ArrayList<Individual>();
-        int genomeSize = N_MUTATOR_LOCI + N_FITNESS_LOCI + N_RECOMBINATION_LOCI;
 
         for (int i = 0; i < nIndividuals; i++) {
-            individuals.add(new Individual(genomeSize));
+            individuals.add(new Individual(GENOME_SIZE));
         }
     }
 
     public void initAsFounder() {
+
     }
 
     public Population generate() {
