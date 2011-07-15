@@ -23,6 +23,12 @@ public class IndividualPair {
     public void mutate() {}
 
     public IndividualPair reproduce() {
+        IndividualPair offspringPair;
+        //if (isAsexualHomozygote());
         return new IndividualPair(individualA, individualB);
+    }
+
+    private boolean isAsexualHomozygote() {
+        return true;
     }
 }

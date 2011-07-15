@@ -15,6 +15,7 @@ public class Population {
     private static final int GENOME_SIZE = N_MUTATOR_LOCI + N_FITNESS_LOCI + N_RECOMBINATION_LOCI;
     private static final int MUTATOR_STRENGTH_MAX = 1000;
     private static final float MUTATOR_RATIO = 0.5f;
+    private static final float RECOMBINATION_RATIO = 0.5f;
 
     private ArrayList<Individual> individuals;
     private LociPattern lociPattern;
@@ -41,18 +42,6 @@ public class Population {
                 }
             }
         }
-    }
-
-    private int getRandomMutatorStrength() {
-        int strength = 1;
-        if (random.nextFloat() < MUTATOR_RATIO) {
-            strength = random.nextInt(MUTATOR_STRENGTH_MAX - 1) + 2;
-        }
-        return strength;
-    }
-
-    private float getRandomRecombinationStrength() {
-        return random.nextFloat();
     }
 
     public Population(Population parent) {
@@ -94,6 +83,22 @@ public class Population {
         Individual individualA = getIndividualArray().get(indexA);
         Individual individualB = getIndividualArray().get(indexB);
         return new IndividualPair(individualA, individualB);
+    }
+
+    private int getRandomMutatorStrength() {
+        int strength = 1;
+        if (random.nextFloat() < MUTATOR_RATIO) {
+            strength = random.nextInt(MUTATOR_STRENGTH_MAX - 1) + 2;
+        }
+        return strength;
+    }
+
+    private float getRandomRecombinationStrength() {
+        float strength = 0;
+        if (random.nextFloat() < RECOMBINATION_RATIO) {
+            strength = random.nextFloat();
+        }
+        return strength;
     }
 
     public ArrayList<Individual> getIndividualArray() {
