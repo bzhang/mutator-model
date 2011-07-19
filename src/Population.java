@@ -27,7 +27,7 @@ public class Population {
         individuals = new ArrayList<Individual>();
 
         for (int i = 0; i < nIndividuals; i++) {
-            Individual individual = new Individual(GENOME_SIZE);
+            Individual individual = new Individual(lociPattern);
             individuals.add(individual);
 
             for (int location = 0; location < GENOME_SIZE; location++) {

@@ -6,9 +6,11 @@
 public class Individual {
 
     private Locus[] loci;
+    private LociPattern lociPattern;
 
-    public Individual(int genomeSize) {
-        loci = new Locus[genomeSize];
+    public Individual(LociPattern pattern) {
+        this.lociPattern = pattern;
+        loci = new Locus[lociPattern.getGenomeSize()];
     }
 
     public void setFitnessLocus(int position, float fitnessEffect) {
@@ -39,7 +41,8 @@ public class Individual {
     }
 
     public float getRecombinationStrength() {
-
+        int recombinationLocusPosition = lociPattern.getRecombinationLociPositions()[0];
+        return ((RecombinationLocus)loci[recombinationLocusPosition]).getStrength(); // refactor
     }
 
 }

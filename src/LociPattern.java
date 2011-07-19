@@ -10,7 +10,7 @@ public class LociPattern {
         Fitness, Mutator, Recombination
     }
 
-    private int length;
+    private int genomeSize;
     private LocusType[] pattern;
     private int[] recombinationLociPositions;
 
@@ -18,11 +18,11 @@ public class LociPattern {
 
     public LociPattern(int nFitness, int nMutator, int nRecombination) {
 
-        length = nFitness + nMutator + nRecombination;
-        pattern = new LocusType[length];
+        genomeSize = nFitness + nMutator + nRecombination;
+        pattern = new LocusType[genomeSize];
         recombinationLociPositions = new int[nRecombination];
 
-        for (int i = 0; i < length; i++) {
+        for (int i = 0; i < genomeSize; i++) {
             pattern[i] = LocusType.Fitness;
         }
 
@@ -44,8 +44,8 @@ public class LociPattern {
         }
     }
 
-    private int getRandomLocation() {
-        return random.nextInt(length);
+    public int getGenomeSize() {
+        return genomeSize;
     }
 
     public LocusType getLocusType(int location) {
@@ -54,5 +54,9 @@ public class LociPattern {
 
     public int[] getRecombinationLociPositions() {
         return recombinationLociPositions;
+    }
+
+    private int getRandomLocation() {
+        return random.nextInt(genomeSize);
     }
 }
