@@ -9,13 +9,13 @@ import java.util.Random;
 public class Population {
 
     // TODO: read parameters from properties file
-    private static final int N_FITNESS_LOCI = 1000;
+    private static final int N_FITNESS_LOCI = 100;
     private static final int N_MUTATOR_LOCI = 1;
     private static final int N_RECOMBINATION_LOCI = 1;
     private static final int GENOME_SIZE = N_MUTATOR_LOCI + N_FITNESS_LOCI + N_RECOMBINATION_LOCI;
-    private static final int MUTATOR_STRENGTH_MAX = 1000;
-    private static final float MUTATOR_RATIO = 0.5f;
-    private static final float RECOMBINATION_RATIO = 0.5f;
+    private static final int MUTATOR_STRENGTH_MAX = 1;
+    private static final float MUTATOR_RATIO = 0.0f;
+    private static final float RECOMBINATION_RATIO = 0.0f;
 
     private ArrayList<Individual> individuals;
     private LociPattern lociPattern;
@@ -64,6 +64,8 @@ public class Population {
     }
 
     private void addIndividualPairs(IndividualPair offspringPair) {
+        // TODO: check 1) how many individuals left after mutation; could be 0,1,2
+        // TODO: check 2) if only one individual short in nextGeneration. If so, only add one individual
         addIndividual(offspringPair.getIndividualA());
         addIndividual(offspringPair.getIndividualB());
     }
@@ -87,6 +89,7 @@ public class Population {
 
     private int getRandomMutatorStrength() {
         int strength = 1;
+//      Generate mutator locus, strength ranging from [2, MUTATOR_STRENGTH_MAX]
         if (random.nextFloat() < MUTATOR_RATIO) {
             strength = random.nextInt(MUTATOR_STRENGTH_MAX - 1) + 2;
         }
@@ -95,6 +98,7 @@ public class Population {
 
     private float getRandomRecombinationStrength() {
         float strength = 0;
+//      Generate recombination locus (sexual), strength ranging from (0.0, 1.0]
         if (random.nextFloat() < RECOMBINATION_RATIO) {
             strength = random.nextFloat();
         }
