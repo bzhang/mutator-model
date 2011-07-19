@@ -1,5 +1,4 @@
 import java.util.Random;
-
 import static java.lang.System.arraycopy;
 
 /**
@@ -10,7 +9,7 @@ import static java.lang.System.arraycopy;
 public class IndividualPair {
 
     private Individual individualA, individualB;
-        private Random random = new Random(System.nanoTime());
+    private Random random = new Random(System.nanoTime());
 
     public IndividualPair(Individual individualA, Individual individualB) {
         this.individualA = individualA;
@@ -28,38 +27,28 @@ public class IndividualPair {
     public void mutate() {}
 
     public IndividualPair reproduce() {
-        IndividualPair offspringPair = new IndividualPair(individualA,individualB);
-        float recombinationLocusStrengthA;
-        float recombinationLocusStrengthB;
-        float recombinationProbability;
-        int recombinationPosition;
-        // Calculate the probability of recombination, mean(RecombinationLocusStrengthA, B)
-        recombinationLocusStrengthA = individualA.getRecombinationLocusStrength();
-        recombinationLocusStrengthB = individualB.getRecombinationLocusStrength();
-        recombinationProbability = (recombinationLocusStrengthA + recombinationLocusStrengthB) / 2;
 
-        if(random.nextFloat() < recombinationProbability){
-            return offspringPair;
-        }   else {
-            recombinationPosition = random.nextInt(individualA.getGenomeSize());
-            offspringPair = recombine(individualA, individualB, recombinationPosition);
-            return offspringPair;
+        IndividualPair offspringPair = new IndividualPair(individualA, individualB);
+
+        float recombinationStrengthA = individualA.getRecombinationStrength();
+        float recombinationStrengthB = individualB.getRecombinationStrength();
+        float recombinationProbability = (recombinationStrengthA + recombinationStrengthB) / 2;
+
+        if (random.nextFloat() < recombinationProbability) {
+            offspringPair.recombine();
         }
+
+        return offspringPair;
     }
 
-    private IndividualPair recombine(Individual individualA, Individual individualB, int recombinationPosition) {
-        IndividualPair recombinedOffspringPair;
-        Individual recombinedIndividualA = individualA;
-        Individual recombinedIndividualB = individualB;
-        int length = individualA.getGenomeSize() - recombinationPosition + 1;
+    private void recombine() {
+        int position = random.nextInt(individualA.getGenomeSize());
+        int swapLength = individualA.getGenomeSize() - position + 1;
 
-        arraycopy(individualB, recombinationPosition,
-                recombinedIndividualA, recombinationPosition,
-                length);
-        arraycopy(individualA, recombinationPosition,
-                recombinedIndividualB, recombinationPosition,
-                length);
-        return recombinedOffspringPair = new IndividualPair(recombinedIndividualA, recombinedIndividualB);
+        Locus[] temp = new Locus[swapLength];
+        System.arraycopy(individualA, position, temp, 0, swapLength);
+        System.arraycopy(individualB, position, individualA, position, swapLength);
+        System.arraycopy(temp, 0, individualB, position, swapLength);
     }
 
 }

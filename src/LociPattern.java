@@ -6,19 +6,21 @@ import java.util.Random;
 
 public class LociPattern {
 
-    private int length;
-    private Random random = new Random(System.nanoTime());
-
     public enum LocusType {
         Fitness, Mutator, Recombination
     }
 
+    private int length;
     private LocusType[] pattern;
+    private int[] recombinationLociPositions;
+
+    private Random random = new Random(System.nanoTime());
 
     public LociPattern(int nFitness, int nMutator, int nRecombination) {
 
         length = nFitness + nMutator + nRecombination;
         pattern = new LocusType[length];
+        recombinationLociPositions = new int[nRecombination];
 
         for (int i = 0; i < length; i++) {
             pattern[i] = LocusType.Fitness;
@@ -38,6 +40,7 @@ public class LociPattern {
                 position = getRandomLocation();
             }
             pattern[position] = LocusType.Recombination;
+            recombinationLociPositions[i] = position;
         }
     }
 
@@ -47,5 +50,9 @@ public class LociPattern {
 
     public LocusType getLocusType(int location) {
         return pattern[location];
+    }
+
+    public int[] getRecombinationLociPositions() {
+        return recombinationLociPositions;
     }
 }

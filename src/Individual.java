@@ -38,4 +38,8 @@ public class Individual {
         return loci.length;
     }
 
+    public float getRecombinationStrength() {
+
+    }
+
 }
