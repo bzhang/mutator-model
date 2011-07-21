@@ -12,7 +12,7 @@ public class LociPattern {
 
     private int genomeSize;
     private LocusType[] pattern;
-    private int[] recombinationLociPositions;
+    private int[] mutatorLociPositions, recombinationLociPositions;
 
     private Random random = new Random(System.nanoTime());
 
@@ -20,6 +20,7 @@ public class LociPattern {
 
         genomeSize = nFitness + nMutator + nRecombination;
         pattern = new LocusType[genomeSize];
+        mutatorLociPositions = new int[nMutator];
         recombinationLociPositions = new int[nRecombination];
 
         for (int i = 0; i < genomeSize; i++) {
@@ -32,6 +33,7 @@ public class LociPattern {
                 position = getRandomLocation();
             }
             pattern[position] = LocusType.Mutator;
+            mutatorLociPositions[i] = position;
         }
 
         for (int i = 0; i < nRecombination; i++) {
@@ -54,6 +56,10 @@ public class LociPattern {
 
     public int[] getRecombinationLociPositions() {
         return recombinationLociPositions;
+    }
+
+    public int[] getMutatorLociPositions() {
+        return mutatorLociPositions;
     }
 
     private int getRandomLocation() {

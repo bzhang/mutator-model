@@ -14,7 +14,30 @@ public class Individual {
     }
 
     public void mutate() {
-        // TODO: lethalMutate, deleteriousMutate, beneficialMutate
+        lethalMutate();
+        deleteriousMutate();
+        beneficialMutate();
+    }
+
+    private void lethalMutate() {
+        double mutationRate = ModelParameters.baseLethalMutationRate * getMutatorStrength();
+        if (Rand.getDouble() < mutationRate) {
+            // TODO: individual dies
+        }
+    }
+
+    private void deleteriousMutate() {
+        double mutationRate = ModelParameters.baseDeleteriousMutationRate * getMutatorStrength();
+        if (Rand.getDouble() < mutationRate) {
+            // TODO: deleterious mutate
+        }
+    }
+
+    private void beneficialMutate() {
+        double mutationRate = ModelParameters.baseBeneficialMutationRate * getMutatorStrength();
+        if (Rand.getDouble() < mutationRate) {
+            // TODO: beneficial mutate
+        }
     }
 
     public void setFitnessLocus(int position, float fitnessEffect) {
@@ -52,7 +75,14 @@ public class Individual {
         return loci.length;
     }
 
+    public float getMutatorStrength() {
+        // TODO: multiple all mutator strength values
+        int mutatorLocusPosition = lociPattern.getMutatorLociPositions()[0];
+        return ((MutatorLocus)loci[mutatorLocusPosition]).getStrength(); // refactor
+    }
+
     public float getRecombinationStrength() {
+        // TODO: multiple all recombination strength values
         int recombinationLocusPosition = lociPattern.getRecombinationLociPositions()[0];
         return ((RecombinationLocus)loci[recombinationLocusPosition]).getStrength(); // refactor
     }
