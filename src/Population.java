@@ -8,29 +8,21 @@ import java.util.Random;
 
 public class Population {
 
-    // TODO: read parameters from properties file
-    private static final int N_FITNESS_LOCI = 100;
-    private static final int N_MUTATOR_LOCI = 1;
-    private static final int N_RECOMBINATION_LOCI = 1;
-    private static final int GENOME_SIZE = N_MUTATOR_LOCI + N_FITNESS_LOCI + N_RECOMBINATION_LOCI;
-    private static final int MUTATOR_STRENGTH_MAX = 1;
-    private static final float MUTATOR_RATIO = 0.0f;
-    private static final float RECOMBINATION_RATIO = 0.0f;
-
     private ArrayList<Individual> individuals;
     private LociPattern lociPattern;
     private Random random = new Random(System.nanoTime());
 
     public Population(int nIndividuals) {
         // Create the founder population
-        lociPattern = new LociPattern(N_FITNESS_LOCI, N_MUTATOR_LOCI, N_RECOMBINATION_LOCI);
+        lociPattern = new LociPattern(ModelParameters.nFitnessLoci,
+                ModelParameters.nMutatorLoci, ModelParameters.nRecombinationLoci);
         individuals = new ArrayList<Individual>();
 
         for (int i = 0; i < nIndividuals; i++) {
             Individual individual = new Individual(lociPattern);
             individuals.add(individual);
 
-            for (int location = 0; location < GENOME_SIZE; location++) {
+            for (int location = 0; location < ModelParameters.genomeSize; location++) {
                 if (lociPattern.getLocusType(location) == LociPattern.LocusType.Fitness) {
                     individual.setFitnessLocus(location);
                 }
@@ -84,8 +76,8 @@ public class Population {
     private int getRandomMutatorStrength() {
         int strength = 1;
         // Generate mutator locus, strength ranging from [2, MUTATOR_STRENGTH_MAX]
-        if (random.nextFloat() < MUTATOR_RATIO) {
-            strength = random.nextInt(MUTATOR_STRENGTH_MAX - 1) + 2;
+        if (random.nextFloat() < ModelParameters.mutatorRatio) {
+            strength = random.nextInt(ModelParameters.mutatorStrengthMax - 1) + 2;
         }
         return strength;
     }
@@ -93,7 +85,7 @@ public class Population {
     private float getRandomRecombinationStrength() {
         float strength = 0;
         // Generate recombination locus (sexual), strength ranging from (0.0, 1.0]
-        if (random.nextFloat() < RECOMBINATION_RATIO) {
+        if (random.nextFloat() < ModelParameters.recombinationRatio) {
             strength = random.nextFloat();
         }
         return strength;
