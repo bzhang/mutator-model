@@ -8,11 +8,11 @@ public class ModelParameters {
     public static final int nFitnessLoci = 100;
     public static final int nMutatorLoci = 1;
     public static final int nRecombinationLoci = 1;
-    public static final int genomeSize = nFitnessLoci + nMutatorLoci + nRecombinationLoci
-            ;
-    public static final int mutatorStrengthMax = 1;
-    public static final float mutatorRatio = 0.0f;
-    public static final float recombinationRatio = 0.0f;
+    public static final int genomeSize = nFitnessLoci + nMutatorLoci + nRecombinationLoci;
+
+    public static final int mutatorStrengthMax = 1000;
+    public static final float mutatorRatio = 0.5f;
+    public static final float recombinationRatio = 0.5f;
 
     public static final double baseLethalMutationRate = 1e-5;
     public static final double baseDeleteriousMutationRate = 1e-4;

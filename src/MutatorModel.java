@@ -12,9 +12,15 @@ public class MutatorModel {
     public static void main(String[] args) {
         // Founder population
         Population population = new Population(POPULATION_SIZE);
+        // float[] fitnessArray = population.getFitnessArray()
+        // fitnessArrays.mean()
+        // fitnessArrays.sd()
 
         for (int i = 0; i < N_GENERATIONS; i++ ) {
             population = new Population(population);
+        // float[] fitnessArray = population.getFitnessArray()
+        // fitnessArrays.mean()
+        // fitnessArrays.sd()
         }
 
     }
