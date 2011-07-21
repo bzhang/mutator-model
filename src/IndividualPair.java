@@ -48,9 +48,10 @@ public class IndividualPair {
         int position = random.nextInt(genomeSize);
 
         for (int i = position; i < genomeSize; i++) {
-            Locus temp = individualA.getLocus(i);
-            individualA.setLocus(i, individualB.getLocus(i));
-            individualB.setLocus(i, temp);
+            Locus locusA = individualA.getLocus(i);
+            Locus locusB = individualB.getLocus(i);
+            individualA.setLocus(i, locusB);
+            individualB.setLocus(i, locusA);
         }
     }
 
