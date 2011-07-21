@@ -22,7 +22,7 @@ public class Population {
     private Random random = new Random(System.nanoTime());
 
     public Population(int nIndividuals) {
-        // Founder population
+        // Create the founder population
         lociPattern = new LociPattern(N_FITNESS_LOCI, N_MUTATOR_LOCI, N_RECOMBINATION_LOCI);
         individuals = new ArrayList<Individual>();
 
@@ -45,29 +45,23 @@ public class Population {
     }
 
     public Population(Population parent) {
-        // Create next generation
+        // Create the next generation
         lociPattern = parent.lociPattern;
         individuals = new ArrayList<Individual>();
 
         while (getSize() < parent.getSize()) {
             IndividualPair offspringPair = reproduceOffspringPair();
             offspringPair.mutate();
-            addIndividualPairs(offspringPair);
-            // TODO: What if the population only needs one individual instead of two?
+            addIndividual(offspringPair.getIndividualA());
+            if (getSize() < parent.getSize()) {
+                addIndividual(offspringPair.getIndividualB());
+            }
         }
     }
 
     public IndividualPair reproduceOffspringPair() {
         IndividualPair parentPair = getRandomIndividualPair();
-        IndividualPair offspringPair = parentPair.reproduce();
-        return offspringPair;
-    }
-
-    private void addIndividualPairs(IndividualPair offspringPair) {
-        // TODO: check 1) how many individuals left after mutation; could be 0,1,2
-        // TODO: check 2) if only one individual short in nextGeneration. If so, only add one individual
-        addIndividual(offspringPair.getIndividualA());
-        addIndividual(offspringPair.getIndividualB());
+        return parentPair.reproduce();
     }
 
     private void addIndividual(Individual individual) {
@@ -89,7 +83,7 @@ public class Population {
 
     private int getRandomMutatorStrength() {
         int strength = 1;
-//      Generate mutator locus, strength ranging from [2, MUTATOR_STRENGTH_MAX]
+        // Generate mutator locus, strength ranging from [2, MUTATOR_STRENGTH_MAX]
         if (random.nextFloat() < MUTATOR_RATIO) {
             strength = random.nextInt(MUTATOR_STRENGTH_MAX - 1) + 2;
         }
@@ -98,7 +92,7 @@ public class Population {
 
     private float getRandomRecombinationStrength() {
         float strength = 0;
-//      Generate recombination locus (sexual), strength ranging from (0.0, 1.0]
+        // Generate recombination locus (sexual), strength ranging from (0.0, 1.0]
         if (random.nextFloat() < RECOMBINATION_RATIO) {
             strength = random.nextFloat();
         }

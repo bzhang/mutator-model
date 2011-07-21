@@ -23,7 +23,10 @@ public class IndividualPair {
         return individualB;
     }
 
-    public void mutate() {}
+    public void mutate() {
+        individualA.mutate();
+        individualB.mutate();
+    }
 
     public IndividualPair reproduce() {
 
@@ -41,13 +44,14 @@ public class IndividualPair {
     }
 
     private void recombine() {
-        int position = random.nextInt(individualA.getGenomeSize());
-        int swapLength = individualA.getGenomeSize() - position + 1;
+        int genomeSize = individualA.getGenomeSize();
+        int position = random.nextInt(genomeSize);
 
-        Locus[] temp = new Locus[swapLength];
-        System.arraycopy(individualA, position, temp, 0, swapLength);
-        System.arraycopy(individualB, position, individualA, position, swapLength);
-        System.arraycopy(temp, 0, individualB, position, swapLength);
+        for (int i = position; i < genomeSize; i++) {
+            Locus temp = individualA.getLocus(i);
+            individualA.setLocus(i, individualB.getLocus(i));
+            individualB.setLocus(i, temp);
+        }
     }
 
 }

@@ -13,6 +13,10 @@ public class Individual {
         loci = new Locus[lociPattern.getGenomeSize()];
     }
 
+    public void mutate() {
+        // TODO: lethalMutate, deleteriousMutate, beneficialMutate
+    }
+
     public void setFitnessLocus(int position, float fitnessEffect) {
         FitnessLocus fitnessLocus = new FitnessLocus(fitnessEffect);
         loci[position] = fitnessLocus;
@@ -30,6 +34,14 @@ public class Individual {
     public void setRecombinationLocus(int position, float strength) {
         RecombinationLocus recombinationLocus = new RecombinationLocus(strength);
         loci[position] = recombinationLocus;
+    }
+
+    public Locus getLocus(int position) {
+        return loci[position];
+    }
+
+    public void setLocus(int position, Locus locus) {
+        loci[position] = locus;
     }
 
     public float getFitness() {
