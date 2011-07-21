@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
  * @author Bingjun
  * Created by bingjun at 5/16/11 9:42 AM
@@ -56,7 +58,7 @@ public class Individual {
 
     private FitnessLocus getRandomFitnessLocus() {
         int position = lociPattern.getRandomFitnessPosition();
-        return (FitnessLocus)getLocus(position);
+        return (FitnessLocus) getLocus(position);
     }
 
     public void setFitnessLocus(int position, float fitnessEffect) {
@@ -86,24 +88,31 @@ public class Individual {
         loci[position] = locus;
     }
 
-    public float getFitness() {
-        return 1.5f;
-    }
-
     public int getGenomeSize() {
         return loci.length;
+    }
+
+    public float getFitness() {
+        float fitness = 1;
+        for (int i = 0; i < getGenomeSize(); i++) {
+            if (lociPattern.getLocusType(i) == LociPattern.LocusType.Fitness) {
+                FitnessLocus locus = (FitnessLocus)getLocus(i);
+                fitness *= locus.getFitnessEffect();
+            }
+        }
+        return fitness;
     }
 
     public float getMutatorStrength() {
         // TODO: multiple all mutator strength values
         int mutatorLocusPosition = lociPattern.getMutatorLociPositions()[0];
-        return ((MutatorLocus)getLocus(mutatorLocusPosition)).getStrength(); // refactor
+        return ((MutatorLocus) getLocus(mutatorLocusPosition)).getStrength(); // refactor
     }
 
     public float getRecombinationStrength() {
         // TODO: multiple all recombination strength values
         int recombinationLocusPosition = lociPattern.getRecombinationLociPositions()[0];
-        return ((RecombinationLocus)getLocus(recombinationLocusPosition)).getStrength(); // refactor
+        return ((RecombinationLocus) getLocus(recombinationLocusPosition)).getStrength(); // refactor
     }
 
 }

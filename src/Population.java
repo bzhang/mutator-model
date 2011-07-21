@@ -49,6 +49,14 @@ public class Population {
         }
     }
 
+    public float[] getFitnessArray() {
+        float[] fitnessArray = new float[getSize()];
+        for (int i = 0; i < getSize(); i++) {
+            fitnessArray[i] = getIndividual(i).getFitness();
+        }
+        return fitnessArray;
+    }
+
     private void addIndividualPair(IndividualPair offspringPair, int parentSize) {
         addIndividual(offspringPair.getIndividualA(), parentSize);
         addIndividual(offspringPair.getIndividualB(), parentSize);
@@ -68,8 +76,8 @@ public class Population {
         while (indexA == indexB) {
             indexB = wrg.nextInt();
         }
-        Individual individualA = getIndividualArray().get(indexA);
-        Individual individualB = getIndividualArray().get(indexB);
+        Individual individualA = getIndividual(indexA);
+        Individual individualB = getIndividual(indexB);
         return new IndividualPair(individualA, individualB);
     }
 
@@ -95,16 +103,12 @@ public class Population {
         return individuals;
     }
 
+    public Individual getIndividual(int index) {
+        return individuals.get(index);
+    }
+
     public int getSize() {
         return individuals.size();
     }
 
-    private float[] getFitnessArray() {
-        float[] fitnessArray = new float[getSize()];
-        int i = 0;
-        for (Individual individual : getIndividualArray()) {
-            fitnessArray[i++] = individual.getFitness();
-        }
-        return fitnessArray;
-    }
 }
