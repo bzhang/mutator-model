@@ -50,7 +50,8 @@ public class Population {
         individuals = new ArrayList<Individual>();
 
         while (getSize() < parent.getSize()) {
-            IndividualPair offspringPair = reproduceOffspringPair();
+            IndividualPair parentPair = parent.getRandomIndividualPair();
+            IndividualPair offspringPair = parentPair.reproduce();
             offspringPair.mutate();
             addIndividualPair(offspringPair, parent.getSize());
         }
@@ -59,11 +60,6 @@ public class Population {
     private void addIndividualPair(IndividualPair offspringPair, int parentSize) {
         addIndividual(offspringPair.getIndividualA(), parentSize);
         addIndividual(offspringPair.getIndividualB(), parentSize);
-    }
-
-    public IndividualPair reproduceOffspringPair() {
-        IndividualPair parentPair = getRandomIndividualPair();
-        return parentPair.reproduce();
     }
 
     private void addIndividual(Individual individual, int parentSize) {
