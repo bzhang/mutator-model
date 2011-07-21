@@ -62,7 +62,16 @@ public class LociPattern {
         return mutatorLociPositions;
     }
 
+    public int getRandomFitnessPosition() {
+        int position;
+        do {
+            position = getRandomLocation();
+        } while (getLocusType(position) != LocusType.Fitness);
+        return position;
+    }
+
     private int getRandomLocation() {
         return random.nextInt(genomeSize);
     }
+
 }

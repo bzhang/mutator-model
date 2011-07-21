@@ -29,15 +29,22 @@ public class Individual {
     private void deleteriousMutate() {
         double mutationRate = ModelParameters.baseDeleteriousMutationRate * getMutatorStrength();
         if (Rand.getDouble() < mutationRate) {
-            // TODO: deleterious mutate
+            FitnessLocus locus = getRandomFitnessLocus();
+            locus.addFitnessEffect(ModelParameters.defaultDeleteriousEffect);
         }
     }
 
     private void beneficialMutate() {
         double mutationRate = ModelParameters.baseBeneficialMutationRate * getMutatorStrength();
         if (Rand.getDouble() < mutationRate) {
-            // TODO: beneficial mutate
+            FitnessLocus locus = getRandomFitnessLocus();
+            locus.addFitnessEffect(ModelParameters.defaultBeneficialEffect);
         }
+    }
+
+    private FitnessLocus getRandomFitnessLocus() {
+        int position = lociPattern.getRandomFitnessPosition();
+        return (FitnessLocus)getLocus(position);
     }
 
     public void setFitnessLocus(int position, float fitnessEffect) {
@@ -46,17 +53,17 @@ public class Individual {
     }
 
     public void setFitnessLocus(int position) {
-        setFitnessLocus(position, 0);
+        setFitnessLocus(position, ModelParameters.baseFitnessEffect);
     }
 
     public void setMutatorLocus(int position, int strength) {
         MutatorLocus mutatorLocus = new MutatorLocus(strength);
-        loci[position] = mutatorLocus;
+        setLocus(position, mutatorLocus);
     }
 
     public void setRecombinationLocus(int position, float strength) {
         RecombinationLocus recombinationLocus = new RecombinationLocus(strength);
-        loci[position] = recombinationLocus;
+        setLocus(position, recombinationLocus);
     }
 
     public Locus getLocus(int position) {
@@ -78,13 +85,13 @@ public class Individual {
     public float getMutatorStrength() {
         // TODO: multiple all mutator strength values
         int mutatorLocusPosition = lociPattern.getMutatorLociPositions()[0];
-        return ((MutatorLocus)loci[mutatorLocusPosition]).getStrength(); // refactor
+        return ((MutatorLocus)getLocus(mutatorLocusPosition)).getStrength(); // refactor
     }
 
     public float getRecombinationStrength() {
         // TODO: multiple all recombination strength values
         int recombinationLocusPosition = lociPattern.getRecombinationLociPositions()[0];
-        return ((RecombinationLocus)loci[recombinationLocusPosition]).getStrength(); // refactor
+        return ((RecombinationLocus)getLocus(recombinationLocusPosition)).getStrength(); // refactor
     }
 
 }
