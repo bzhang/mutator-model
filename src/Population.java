@@ -52,11 +52,13 @@ public class Population {
         while (getSize() < parent.getSize()) {
             IndividualPair offspringPair = reproduceOffspringPair();
             offspringPair.mutate();
-            addIndividual(offspringPair.getIndividualA());
-            if (getSize() < parent.getSize()) {
-                addIndividual(offspringPair.getIndividualB());
-            }
+            addIndividualPair(offspringPair, parent.getSize());
         }
+    }
+
+    private void addIndividualPair(IndividualPair offspringPair, int parentSize) {
+        addIndividual(offspringPair.getIndividualA(), parentSize);
+        addIndividual(offspringPair.getIndividualB(), parentSize);
     }
 
     public IndividualPair reproduceOffspringPair() {
@@ -64,8 +66,10 @@ public class Population {
         return parentPair.reproduce();
     }
 
-    private void addIndividual(Individual individual) {
-        individuals.add(individual);
+    private void addIndividual(Individual individual, int parentSize) {
+        if (getSize() < parentSize && individual.isAlive()) {
+            individuals.add(individual);
+        }
     }
 
     private IndividualPair getRandomIndividualPair() {

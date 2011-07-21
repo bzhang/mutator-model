@@ -7,23 +7,35 @@ public class Individual {
 
     private Locus[] loci;
     private LociPattern lociPattern;
+    private boolean alive;
 
     public Individual(LociPattern pattern) {
         this.lociPattern = pattern;
         loci = new Locus[lociPattern.getGenomeSize()];
+        alive = true;
     }
 
     public void mutate() {
         lethalMutate();
-        deleteriousMutate();
-        beneficialMutate();
+        if (isAlive()) {
+            deleteriousMutate();
+            beneficialMutate();
+        }
     }
 
     private void lethalMutate() {
         double mutationRate = ModelParameters.baseLethalMutationRate * getMutatorStrength();
         if (Rand.getDouble() < mutationRate) {
-            // TODO: individual dies
+            die();
         }
+    }
+
+    public void die() {
+        alive = false;
+    }
+
+    public boolean isAlive() {
+        return alive;
     }
 
     private void deleteriousMutate() {
