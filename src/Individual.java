@@ -103,7 +103,7 @@ public class Individual {
         return fitness;
     }
 
-    public float getMutatorStrength() {
+    public int getMutatorStrength() {
         // TODO: multiple all mutator strength values
         int mutatorLocusPosition = lociPattern.getMutatorLociPositions()[0];
         return ((MutatorLocus) getLocus(mutatorLocusPosition)).getStrength(); // refactor

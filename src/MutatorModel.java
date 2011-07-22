@@ -1,4 +1,5 @@
-import java.net.SocketOptions;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 
 /**
  * @author Bingjun
@@ -10,29 +11,39 @@ public class MutatorModel {
 
     private static final int N_GENERATIONS = 100;
     private static final int POPULATION_SIZE = 10;
+    private static final String OUTPUT_FILE_NAME = "Mutator.txt";
 
     public static void main(String[] args) {
+
+        String output = "FitnessMean\tFitnessSD\tMutatorStrengthMean\tMutatorStrengthSD\n";
+
         // Founder population
         Population population = new Population(POPULATION_SIZE);
-        printPopulationStat(population);
+        output += outputPopulationStat(population);
 
         for (int i = 0; i < N_GENERATIONS; i++ ) {
             population = new Population(population);
-            printPopulationStat(population);
+            output += outputPopulationStat(population);
         }
+
+        writeFile(OUTPUT_FILE_NAME, output);
     }
 
-    private static void printPopulationStat(Population population) {
+    private static String outputPopulationStat(Population population) {
         float[] fitnessArray = population.getFitnessArray();
-        System.out.println(Util.mean(fitnessArray));
-        System.out.println(Util.standardDeviation(fitnessArray));
-
-        for (float f : fitnessArray) {
-            System.out.print(f);
-            System.out.print(", ");
-        }
-        System.out.println("");
-        System.out.println("------------------------");
+        int[] mutatorStrengthArray = population.getMutatorStrengthArray();
+        return Util.mean(fitnessArray) + "\t" + Util.standardDeviation(fitnessArray) + "\t"
+                + Util.mean(mutatorStrengthArray) + "\t" + Util.standardDeviation(mutatorStrengthArray) + "\n";
     }
 
+    public static void writeFile(String outputFileName, String output) {
+        try {
+            FileWriter fileWriter = new FileWriter(outputFileName);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            bufferedWriter.write(output);
+            bufferedWriter.close();
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage());
+        }
+    }
 }

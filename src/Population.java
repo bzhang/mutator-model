@@ -57,6 +57,14 @@ public class Population {
         return fitnessArray;
     }
 
+    public int[] getMutatorStrengthArray() {
+        int[] mutatorStrengthArray = new int[getSize()];
+        for (int i = 0; i < getSize(); i++) {
+            mutatorStrengthArray[i] = getIndividual(i).getMutatorStrength();
+        }
+        return mutatorStrengthArray;
+    }
+
     private void addIndividualPair(IndividualPair offspringPair, int parentSize) {
         addIndividual(offspringPair.getIndividualA(), parentSize);
         addIndividual(offspringPair.getIndividualB(), parentSize);
