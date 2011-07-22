@@ -14,15 +14,15 @@ public class Population {
 
     public Population(int nIndividuals) {
         // Create the founder population
-        lociPattern = new LociPattern(ModelParameters.nFitnessLoci,
-                ModelParameters.nMutatorLoci, ModelParameters.nRecombinationLoci);
+        lociPattern = new LociPattern(ModelParameters.N_FITNESS_LOCI,
+                ModelParameters.N_MUTATOR_LOCI, ModelParameters.N_RECOMBINATION_LOCI);
         individuals = new ArrayList<Individual>();
 
         for (int i = 0; i < nIndividuals; i++) {
             Individual individual = new Individual(lociPattern);
             individuals.add(individual);
 
-            for (int location = 0; location < ModelParameters.genomeSize; location++) {
+            for (int location = 0; location < ModelParameters.GENOME_SIZE; location++) {
                 if (lociPattern.getLocusType(location) == LociPattern.LocusType.Fitness) {
                     individual.setFitnessLocus(location);
                 }
@@ -92,8 +92,8 @@ public class Population {
     private int getRandomMutatorStrength() {
         int strength = 1;
         // Generate mutator locus, strength ranging from [2, MUTATOR_STRENGTH_MAX]
-        if (random.nextFloat() < ModelParameters.mutatorRatio) {
-            strength = random.nextInt(ModelParameters.mutatorStrengthMax - 1) + 2;
+        if (random.nextFloat() < ModelParameters.MUTATOR_RATIO) {
+            strength = random.nextInt(ModelParameters.MUTATOR_STRENGTH_MAX - 1) + 2;
         }
         return strength;
     }
@@ -101,7 +101,7 @@ public class Population {
     private float getRandomRecombinationStrength() {
         float strength = 0;
         // Generate recombination locus (sexual), strength ranging from (0.0, 1.0]
-        if (random.nextFloat() < ModelParameters.recombinationRatio) {
+        if (random.nextFloat() < ModelParameters.RECOMBINATION_RATIO) {
             strength = random.nextFloat();
         }
         return strength;

@@ -5,21 +5,21 @@
 public class ModelParameters {
 
     // TODO: read parameters from properties file
-    public static final int nFitnessLoci = 100;
-    public static final int nMutatorLoci = 1;
-    public static final int nRecombinationLoci = 1;
-    public static final int genomeSize = nFitnessLoci + nMutatorLoci + nRecombinationLoci;
+    public static final int N_FITNESS_LOCI = 100;
+    public static final int N_MUTATOR_LOCI = 1;
+    public static final int N_RECOMBINATION_LOCI = 1;
+    public static final int GENOME_SIZE = N_FITNESS_LOCI + N_MUTATOR_LOCI + N_RECOMBINATION_LOCI;
 
-    public static final int mutatorStrengthMax = 1000;
-    public static final float mutatorRatio = 0.5f;
-    public static final float recombinationRatio = 0.5f;
+    public static final int MUTATOR_STRENGTH_MAX = 1000;
+    public static final float MUTATOR_RATIO = 0.0f;
+    public static final float RECOMBINATION_RATIO = 0.0f;
 
-    public static final double baseLethalMutationRate = 1e-5;
-    public static final double baseDeleteriousMutationRate = 1e-4;
-    public static final double baseBeneficialMutationRate = 1e-8;
+    public static final double BASE_LETHAL_MUTATION_RATE = 1e-5;
+    public static final double BASE_DELETERIOUS_MUTATION_RATE = 1e-4;
+    public static final double BASE_BENEFICIAL_MUTATION_RATE = 1e-8;
 
-    public static final float baseFitnessEffect = 1f;
-    public static final float defaultDeleteriousEffect = 0.99f;
-    public static final float defaultBeneficialEffect = 1.01f;
+    public static final float BASE_FITNESS_EFFECT = 1f;
+    public static final float DEFAULT_DELETERIOUS_EFFECT = 0.98f;
+    public static final float DEFAULT_BENEFICIAL_EFFECT = 1.02f;
 
 }

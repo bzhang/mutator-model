@@ -9,21 +9,26 @@ public class MutatorModel {
 
     public static final String VERSION = "0.1";
 
-    private static final int N_GENERATIONS = 100;
-    private static final int POPULATION_SIZE = 10;
-    private static final String OUTPUT_FILE_NAME = "Mutator.txt";
+    private static final int N_GENERATIONS = 2000;
+    private static final int POPULATION_SIZE = 500;
+    private static final String OUTPUT_FILE_NAME = "Mutator_M0_R0_G2000_N500.txt";
 
     public static void main(String[] args) {
 
         String output = "FitnessMean\tFitnessSD\tMutatorStrengthMean\tMutatorStrengthSD\n";
 
         // Founder population
+        System.out.println("Output file: " + OUTPUT_FILE_NAME + "\nFounder population creating...");
         Population population = new Population(POPULATION_SIZE);
         output += outputPopulationStat(population);
 
+        System.out.println("Founder population created.");
+
         for (int i = 0; i < N_GENERATIONS; i++ ) {
+            // Create the next generation
             population = new Population(population);
             output += outputPopulationStat(population);
+            System.out.println("Generation " + i);
         }
 
         writeFile(OUTPUT_FILE_NAME, output);

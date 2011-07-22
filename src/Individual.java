@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 /**
  * @author Bingjun
  * Created by bingjun at 5/16/11 9:42 AM
@@ -23,10 +21,13 @@ public class Individual {
             deleteriousMutate();
             beneficialMutate();
         }
+        if (getFitness() <= 0) {
+            die();
+        }
     }
 
     private void lethalMutate() {
-        double mutationRate = ModelParameters.baseLethalMutationRate * getMutatorStrength();
+        double mutationRate = ModelParameters.BASE_LETHAL_MUTATION_RATE * getMutatorStrength();
         if (Rand.getDouble() < mutationRate) {
             die();
         }
@@ -41,18 +42,18 @@ public class Individual {
     }
 
     private void deleteriousMutate() {
-        double mutationRate = ModelParameters.baseDeleteriousMutationRate * getMutatorStrength();
+        double mutationRate = ModelParameters.BASE_DELETERIOUS_MUTATION_RATE * getMutatorStrength();
         if (Rand.getDouble() < mutationRate) {
             FitnessLocus locus = getRandomFitnessLocus();
-            locus.addFitnessEffect(ModelParameters.defaultDeleteriousEffect);
+            locus.addFitnessEffect(ModelParameters.DEFAULT_DELETERIOUS_EFFECT);
         }
     }
 
     private void beneficialMutate() {
-        double mutationRate = ModelParameters.baseBeneficialMutationRate * getMutatorStrength();
+        double mutationRate = ModelParameters.BASE_BENEFICIAL_MUTATION_RATE * getMutatorStrength();
         if (Rand.getDouble() < mutationRate) {
             FitnessLocus locus = getRandomFitnessLocus();
-            locus.addFitnessEffect(ModelParameters.defaultBeneficialEffect);
+            locus.addFitnessEffect(ModelParameters.DEFAULT_BENEFICIAL_EFFECT);
         }
     }
 
@@ -67,7 +68,7 @@ public class Individual {
     }
 
     public void setFitnessLocus(int position) {
-        setFitnessLocus(position, ModelParameters.baseFitnessEffect);
+        setFitnessLocus(position, ModelParameters.BASE_FITNESS_EFFECT);
     }
 
     public void setMutatorLocus(int position, int strength) {
