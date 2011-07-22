@@ -3,6 +3,8 @@
  * 5/16/11 12:32 AM
  */
 
+import com.sun.java.swing.action.ExitAction;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -42,11 +44,19 @@ public class Population {
         individuals = new ArrayList<Individual>();
 
         while (getSize() < parent.getSize()) {
+            int previousSize = getSize();
+            int counter = 0;
             IndividualPair parentPair = parent.getRandomIndividualPair();
             IndividualPair offspringPair = parentPair.reproduce();
             offspringPair.mutate();
             addIndividualPair(offspringPair, parent.getSize());
-            System.out.println("# of individuals: " + getSize());
+//            System.out.println("# of individuals: " + getSize());
+            if (getSize() - previousSize == 0) {
+                counter++;
+                if (counter == 500) {
+                    System.exit(0);
+                }
+            }
         }
     }
 
