@@ -46,6 +46,7 @@ public class Population {
             IndividualPair offspringPair = parentPair.reproduce();
             offspringPair.mutate();
             addIndividualPair(offspringPair, parent.getSize());
+            System.out.println("# of individuals: " + getSize());
         }
     }
 
@@ -73,6 +74,7 @@ public class Population {
     private void addIndividual(Individual individual, int parentSize) {
         if (getSize() < parentSize && individual.isAlive()) {
             individuals.add(individual);
+
         }
     }
 
