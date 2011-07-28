@@ -5,4 +5,6 @@
 
 public interface Locus  {
 
+    public Locus clone();
+
 }

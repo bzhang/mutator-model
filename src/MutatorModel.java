@@ -9,35 +9,31 @@ public class MutatorModel {
 
     public static final String VERSION = "0.1";
 
-    private static final int N_GENERATIONS = 2000;
-    private static final int POPULATION_SIZE = 500;
-    private static final String OUTPUT_FILE_NAME = "Mutator_M0_R0_G2000_N500.txt";
-
     public static void main(String[] args) {
 
-        String output = "FitnessMean\tFitnessSD\tMutatorStrengthMean\tMutatorStrengthSD\n";
+        String output = "Generation\tFitnessMean\tFitnessSD\tMutatorStrengthMean\tMutatorStrengthSD\n";
 
         // Founder population
-        System.out.println("Output file: " + OUTPUT_FILE_NAME + "\nFounder population creating...");
-        Population population = new Population(POPULATION_SIZE);
-        output += outputPopulationStat(population);
+        System.out.println("Output file: " + getFilename() + "\nFounder population creating...");
+        Population population = new Population(ModelParameters.POPULATION_SIZE);
+        output += outputPopulationStat(1, population);
 
         System.out.println("Founder population created.");
 
-        for (int i = 0; i < N_GENERATIONS; i++ ) {
+        for (int i = 2; i <= ModelParameters.N_GENERATIONS; i++ ) {
             // Create the next generation
             population = new Population(population);
-            output += outputPopulationStat(population);
+            output += outputPopulationStat(i, population);
             System.out.println("Generation " + i);
         }
 
-        writeFile(OUTPUT_FILE_NAME, output);
+        writeFile(getFilename(), output);
     }
 
-    private static String outputPopulationStat(Population population) {
+    private static String outputPopulationStat(int i, Population population) {
         float[] fitnessArray = population.getFitnessArray();
         int[] mutatorStrengthArray = population.getMutatorStrengthArray();
-        return Util.mean(fitnessArray) + "\t" + Util.standardDeviation(fitnessArray) + "\t"
+        return i + "\t" + Util.mean(fitnessArray) + "\t" + Util.standardDeviation(fitnessArray) + "\t"
                 + Util.mean(mutatorStrengthArray) + "\t" + Util.standardDeviation(mutatorStrengthArray) + "\n";
     }
 
@@ -50,5 +46,10 @@ public class MutatorModel {
         } catch (Exception e) {
             System.err.println("Error: " + e.getMessage());
         }
+    }
+
+    private static String getFilename() {
+        return "out/Mutator_M" + ModelParameters.MUTATOR_RATIO + "_R" + ModelParameters.RECOMBINATION_RATIO
+                + "_G" + ModelParameters.N_GENERATIONS + "_N" + ModelParameters.POPULATION_SIZE + ".txt";
     }
 }

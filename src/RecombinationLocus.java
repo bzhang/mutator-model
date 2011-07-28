@@ -11,6 +11,10 @@ public class RecombinationLocus implements Locus {
         this.strength = strength;
     }
 
+    public RecombinationLocus clone() {
+        return new RecombinationLocus(getStrength());
+    }
+
     public float getStrength() {
         return strength;
     }

@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -13,6 +14,10 @@ public class FitnessLocus implements Locus {
         fitnessEffects.add(effect);
     }
 
+    public FitnessLocus(ArrayList<Float> fitnessEffects) {
+        this.fitnessEffects = new ArrayList<Float>(fitnessEffects);
+    }
+
     public float getFitnessEffect() {
         float effect = 1;
         for (float e : fitnessEffects) {
@@ -23,6 +28,11 @@ public class FitnessLocus implements Locus {
 
     public void addFitnessEffect(float effect) {
         fitnessEffects.add(effect);
+    }
+
+    public FitnessLocus clone() {
+        return new FitnessLocus(fitnessEffects);
+
     }
 
 }

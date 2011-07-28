@@ -8,7 +8,6 @@ import java.util.Random;
 public class IndividualPair {
 
     private Individual individualA, individualB;
-    private Random random = new Random(System.nanoTime());
 
     public IndividualPair(Individual individualA, Individual individualB) {
         this.individualA = individualA;
@@ -24,19 +23,21 @@ public class IndividualPair {
     }
 
     public void mutate() {
-        individualA.mutate();
-        individualB.mutate();
+        getIndividualA().mutate();
+        getIndividualB().mutate();
     }
 
     public IndividualPair reproduce() {
 
-        IndividualPair offspringPair = new IndividualPair(individualA, individualB);
+        Individual offspringA = new Individual(getIndividualA());
+        Individual offspringB = new Individual(getIndividualB());
+        IndividualPair offspringPair = new IndividualPair(offspringA, offspringB);
 
-        float recombinationStrengthA = individualA.getRecombinationStrength();
-        float recombinationStrengthB = individualB.getRecombinationStrength();
+        float recombinationStrengthA = offspringA.getRecombinationStrength();
+        float recombinationStrengthB = offspringB.getRecombinationStrength();
         float recombinationProbability = (recombinationStrengthA + recombinationStrengthB) / 2;
 
-        if (random.nextFloat() < recombinationProbability) {
+        if (Rand.getFloat() < recombinationProbability) {
             offspringPair.recombine();
         }
 
@@ -44,14 +45,14 @@ public class IndividualPair {
     }
 
     private void recombine() {
-        int genomeSize = individualA.getGenomeSize();
-        int position = random.nextInt(genomeSize);
+        int genomeSize = getIndividualA().getGenomeSize();
+        int position = Rand.getInt(genomeSize);
 
         for (int i = position; i < genomeSize; i++) {
-            Locus locusA = individualA.getLocus(i);
-            Locus locusB = individualB.getLocus(i);
-            individualA.setLocus(i, locusB);
-            individualB.setLocus(i, locusA);
+            Locus locusA = getIndividualA().getLocus(i);
+            Locus locusB = getIndividualB().getLocus(i);
+            getIndividualA().setLocus(i, locusB);
+            getIndividualB().setLocus(i, locusA);
         }
     }
 

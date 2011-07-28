@@ -11,6 +11,10 @@ public class MutatorLocus implements Locus {
         this.strength = strength;
     }
 
+    public MutatorLocus clone() {
+        return new MutatorLocus(getStrength());
+    }
+
     public int getStrength() {
         return strength;
     }

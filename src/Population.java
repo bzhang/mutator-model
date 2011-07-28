@@ -84,7 +84,6 @@ public class Population {
     private void addIndividual(Individual individual, int parentSize) {
         if (getSize() < parentSize && individual.isAlive()) {
             individuals.add(individual);
-
         }
     }
 

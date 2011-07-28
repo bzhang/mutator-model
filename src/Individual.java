@@ -10,9 +10,16 @@ public class Individual {
     private boolean alive;
 
     public Individual(LociPattern pattern) {
-        this.lociPattern = pattern;
+        lociPattern = pattern;
         loci = new Locus[lociPattern.getGenomeSize()];
         alive = true;
+    }
+
+    public Individual(Individual individual) {
+        this(individual.getLociPattern());
+        for (int i = 0; i < individual.getGenomeSize(); i++) {
+            loci[i] = individual.getLocus(i).clone();
+        }
     }
 
     public void mutate() {
@@ -79,6 +86,10 @@ public class Individual {
     public void setRecombinationLocus(int position, float strength) {
         RecombinationLocus recombinationLocus = new RecombinationLocus(strength);
         setLocus(position, recombinationLocus);
+    }
+
+    public LociPattern getLociPattern() {
+        return lociPattern;
     }
 
     public Locus getLocus(int position) {
