@@ -1,3 +1,5 @@
+import static LociPattern.LocusType.*;
+
 /**
  * @author Bingjun
  * Created by bingjun at 5/16/11 9:42 AM
@@ -18,7 +20,19 @@ public class Individual {
     public Individual(Individual individual) {
         this(individual.getLociPattern());
         for (int i = 0; i < individual.getGenomeSize(); i++) {
-            loci[i] = individual.getLocus(i).clone();
+            Object clonedLocus = null;
+            try {
+                clonedLocus = individual.getLocus(i).clone();
+            } catch (CloneNotSupportedException e) {
+                e.printStackTrace();
+            }
+            if (getLociPattern().getLocusType(i) == Fitness) {
+                loci[i] = (FitnessLocus) clonedLocus;
+            } else if (getLociPattern().getLocusType(i) == Mutator) {
+                loci[i] = (MutatorLocus) clonedLocus;
+            } else if (getLociPattern().getLocusType(i) == Recombination) {
+                loci[i] = (RecombinationLocus) clonedLocus;
+            }
         }
     }
 
@@ -107,7 +121,7 @@ public class Individual {
     public float getFitness() {
         float fitness = 1;
         for (int i = 0; i < getGenomeSize(); i++) {
-            if (lociPattern.getLocusType(i) == LociPattern.LocusType.Fitness) {
+            if (lociPattern.getLocusType(i) == Fitness) {
                 FitnessLocus locus = (FitnessLocus)getLocus(i);
                 fitness *= locus.getFitnessEffect();
             }

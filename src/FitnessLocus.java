@@ -5,17 +5,13 @@ import java.util.ArrayList;
  * Created by bingjun at 7/8/11 11:43 AM
  */
 
-public class FitnessLocus implements Locus {
+public class FitnessLocus extends Locus {
 
     private ArrayList<Float> fitnessEffects;
 
     public FitnessLocus(float effect) {
         fitnessEffects = new ArrayList<Float>();
         fitnessEffects.add(effect);
-    }
-
-    public FitnessLocus(ArrayList<Float> fitnessEffects) {
-        this.fitnessEffects = new ArrayList<Float>(fitnessEffects);
     }
 
     public float getFitnessEffect() {
@@ -28,11 +24,6 @@ public class FitnessLocus implements Locus {
 
     public void addFitnessEffect(float effect) {
         fitnessEffects.add(effect);
-    }
-
-    public FitnessLocus clone() {
-        return new FitnessLocus(fitnessEffects);
-
     }
 
 }
