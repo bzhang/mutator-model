@@ -1,5 +1,3 @@
-import java.util.Random;
-
 /**
  * @author Bingjun
  * A pair of individuals

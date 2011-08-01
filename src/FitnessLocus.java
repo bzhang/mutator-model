@@ -26,4 +26,17 @@ public class FitnessLocus extends Locus {
         fitnessEffects.add(effect);
     }
 
+    public Object clone() throws CloneNotSupportedException {
+        FitnessLocus cloned = null;
+        try {
+            cloned = (FitnessLocus) super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        for (float fitnessEffect : fitnessEffects) {
+            cloned.addFitnessEffect(fitnessEffect);
+        }
+        return cloned;
+    }
+
 }

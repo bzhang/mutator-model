@@ -3,8 +3,6 @@
  * 5/16/11 12:32 AM
  */
 
-import com.sun.java.swing.action.ExitAction;
-
 import java.util.ArrayList;
 import java.util.Random;
 

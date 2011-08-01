@@ -1,4 +1,4 @@
-import static LociPattern.LocusType.*;
+//import static LociPattern.LocusType.*;
 
 /**
  * @author Bingjun
@@ -26,11 +26,11 @@ public class Individual {
             } catch (CloneNotSupportedException e) {
                 e.printStackTrace();
             }
-            if (getLociPattern().getLocusType(i) == Fitness) {
+            if (getLociPattern().getLocusType(i) == LociPattern.LocusType.Fitness) {
                 loci[i] = (FitnessLocus) clonedLocus;
-            } else if (getLociPattern().getLocusType(i) == Mutator) {
+            } else if (getLociPattern().getLocusType(i) == LociPattern.LocusType.Mutator) {
                 loci[i] = (MutatorLocus) clonedLocus;
-            } else if (getLociPattern().getLocusType(i) == Recombination) {
+            } else if (getLociPattern().getLocusType(i) == LociPattern.LocusType.Recombination) {
                 loci[i] = (RecombinationLocus) clonedLocus;
             }
         }
@@ -121,7 +121,7 @@ public class Individual {
     public float getFitness() {
         float fitness = 1;
         for (int i = 0; i < getGenomeSize(); i++) {
-            if (lociPattern.getLocusType(i) == Fitness) {
+            if (lociPattern.getLocusType(i) == LociPattern.LocusType.Fitness) {
                 FitnessLocus locus = (FitnessLocus)getLocus(i);
                 fitness *= locus.getFitnessEffect();
             }
