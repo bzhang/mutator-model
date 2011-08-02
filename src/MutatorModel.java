@@ -1,4 +1,5 @@
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 
 /**
@@ -9,23 +10,29 @@ public class MutatorModel {
 
     public static void main(String[] args) {
 
-        String output = "Generation\tFitnessMean\tFitnessSD\tMutatorStrengthMean\tMutatorStrengthSD\n";
+        String resultDir = createDirectory();
+        for (int nExperiment = 0; nExperiment < ModelParameters.N_EXPERIMENT; nExperiment++) {
 
-        // Founder population
-        System.out.println("Output file: " + getFilename() + "\nFounder population creating...");
-        Population population = new Population(ModelParameters.POPULATION_SIZE);
-        output += outputPopulationStat(1, population);
+            String output = "Generation\tFitnessMean\tFitnessSD\tMutatorStrengthMean\tMutatorStrengthSD\n";
 
-        System.out.println("Founder population created.");
+            // Founder population
+            System.out.println("Output file: " + getFilename(resultDir,nExperiment) + "\nFounder population creating...");
+            Population population = new Population(ModelParameters.POPULATION_SIZE);
+            output += outputPopulationStat(1, population);
 
-        for (int i = 2; i <= ModelParameters.N_GENERATIONS; i++ ) {
-            // Create the next generation
-            population = new Population(population);
-            output += outputPopulationStat(i, population);
-            System.out.println("Generation " + i);
+            System.out.println("Founder population created.");
+
+            for (int i = 2; i <= ModelParameters.N_GENERATIONS; i++) {
+                // Create the next generation
+                population = new Population(population);
+                output += outputPopulationStat(i, population);
+                System.out.println("Generation " + i);
+            }
+
+            writeFile(getFilename(resultDir, nExperiment), output);
+
         }
 
-        writeFile(getFilename(), output);
     }
 
     private static String outputPopulationStat(int i, Population population) {
@@ -46,10 +53,19 @@ public class MutatorModel {
         }
     }
 
-    private static String getFilename() {
-        return "out/Mutator_M" + ModelParameters.MUTATOR_RATIO + "_R" + ModelParameters.RECOMBINATION_RATIO
+    private static String getFilename(String dir, int nExperiment) {
+        return dir + "/" + nExperiment + ".txt";
+    }
+
+    private static String createDirectory() {
+        String dir = "out/" + ModelParameters.MUTATOR_RATIO + "_R" + ModelParameters.RECOMBINATION_RATIO
                 + "_G" + ModelParameters.N_GENERATIONS + "_N" + ModelParameters.POPULATION_SIZE +
                 "_BeneMR" + ModelParameters.BASE_BENEFICIAL_MUTATION_RATE + "_DeleMR" +
-                ModelParameters.BASE_DELETERIOUS_MUTATION_RATE + ".txt";
+                ModelParameters.BASE_DELETERIOUS_MUTATION_RATE;
+        boolean success = (new File(dir)).mkdir();
+        if (success) {
+            System.out.println("Directory: " + dir + " created.");
+        }
+        return dir;
     }
 }
