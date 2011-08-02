@@ -48,6 +48,8 @@ public class MutatorModel {
 
     private static String getFilename() {
         return "out/Mutator_M" + ModelParameters.MUTATOR_RATIO + "_R" + ModelParameters.RECOMBINATION_RATIO
-                + "_G" + ModelParameters.N_GENERATIONS + "_N" + ModelParameters.POPULATION_SIZE + ".txt";
+                + "_G" + ModelParameters.N_GENERATIONS + "_N" + ModelParameters.POPULATION_SIZE +
+                "_BeneMR" + ModelParameters.BASE_BENEFICIAL_MUTATION_RATE + "_DeleMR" +
+                ModelParameters.BASE_DELETERIOUS_MUTATION_RATE + ".txt";
     }
 }
