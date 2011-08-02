@@ -40,10 +40,10 @@ public class Population {
         // Create the next generation
         lociPattern = parent.lociPattern;
         individuals = new ArrayList<Individual>();
+        int counter = 0;
 
         while (getSize() < parent.getSize()) {
             int previousSize = getSize();
-            int counter = 0;
             IndividualPair parentPair = parent.getRandomIndividualPair();
             IndividualPair offspringPair = parentPair.reproduce();
             offspringPair.mutate();

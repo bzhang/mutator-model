@@ -1,4 +1,3 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -30,13 +29,18 @@ public class FitnessLocus extends Locus {
         FitnessLocus cloned = null;
         try {
             cloned = (FitnessLocus) super.clone();
+            cloned.initFitnessEffects();
+            for (float fitnessEffect : fitnessEffects) {
+                cloned.addFitnessEffect(fitnessEffect);
+            }
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
-        for (float fitnessEffect : fitnessEffects) {
-            cloned.addFitnessEffect(fitnessEffect);
-        }
         return cloned;
+    }
+
+    protected void initFitnessEffects() {
+        fitnessEffects = new ArrayList<Float>();
     }
 
 }

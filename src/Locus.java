@@ -3,7 +3,7 @@
  * Created by @author Bingjun at 6/24/11 1:55 PM
  */
 
-public abstract class Locus  {
+public abstract class Locus implements Cloneable{
 
     public Object clone() throws CloneNotSupportedException {
         Object cloned = null;

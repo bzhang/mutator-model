@@ -7,8 +7,6 @@ import java.io.FileWriter;
 
 public class MutatorModel {
 
-    public static final String VERSION = "0.1";
-
     public static void main(String[] args) {
 
         String output = "Generation\tFitnessMean\tFitnessSD\tMutatorStrengthMean\tMutatorStrengthSD\n";
