@@ -1,29 +1,73 @@
+import java.io.FileInputStream;
+import java.util.Properties;
+
 /**
  * Created by Bingjun at 7/20/11 11:00 PM
  */
 
 public class ModelParameters {
 
-    // TODO: read parameters from properties file
-    public static final int N_EXPERIMENT = 2;
-    public static final int N_GENERATIONS = 2000;
-    public static final int POPULATION_SIZE = 100;
+    private static final String PROPERTIES_FILE_NAME = "MutatorModel.properties";
+    private static final Properties properties = new Properties();
 
-    public static final int N_FITNESS_LOCI = 100;
-    public static final int N_MUTATOR_LOCI = 1;
-    public static final int N_RECOMBINATION_LOCI = 1;
-    public static final int GENOME_SIZE = N_FITNESS_LOCI + N_MUTATOR_LOCI + N_RECOMBINATION_LOCI;
+    public static final int N_EXPERIMENT, N_GENERATIONS, POPULATION_SIZE;
+    public static final int N_FITNESS_LOCI, N_MUTATOR_LOCI, N_RECOMBINATION_LOCI, GENOME_SIZE;
+    public static final int MUTATOR_STRENGTH_MAX;
+    public static final float MUTATOR_RATIO, RECOMBINATION_RATIO;
+    public static final double BASE_LETHAL_MUTATION_RATE, BASE_DELETERIOUS_MUTATION_RATE, BASE_BENEFICIAL_MUTATION_RATE;
+    public static final float BASE_FITNESS_EFFECT, DEFAULT_DELETERIOUS_EFFECT, DEFAULT_BENEFICIAL_EFFECT;
 
-    public static final int MUTATOR_STRENGTH_MAX = 1000;
-    public static final float MUTATOR_RATIO = 0.0f;
-    public static final float RECOMBINATION_RATIO = 1.0f;
+    public static final String DIRECTORY_NAME;
 
-    public static final double BASE_LETHAL_MUTATION_RATE = 1e-5 * 0;
-    public static final double BASE_DELETERIOUS_MUTATION_RATE = 1e-4 * 0;
-    public static final double BASE_BENEFICIAL_MUTATION_RATE = 1e-8 * 0;
+    static {
+        try {
+            properties.load(new FileInputStream(PROPERTIES_FILE_NAME));
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage());
+        }
 
-    public static final float BASE_FITNESS_EFFECT = 1f;
-    public static final float DEFAULT_DELETERIOUS_EFFECT = 0.98f;
-    public static final float DEFAULT_BENEFICIAL_EFFECT = 1.02f;
+        N_EXPERIMENT    = getInt("N_EXPERIMENT");
+        N_GENERATIONS   = getInt("N_GENERATIONS");
+        POPULATION_SIZE = getInt("POPULATION_SIZE");
 
+        N_FITNESS_LOCI       = getInt("N_FITNESS_LOCI");
+        N_MUTATOR_LOCI       = getInt("N_MUTATOR_LOCI");
+        N_RECOMBINATION_LOCI = getInt("N_RECOMBINATION_LOCI");
+        GENOME_SIZE          = N_FITNESS_LOCI + N_MUTATOR_LOCI + N_RECOMBINATION_LOCI;
+
+        MUTATOR_STRENGTH_MAX = getInt("MUTATOR_STRENGTH_MAX");
+        MUTATOR_RATIO        = getFloat("MUTATOR_RATIO");
+        RECOMBINATION_RATIO  = getFloat("RECOMBINATION_RATIO");
+
+        BASE_LETHAL_MUTATION_RATE      = getDouble("BASE_LETHAL_MUTATION_RATE");
+        BASE_DELETERIOUS_MUTATION_RATE = getDouble("BASE_DELETERIOUS_MUTATION_RATE");
+        BASE_BENEFICIAL_MUTATION_RATE  = getDouble("BASE_BENEFICIAL_MUTATION_RATE");
+
+        BASE_FITNESS_EFFECT        = getFloat("BASE_FITNESS_EFFECT");
+        DEFAULT_DELETERIOUS_EFFECT = getFloat("DEFAULT_DELETERIOUS_EFFECT");
+        DEFAULT_BENEFICIAL_EFFECT  = getFloat("DEFAULT_BENEFICIAL_EFFECT");
+
+        DIRECTORY_NAME = "out/M"   + MUTATOR_RATIO
+                       + "_R"      + RECOMBINATION_RATIO
+                       + "_G"      + N_GENERATIONS
+                       + "_N"      + POPULATION_SIZE
+                       + "_BeneMR" + BASE_BENEFICIAL_MUTATION_RATE
+                       + "_DeleMR" + BASE_DELETERIOUS_MUTATION_RATE
+                       + "BeneE"   + DEFAULT_BENEFICIAL_EFFECT
+                       + "DeleE"   + DEFAULT_DELETERIOUS_EFFECT
+                       + "_MutStr" + MUTATOR_STRENGTH_MAX
+                       + "_testProperties";
+    }
+
+    private static int getInt(String propertyName) {
+        return Integer.parseInt(properties.getProperty(propertyName));
+    }
+
+    private static float getFloat(String propertyName) {
+        return Float.parseFloat(properties.getProperty(propertyName));
+    }
+
+    private static double getDouble(String propertyName) {
+        return Double.parseDouble(properties.getProperty(propertyName));
+    }
 }
