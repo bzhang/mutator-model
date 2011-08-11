@@ -14,9 +14,13 @@ public class MutatorModel {
     public static void main(String[] args) {
 
         String resultDir = createDirectory();
+        final String resultFileName = getFilename(resultDir);
+
         File srcFile = new File(ModelParameters.PROPERTIES_FILE_NAME);
         File destDir = new File(ModelParameters.DIRECTORY_NAME);
         File destFile = new File(ModelParameters.DIRECTORY_NAME + "/" + ModelParameters.PROPERTIES_FILE_NAME);
+
+//        public String PROPERTIES_FILE_NAME = args[0];
 
         if (destFile.exists()) {
         } else {
@@ -32,7 +36,7 @@ public class MutatorModel {
             String output = "Generation\tFitnessMean\tFitnessSD\tMutatorStrengthMean\tMutatorStrengthSD\n";
 
             // Founder population
-            System.out.println("Output file: " + getFilename(resultDir, nExperiment) + "\nFounder population creating...");
+            System.out.println("Output file: " + resultFileName + "\nFounder population creating...");
             Population population = new Population(ModelParameters.POPULATION_SIZE);
             output += outputPopulationStat(1, population);
 
@@ -45,7 +49,7 @@ public class MutatorModel {
                 System.out.println("Generation " + i);
             }
 
-            writeFile(getFilename(resultDir, nExperiment), output);
+            writeFile(resultFileName, output);
         }
     }
 
@@ -67,12 +71,8 @@ public class MutatorModel {
         }
     }
 
-    private static String getFilename(String dir, int nExperiment) {
-        if (ModelParameters.N_EXPERIMENT > 1) {
-            return dir + "/" + nExperiment + ".txt";
-        } else {
-            return dir + "/" + ModelParameters.EXPERIMENT_ROUND + ".txt";
-        }
+    private static String getFilename(String dir) {
+        return dir + "/" + System.nanoTime() + ".txt";
     }
 
     private static String createDirectory() {
