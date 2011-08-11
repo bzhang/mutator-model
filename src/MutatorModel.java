@@ -1,6 +1,9 @@
+import org.apache.commons.io.FileUtils;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  * @author Bingjun
@@ -11,6 +14,18 @@ public class MutatorModel {
     public static void main(String[] args) {
 
         String resultDir = createDirectory();
+        File srcFile = new File(ModelParameters.PROPERTIES_FILE_NAME);
+        File destDir = new File(ModelParameters.DIRECTORY_NAME);
+        File destFile = new File(ModelParameters.DIRECTORY_NAME + "/" + ModelParameters.PROPERTIES_FILE_NAME);
+
+        if (destFile.exists()) {
+        } else {
+            try {
+                FileUtils.copyFileToDirectory(srcFile, destDir, false);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
         for (int nExperiment = 0; nExperiment < ModelParameters.N_EXPERIMENT; nExperiment++) {
 
@@ -53,15 +68,22 @@ public class MutatorModel {
     }
 
     private static String getFilename(String dir, int nExperiment) {
-        return dir + "/" + nExperiment + ".txt";
+        if (ModelParameters.N_EXPERIMENT > 1) {
+            return dir + "/" + nExperiment + ".txt";
+        } else {
+            return dir + "/" + ModelParameters.EXPERIMENT_ROUND + ".txt";
+        }
     }
 
     private static String createDirectory() {
         String dir = ModelParameters.DIRECTORY_NAME;
-        if ((new File(dir)).mkdir()) {
-            System.out.println("Directory: " + dir + " created.");
+        File outputDir = new File(dir);
+
+        if (!outputDir.exists()) {
+            if (outputDir.mkdir()) {
+                System.out.println("Directory: " + dir + " created.");
+            }
         }
         return dir;
     }
-
 }

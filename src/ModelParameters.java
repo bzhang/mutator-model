@@ -7,10 +7,10 @@ import java.util.Properties;
 
 public class ModelParameters {
 
-    private static final String PROPERTIES_FILE_NAME = "MutatorModel.properties";
+    public static final String PROPERTIES_FILE_NAME = "MutatorModel.properties";
     private static final Properties properties = new Properties();
 
-    public static final int N_EXPERIMENT, N_GENERATIONS, POPULATION_SIZE;
+    public static final int N_EXPERIMENT, EXPERIMENT_ROUND, N_GENERATIONS, POPULATION_SIZE;
     public static final int N_FITNESS_LOCI, N_MUTATOR_LOCI, N_RECOMBINATION_LOCI, GENOME_SIZE;
     public static final int MUTATOR_STRENGTH_MAX;
     public static final float MUTATOR_RATIO, RECOMBINATION_RATIO;
@@ -26,9 +26,10 @@ public class ModelParameters {
             System.err.println("Error: " + e.getMessage());
         }
 
-        N_EXPERIMENT    = getInt("N_EXPERIMENT");
-        N_GENERATIONS   = getInt("N_GENERATIONS");
-        POPULATION_SIZE = getInt("POPULATION_SIZE");
+        N_EXPERIMENT     = getInt("N_EXPERIMENT");
+        EXPERIMENT_ROUND = getInt("EXPERIMENT_ROUND");
+        N_GENERATIONS    = getInt("N_GENERATIONS");
+        POPULATION_SIZE  = getInt("POPULATION_SIZE");
 
         N_FITNESS_LOCI       = getInt("N_FITNESS_LOCI");
         N_MUTATOR_LOCI       = getInt("N_MUTATOR_LOCI");
