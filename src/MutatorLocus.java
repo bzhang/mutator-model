@@ -17,16 +17,12 @@ public class MutatorLocus extends Locus {
         return strength;
     }
 
-//    public void setStrength(int strength) {
-//        this.strength = strength;
-//    }
-
     public void increaseStrength() {
-        this.strength *= ModelParameters.MUTATOR_MUTATION_EFFECT;
+        this.strength += ModelParameters.MUTATOR_MUTATION_EFFECT;
     }
 
     public void decreaseStrength() {
-        this.strength /= ModelParameters.MUTATOR_MUTATION_EFFECT;
+        this.strength -= ModelParameters.MUTATOR_MUTATION_EFFECT;
     }
 }
 
