@@ -55,16 +55,19 @@ public class ModelParameters {
         DEFAULT_DELETERIOUS_EFFECT = getFloat("DEFAULT_DELETERIOUS_EFFECT");
         DEFAULT_BENEFICIAL_EFFECT  = getFloat("DEFAULT_BENEFICIAL_EFFECT");
 
-        DIRECTORY_NAME = "out/M"   + MUTATOR_RATIO
-                       + "_R"      + RECOMBINATION_RATIO
-                       + "_G"      + N_GENERATIONS
-                       + "_N"      + POPULATION_SIZE
-                       + "_BeneMR" + BASE_BENEFICIAL_MUTATION_RATE
-                       + "_DeleMR" + BASE_DELETERIOUS_MUTATION_RATE
-                       + "BeneE"   + DEFAULT_BENEFICIAL_EFFECT
-                       + "DeleE"   + DEFAULT_DELETERIOUS_EFFECT
-                       + "_MutStr" + MUTATOR_STRENGTH_MAX
-                       ;
+        DIRECTORY_NAME = "out/M" + MUTATOR_RATIO
+                + "_R" + RECOMBINATION_RATIO
+                + "_G" + N_GENERATIONS
+                + "_N" + POPULATION_SIZE
+                + "_BeneMR" + BASE_BENEFICIAL_MUTATION_RATE
+                + "_DeleMR" + BASE_DELETERIOUS_MUTATION_RATE
+                + "_BeneE"  + DEFAULT_BENEFICIAL_EFFECT
+                + "_DeleE"  + DEFAULT_DELETERIOUS_EFFECT
+                + "_MutStr" + MUTATOR_STRENGTH_MAX
+                + "_MutaMR" + MUTATOR_MUTATION_RATE
+                + "_Prob2M" + PROBABILITY_TO_MUTATOR
+                + "_MutaE"  + MUTATOR_MUTATION_EFFECT
+                ;
     }
 
     private static int getInt(String propertyName) {
