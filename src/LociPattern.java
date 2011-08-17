@@ -6,14 +6,15 @@ import java.util.Random;
 
 public class LociPattern {
 
+
+
     public enum LocusType {
         Fitness, Mutator, Recombination
     }
-
     private int genomeSize;
+
     private LocusType[] pattern;
     private int[] mutatorLociPositions, recombinationLociPositions;
-
     private Random random = new Random(System.nanoTime());
 
     public LociPattern(int nFitness, int nMutator, int nRecombination) {
@@ -60,6 +61,14 @@ public class LociPattern {
 
     public int[] getMutatorLociPositions() {
         return mutatorLociPositions;
+    }
+
+    public int getRandomMutatorPosition() {
+        int position;
+        do {
+            position = getRandomLocation();
+        } while (getLocusType(position) != LocusType.Mutator);
+        return position;
     }
 
     public int getRandomFitnessPosition() {

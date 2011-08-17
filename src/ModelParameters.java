@@ -17,7 +17,8 @@ public class ModelParameters {
     public static final double BASE_LETHAL_MUTATION_RATE, BASE_DELETERIOUS_MUTATION_RATE, BASE_BENEFICIAL_MUTATION_RATE;
 
     public static final double MUTATOR_MUTATION_RATE;
-    public static double MUTATION_RATE_TO_MUTATOR;
+    public static final double PROBABILITY_TO_MUTATOR;
+    public static final int MUTATOR_MUTATION_EFFECT;
 
     public static final float BASE_FITNESS_EFFECT, DEFAULT_DELETERIOUS_EFFECT, DEFAULT_BENEFICIAL_EFFECT;
     public static final String DIRECTORY_NAME;
@@ -47,7 +48,8 @@ public class ModelParameters {
         BASE_BENEFICIAL_MUTATION_RATE  = getDouble("BASE_BENEFICIAL_MUTATION_RATE");
 
         MUTATOR_MUTATION_RATE = getDouble("MUTATOR_MUTATION_RATE");
-        MUTATION_RATE_TO_MUTATOR = getDouble("MUTATION_RATE_TO_MUTATOR");
+        PROBABILITY_TO_MUTATOR = getDouble("PROBABILITY_TO_MUTATOR");
+        MUTATOR_MUTATION_EFFECT = getInt("MUTATOR_MUTATION_EFFECT");
 
         BASE_FITNESS_EFFECT        = getFloat("BASE_FITNESS_EFFECT");
         DEFAULT_DELETERIOUS_EFFECT = getFloat("DEFAULT_DELETERIOUS_EFFECT");

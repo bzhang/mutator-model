@@ -81,14 +81,19 @@ public class Individual implements Cloneable{
         double mutationRate = ModelParameters.MUTATOR_MUTATION_RATE;
         if (Rand.getDouble() < mutationRate) {
             MutatorLocus locus = getRandomMutatorLocus();
-//      mutations in mutator will double or half the current mutator strength
-            if (Rand.getDouble() < ModelParameters.MUTATION_RATE_TO_MUTATOR) {
-                locus.setStrength = locus.getStrength() * ModelParameters.MUTATOR_MUTATION_EFFECT;
-            } else {
-                locus.setStrength = locus.getStrength() / ModelParameters.MUTATOR_MUTATION_EFFECT;
+            if (Rand.getDouble() < ModelParameters.PROBABILITY_TO_MUTATOR) {
+                locus.increaseStrength();
+            } else if (locus.getStrength() > 1) {
+                locus.decreaseStrength();
             }
 
         }
+    }
+
+    // TODO: modify getRandomXXLocus to remove redundant codes; extract new methods
+    private MutatorLocus getRandomMutatorLocus() {
+        int position = lociPattern.getRandomMutatorPosition();
+        return (MutatorLocus) getLocus(position);
     }
 
     private FitnessLocus getRandomFitnessLocus() {
