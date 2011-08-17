@@ -56,7 +56,7 @@ public class ModelParameters {
                        + "BeneE"   + DEFAULT_BENEFICIAL_EFFECT
                        + "DeleE"   + DEFAULT_DELETERIOUS_EFFECT
                        + "_MutStr" + MUTATOR_STRENGTH_MAX
-                       + "_testProperties";
+                       ;
     }
 
     private static int getInt(String propertyName) {

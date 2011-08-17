@@ -22,8 +22,7 @@ public class MutatorModel {
 
 //        public String PROPERTIES_FILE_NAME = args[0];
 
-        if (destFile.exists()) {
-        } else {
+        if (!destFile.exists()) {
             try {
                 FileUtils.copyFileToDirectory(srcFile, destDir, false);
             } catch (IOException e) {
