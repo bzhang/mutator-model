@@ -39,6 +39,7 @@ public class Individual implements Cloneable{
         if (isAlive()) {
             deleteriousMutate();
             beneficialMutate();
+            mutatorMutate();
         }
         if (getFitness() <= 0) {
             die();
@@ -73,6 +74,20 @@ public class Individual implements Cloneable{
         if (Rand.getDouble() < mutationRate) {
             FitnessLocus locus = getRandomFitnessLocus();
             locus.addFitnessEffect(ModelParameters.DEFAULT_BENEFICIAL_EFFECT);
+        }
+    }
+
+    private void mutatorMutate() {
+        double mutationRate = ModelParameters.MUTATOR_MUTATION_RATE;
+        if (Rand.getDouble() < mutationRate) {
+            MutatorLocus locus = getRandomMutatorLocus();
+//      mutations in mutator will double or half the current mutator strength
+            if (Rand.getDouble() < ModelParameters.MUTATION_RATE_TO_MUTATOR) {
+                locus.setStrength = locus.getStrength() * ModelParameters.MUTATOR_MUTATION_EFFECT;
+            } else {
+                locus.setStrength = locus.getStrength() / ModelParameters.MUTATOR_MUTATION_EFFECT;
+            }
+
         }
     }
 
