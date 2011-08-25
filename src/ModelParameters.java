@@ -55,7 +55,8 @@ public class ModelParameters {
         DEFAULT_DELETERIOUS_EFFECT = getFloat("DEFAULT_DELETERIOUS_EFFECT");
         DEFAULT_BENEFICIAL_EFFECT  = getFloat("DEFAULT_BENEFICIAL_EFFECT");
 
-        DIRECTORY_NAME = "out/M" + MUTATOR_RATIO
+        DIRECTORY_NAME = "out/MultiMut"
+                + "_M" + MUTATOR_RATIO
                 + "_R" + RECOMBINATION_RATIO
                 + "_G" + N_GENERATIONS
                 + "_N" + POPULATION_SIZE
