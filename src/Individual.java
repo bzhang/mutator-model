@@ -1,3 +1,5 @@
+import cern.jet.random.Poisson;
+
 /**
  * @author Bingjun
  * Created by bingjun at 5/16/11 9:42 AM
@@ -63,7 +65,9 @@ public class Individual implements Cloneable{
 
     private void deleteriousMutate() {
         double mutationRate = ModelParameters.BASE_DELETERIOUS_MUTATION_RATE * getMutatorStrength();
-        if (Rand.getDouble() < mutationRate) {
+        Poisson poisson = new Poisson(mutationRate, Rand.getEngine());
+        int poissonObs = poisson.nextInt();
+        for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
             FitnessLocus locus = getRandomFitnessLocus();
             locus.addFitnessEffect(ModelParameters.DEFAULT_DELETERIOUS_EFFECT);
         }
@@ -71,7 +75,9 @@ public class Individual implements Cloneable{
 
     private void beneficialMutate() {
         double mutationRate = ModelParameters.BASE_BENEFICIAL_MUTATION_RATE * getMutatorStrength();
-        if (Rand.getDouble() < mutationRate) {
+        Poisson poisson = new Poisson(mutationRate, Rand.getEngine());
+        int poissonObs = poisson.nextInt();
+        for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
             FitnessLocus locus = getRandomFitnessLocus();
             locus.addFitnessEffect(ModelParameters.DEFAULT_BENEFICIAL_EFFECT);
         }
@@ -79,7 +85,9 @@ public class Individual implements Cloneable{
 
     private void mutatorMutate() {
         double mutationRate = ModelParameters.MUTATOR_MUTATION_RATE;
-        if (Rand.getDouble() < mutationRate) {
+        Poisson poisson = new Poisson(mutationRate, Rand.getEngine());
+        int poissonObs = poisson.nextInt();
+        for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
             MutatorLocus locus = getRandomMutatorLocus();
             if (Rand.getDouble() < ModelParameters.PROBABILITY_TO_MUTATOR) {
                 locus.increaseStrength();
