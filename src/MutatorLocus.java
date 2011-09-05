@@ -1,5 +1,3 @@
-import com.sun.org.apache.xpath.internal.operations.Mod;
-
 /**
  * @author Bingjun
  * 7/7/11 11:52 AM
@@ -18,11 +16,11 @@ public class MutatorLocus extends Locus {
     }
 
     public void increaseStrength() {
-        this.strength += ModelParameters.MUTATOR_MUTATION_EFFECT;
+        this.strength *= ModelParameters.MUTATOR_MUTATION_EFFECT;
     }
 
     public void decreaseStrength() {
-        this.strength -= ModelParameters.MUTATOR_MUTATION_EFFECT;
+        this.strength *= ModelParameters.MUTATOR_MUTATION_EFFECT;
     }
 }
 
