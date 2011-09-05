@@ -91,8 +91,9 @@ public class Individual implements Cloneable{
             MutatorLocus locus = getRandomMutatorLocus();
             if (Rand.getDouble() < ModelParameters.PROBABILITY_TO_MUTATOR) {
                 locus.increaseStrength();
-            } else if (locus.getStrength() > ModelParameters.MUTATOR_MUTATION_EFFECT) {
+//            } else if (locus.getStrength() > ModelParameters.MUTATOR_MUTATION_EFFECT) {
             // to ensure the strength is positive
+            } else {
                 locus.decreaseStrength();
             }
 

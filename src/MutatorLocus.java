@@ -20,7 +20,7 @@ public class MutatorLocus extends Locus {
     }
 
     public void decreaseStrength() {
-        this.strength *= ModelParameters.MUTATOR_MUTATION_EFFECT;
+        this.strength /= ModelParameters.MUTATOR_MUTATION_EFFECT;
     }
 }
 
