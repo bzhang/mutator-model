@@ -7,7 +7,7 @@ import java.util.Properties;
 
 public class ModelParameters {
 
-    public static final String PROPERTIES_FILE_NAME = "MutatorModel.properties";
+    public static String PROPERTIES_FILE_NAME;
     private static final Properties properties = new Properties();
 
     public static final int N_EXPERIMENT, N_GENERATIONS, POPULATION_SIZE;
@@ -47,8 +47,8 @@ public class ModelParameters {
         BASE_DELETERIOUS_MUTATION_RATE = getDouble("BASE_DELETERIOUS_MUTATION_RATE");
         BASE_BENEFICIAL_MUTATION_RATE  = getDouble("BASE_BENEFICIAL_MUTATION_RATE");
 
-        MUTATOR_MUTATION_RATE = getDouble("MUTATOR_MUTATION_RATE");
-        PROBABILITY_TO_MUTATOR = getDouble("PROBABILITY_TO_MUTATOR");
+        MUTATOR_MUTATION_RATE   = getDouble("MUTATOR_MUTATION_RATE");
+        PROBABILITY_TO_MUTATOR  = getDouble("PROBABILITY_TO_MUTATOR");
         MUTATOR_MUTATION_EFFECT = getInt("MUTATOR_MUTATION_EFFECT");
 
         BASE_FITNESS_EFFECT        = getFloat("BASE_FITNESS_EFFECT");
@@ -81,5 +81,9 @@ public class ModelParameters {
 
     private static double getDouble(String propertyName) {
         return Double.parseDouble(properties.getProperty(propertyName));
+    }
+
+    public static void setPropertiesFileName(String propertiesFileName) {
+        PROPERTIES_FILE_NAME = propertiesFileName;
     }
 }
