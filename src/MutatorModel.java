@@ -12,13 +12,13 @@ import java.io.IOException;
 public class MutatorModel {
 
     public static void main(String[] args) {
-        String resultDir = createDirectory();
-        final String resultFileName = getFilename(resultDir);
-
         if (args.length > 0) {
             String PROPERTIES_FILE_NAME = args[0];
             ModelParameters.setPropertiesFileName(PROPERTIES_FILE_NAME);
         }
+
+        String resultDir = createDirectory();
+        final String resultFileName = getFilename(resultDir);
 
         File srcFile  = new File(ModelParameters.PROPERTIES_FILE_NAME);
         File destDir  = new File(ModelParameters.DIRECTORY_NAME);
