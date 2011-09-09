@@ -36,7 +36,12 @@ public class MutatorModel {
 
         for (int nExperiment = 0; nExperiment < ModelParameters.N_EXPERIMENT; nExperiment++) {
 
-            String output = "Generation\tFitnessMean\tFitnessSD\tMutatorStrengthMean\tMutatorStrengthSD\n";
+            String output = "Generation" +
+                            "\tFitnessMean\tFitnessSD" +
+                            "\tMutatorStrengthMean\tMutatorStrengthSD" +
+                            "\tnDeleMutMean\tnDeleMutSD" +
+                            "\tnBeneMutMean\tnBeneMutSD" +
+                            "\n";
 
             // Founder population
             System.out.println("Output file: " + resultFileName + "\nFounder population creating...");
