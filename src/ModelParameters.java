@@ -6,8 +6,7 @@ import java.util.Properties;
  */
 
 public class ModelParameters {
-
-    public static String PROPERTIES_FILE_NAME;
+    public static String PROPERTIES_FILE_NAME = "MutatorModel.properties";
     private static final Properties properties = new Properties();
 
     public static final int N_EXPERIMENT, N_GENERATIONS, POPULATION_SIZE;
@@ -83,7 +82,4 @@ public class ModelParameters {
         return Double.parseDouble(properties.getProperty(propertyName));
     }
 
-    public static void setPropertiesFileName(String propertiesFileName) {
-        PROPERTIES_FILE_NAME = propertiesFileName;
-    }
 }

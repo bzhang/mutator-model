@@ -13,14 +13,6 @@ public class FitnessLocus extends Locus {
         fitnessEffects.add(effect);
     }
 
-    public float getFitnessEffect() {
-        float effect = 1;
-        for (float e : fitnessEffects) {
-            effect *= e;
-        }
-        return effect;
-    }
-
     public void addFitnessEffect(float effect) {
         fitnessEffects.add(effect);
     }
@@ -41,6 +33,18 @@ public class FitnessLocus extends Locus {
 
     protected void initFitnessEffects() {
         fitnessEffects = new ArrayList<Float>();
+    }
+
+    public float getFitnessEffect() {
+        float effect = 1;
+        for (float e : fitnessEffects) {
+            effect *= e;
+        }
+        return effect;
+    }
+
+    public ArrayList<Float> getFitnessEffectsArray() {
+        return fitnessEffects;
     }
 
 }

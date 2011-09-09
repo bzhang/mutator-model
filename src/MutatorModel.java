@@ -13,8 +13,8 @@ public class MutatorModel {
 
     public static void main(String[] args) {
         if (args.length > 0) {
-            String PROPERTIES_FILE_NAME = args[0];
-            ModelParameters.setPropertiesFileName(PROPERTIES_FILE_NAME);
+            String propertiesFileName = args[0];
+            setPropertiesFileName(propertiesFileName);
         }
 
         String resultDir = createDirectory();
@@ -59,8 +59,19 @@ public class MutatorModel {
     private static String outputPopulationStat(int i, Population population) {
         float[] fitnessArray = population.getFitnessArray();
         int[] mutatorStrengthArray = population.getMutatorStrengthArray();
-            return i + "\t" + Util.mean(fitnessArray) + "\t" + Util.standardDeviation(fitnessArray) + "\t"
-                + Util.mean(mutatorStrengthArray) + "\t" + Util.standardDeviation(mutatorStrengthArray) + "\n";
+        int[] nDeleMutArray = population.getNDeleMutArray();
+        int[] nBeneMutArray = population.getBeneMutArray();
+
+
+        return i + "\t" + Util.mean(fitnessArray)
+                 + "\t" + Util.standardDeviation(fitnessArray)
+                 + "\t" + Util.mean(mutatorStrengthArray)
+                 + "\t" + Util.standardDeviation(mutatorStrengthArray)
+                 + "\t" + Util.mean(nDeleMutArray)
+                 + "\t" + Util.standardDeviation(nDeleMutArray)
+                 + "\t" + Util.mean(nBeneMutArray)
+                 + "\t" + Util.standardDeviation(nBeneMutArray)
+                 + "\n";
     }
 
     public static void writeFile(String outputFileName, String output) {
@@ -88,5 +99,9 @@ public class MutatorModel {
             }
         }
         return dir;
+    }
+
+    public static void setPropertiesFileName(String propertiesFileName) {
+        ModelParameters.PROPERTIES_FILE_NAME = propertiesFileName;
     }
 }

@@ -74,6 +74,22 @@ public class Population {
         return mutatorStrengthArray;
     }
 
+    public int[] getNDeleMutArray() {
+        int[] nDeleMutArray = new int[getSize()];
+        for (int i = 0; i < getSize(); i++) {
+            nDeleMutArray[i] = getIndividual(i).getNDeleMut();
+        }
+        return nDeleMutArray;
+    }
+
+    public int[] getBeneMutArray() {
+        int[] nBeneMutArray = new int[getSize()];
+        for (int i = 0; i < getSize(); i++) {
+            nBeneMutArray[i] = getIndividual(i).getNBeneMut();
+        }
+        return nBeneMutArray;
+    }
+
     private void addIndividualPair(IndividualPair offspringPair, int parentSize) {
         addIndividual(offspringPair.getIndividualA(), parentSize);
         addIndividual(offspringPair.getIndividualB(), parentSize);
@@ -127,5 +143,4 @@ public class Population {
     public int getSize() {
         return individuals.size();
     }
-
 }

@@ -1,5 +1,7 @@
 import cern.jet.random.Poisson;
 
+import java.util.ArrayList;
+
 /**
  * @author Bingjun
  * Created by bingjun at 5/16/11 9:42 AM
@@ -169,4 +171,35 @@ public class Individual implements Cloneable{
         return ((RecombinationLocus) getLocus(recombinationLocusPosition)).getStrength(); // refactor
     }
 
+    public int getNDeleMut() {
+        int nDeleMut = 0;
+        for (int i = 0; i < getGenomeSize(); i++) {
+            if (lociPattern.getLocusType(i) == LociPattern.LocusType.Fitness) {
+                FitnessLocus locus = (FitnessLocus) getLocus(i);
+                ArrayList<Float> fitnessEffects = locus.getFitnessEffectsArray();
+                for (float fitnessEffect : fitnessEffects) {
+                    if (fitnessEffect < 1) {
+                        nDeleMut++;
+                    }
+                }
+            }
+        }
+        return nDeleMut;
+    }
+
+    public int getNBeneMut() {
+        int nBeneMut = 0;
+        for (int i = 0; i < getGenomeSize(); i++) {
+            if (lociPattern.getLocusType(i) == LociPattern.LocusType.Fitness) {
+                FitnessLocus locus = (FitnessLocus) getLocus(i);
+                ArrayList<Float> fitnessEffects = locus.getFitnessEffectsArray();
+                for (float fitnessEffect : fitnessEffects) {
+                    if (fitnessEffect > 1) {
+                        nBeneMut++;
+                    }
+                }
+            }
+        }
+        return nBeneMut;
+    }
 }
