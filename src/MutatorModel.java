@@ -1,13 +1,13 @@
+/**
+ * @author Bingjun
+ */
+
 import org.apache.commons.io.FileUtils;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-
-/**
- * @author Bingjun
- */
 
 public class MutatorModel {
 
@@ -87,7 +87,6 @@ public class MutatorModel {
             }
         }
 
-        String resultFilename = directoryName + "/" + System.nanoTime() + ".txt";
-        return resultFilename;
+        return directoryName + "/" + System.nanoTime() + ".txt";
     }
 }
