@@ -12,52 +12,32 @@ import java.io.IOException;
 public class MutatorModel {
 
     public static void main(String[] args) {
-        if (args.length > 0) {
-            String propertiesFileName = args[0];
-            setPropertiesFileName(propertiesFileName);
-        }
 
-        String resultDir = createDirectory();
-        final String resultFileName = getFilename(resultDir);
+        String propertiesFileName = args.length > 0 ? args[0] : "MutatorModel.properties";
+        ModelParameters.setPropertiesFileName(propertiesFileName);
 
-        File srcFile  = new File(ModelParameters.PROPERTIES_FILE_NAME);
-        File destDir  = new File(ModelParameters.DIRECTORY_NAME);
-        File destFile = new File(ModelParameters.DIRECTORY_NAME + "/" + ModelParameters.PROPERTIES_FILE_NAME);
+        String resultFilename = prepareOutputDirectory();
 
-//        public String PROPERTIES_FILE_NAME = args[0];
+        for (int nExperiment = 0; nExperiment < ModelParameters.getInt("N_EXPERIMENT"); nExperiment++) {
 
-        if (!destFile.exists()) {
-            try {
-                FileUtils.copyFileToDirectory(srcFile, destDir, false);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        for (int nExperiment = 0; nExperiment < ModelParameters.N_EXPERIMENT; nExperiment++) {
-
-            String output = "Generation" +
-                            "\tFitnessMean\tFitnessSD" +
-                            "\tMutatorStrengthMean\tMutatorStrengthSD" +
-                            "\tnDeleMutMean\tnDeleMutSD" +
-                            "\tnBeneMutMean\tnBeneMutSD" +
-                            "\n";
+            String output = "Generation\tFitnessMean\tFitnessSD\tMutatorStrengthMean\tMutatorStrengthSD" +
+                            "\tnDeleMutMean\tnDeleMutSD\tnBeneMutMean\tnBeneMutSD\n";
 
             // Founder population
-            System.out.println("Output file: " + resultFileName + "\nFounder population creating...");
-            Population population = new Population(ModelParameters.POPULATION_SIZE);
+            System.out.println("Output file: " + resultFilename + "\nFounder population creating...");
+            Population population = new Population(ModelParameters.getInt("POPULATION_SIZE"));
             output += outputPopulationStat(1, population);
 
             System.out.println("Founder population created.");
 
-            for (int i = 2; i <= ModelParameters.N_GENERATIONS; i++) {
+            for (int i = 2; i <= ModelParameters.getInt("N_GENERATIONS"); i++) {
                 // Create the next generation
                 population = new Population(population);
                 output += outputPopulationStat(i, population);
                 System.out.println("Generation " + i);
             }
 
-            writeFile(resultFileName, output);
+            writeFile(resultFilename, output);
         }
     }
 
@@ -90,23 +70,24 @@ public class MutatorModel {
         }
     }
 
-    private static String getFilename(String dir) {
-        return dir + "/" + System.nanoTime() + ".txt";
-    }
+    private static String prepareOutputDirectory() {
+        String directoryName = ModelParameters.getDirectoryName();
+        File outputDir = new File(directoryName);
+        if (!outputDir.exists() && outputDir.mkdir()) {
+            System.out.println("Directory: " + directoryName + " created.");
+        }
 
-    private static String createDirectory() {
-        String dir = ModelParameters.DIRECTORY_NAME;
-        File outputDir = new File(dir);
-
-        if (!outputDir.exists()) {
-            if (outputDir.mkdir()) {
-                System.out.println("Directory: " + dir + " created.");
+        File propertiesFile  = new File(ModelParameters.getPropertiesFilename());
+        File destinationFile = new File(directoryName + "/" + ModelParameters.getPropertiesFilename());
+        if (!destinationFile.exists()) {
+            try {
+                FileUtils.copyFileToDirectory(propertiesFile, outputDir, false);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
-        return dir;
-    }
 
-    public static void setPropertiesFileName(String propertiesFileName) {
-        ModelParameters.PROPERTIES_FILE_NAME = propertiesFileName;
+        String resultFilename = directoryName + "/" + System.nanoTime() + ".txt";
+        return resultFilename;
     }
 }
