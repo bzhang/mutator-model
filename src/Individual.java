@@ -89,6 +89,8 @@ public class Individual implements Cloneable{
         int startingEvolvingGeneration = ModelParameters.getInt("START_EVOLVING_GENERATION");
         double mutationRate = ModelParameters.getDouble("INITIAL_MUTATOR_MUTATION_RATE");
 
+//      startingEvolvingGeneration ranges [1,21];
+//      1 means evolving mutators from beginning; 21 means fixed mu all the time.
         if (currentGeneration >= startingEvolvingGeneration) {
             mutationRate = ModelParameters.getDouble("EVOLVING_MUTATOR_MUTATION_RATE");
         }
