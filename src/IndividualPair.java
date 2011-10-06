@@ -20,9 +20,9 @@ public class IndividualPair {
         return individualB;
     }
 
-    public void mutate() {
-        getIndividualA().mutate();
-        getIndividualB().mutate();
+    public void mutate(int currentGeneration) {
+        getIndividualA().mutate(currentGeneration);
+        getIndividualB().mutate(currentGeneration);
     }
 
     public IndividualPair reproduce() {

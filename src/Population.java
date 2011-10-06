@@ -36,7 +36,7 @@ public class Population {
         }
     }
 
-    public Population(Population parent) {
+    public Population(Population parent, int currentGeneration) {
         // Create the next generation
         lociPattern = parent.lociPattern;
         individuals = new ArrayList<Individual>();
@@ -46,7 +46,7 @@ public class Population {
             int previousSize = getSize();
             IndividualPair parentPair = parent.getRandomIndividualPair();
             IndividualPair offspringPair = parentPair.reproduce();
-            offspringPair.mutate();
+            offspringPair.mutate(currentGeneration);
             addIndividualPair(offspringPair, parent.getSize());
 //            System.out.println("# of individuals: " + getSize());
             if (getSize() - previousSize == 0) {

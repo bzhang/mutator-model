@@ -38,12 +38,12 @@ public class Individual implements Cloneable{
         }
     }
 
-    public void mutate() {
+    public void mutate(int currentGeneration) {
         lethalMutate();
         if (isAlive()) {
             deleteriousMutate();
             beneficialMutate();
-            mutatorMutate();
+            mutatorMutate(currentGeneration);
         }
         if (getFitness() <= 0) {
             die();
@@ -85,8 +85,14 @@ public class Individual implements Cloneable{
         }
     }
 
-    private void mutatorMutate() {
-        double mutationRate = ModelParameters.getDouble("MUTATOR_MUTATION_RATE");
+    private void mutatorMutate(int currentGeneration) {
+        int startingEvolvingGeneration = ModelParameters.getInt("START_EVOLVING_GENERATION");
+        double mutationRate = ModelParameters.getDouble("INITIAL_MUTATOR_MUTATION_RATE");
+
+        if (currentGeneration >= startingEvolvingGeneration) {
+            mutationRate = ModelParameters.getDouble("EVOLVING_MUTATOR_MUTATION_RATE");
+        }
+
         Poisson poisson = new Poisson(mutationRate, Rand.getEngine());
         int poissonObs = poisson.nextInt();
         for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
@@ -94,12 +100,13 @@ public class Individual implements Cloneable{
             if (Rand.getDouble() < ModelParameters.getDouble("PROBABILITY_TO_MUTATOR")) {
                 locus.increaseStrength();
 //            } else if (locus.getStrength() > ModelParameters.MUTATOR_MUTATION_EFFECT) {
-            // to ensure the strength is positive
+                    // to ensure the strength is positive
             } else {
                 locus.decreaseStrength();
             }
-
         }
+
+
     }
 
     // TODO: modify getRandomXXLocus to remove redundant codes; extract new methods
