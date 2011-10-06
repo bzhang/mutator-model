@@ -118,7 +118,7 @@ public class Population {
         int strength = 1;
         // Generate mutator locus, strength ranging from [2, MUTATOR_STRENGTH_MAX]
         if (random.nextFloat() < ModelParameters.getFloat("MUTATOR_RATIO")) {
-            strength = random.nextInt(ModelParameters.getInt("MUTATOR_RATIO") - 1) + 2;
+            strength = random.nextInt(ModelParameters.getInt("MUTATOR_STRENGTH_MAX") - 1) + 2;
         }
         return strength;
     }
