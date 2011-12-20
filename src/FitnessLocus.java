@@ -9,6 +9,7 @@ public class FitnessLocus extends Locus {
     private ArrayList<Float> fitnessEffects;
 
     public FitnessLocus(float effect) {
+        //TODO: Change the arraylist<Float> to <int>, items are the mutation indexes.
         fitnessEffects = new ArrayList<Float>();
         fitnessEffects.add(effect);
     }
