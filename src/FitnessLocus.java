@@ -6,25 +6,24 @@ import java.util.ArrayList;
 
 public class FitnessLocus extends Locus {
 
-    private ArrayList<Float> fitnessEffects;
+    private ArrayList<Integer> mutationIndexes;
 
-    public FitnessLocus(float effect) {
-        //TODO: Change the arraylist<Float> to <int>, items are the mutation indexes.
-        fitnessEffects = new ArrayList<Float>();
-        fitnessEffects.add(effect);
+    public FitnessLocus(int mutationIndex) {
+        mutationIndexes = new ArrayList<Integer>();
+        mutationIndexes.add(mutationIndex);
     }
 
-    public void addFitnessEffect(float effect) {
-        fitnessEffects.add(effect);
+    public void addMutationIndexes(int mutationIndex) {
+        mutationIndexes.add(mutationIndex);
     }
 
     public Object clone() throws CloneNotSupportedException {
         FitnessLocus cloned = null;
         try {
             cloned = (FitnessLocus) super.clone();
-            cloned.initFitnessEffects();
-            for (float fitnessEffect : fitnessEffects) {
-                cloned.addFitnessEffect(fitnessEffect);
+            cloned.initMutationIndexes();
+            for (int mutationIndex : mutationIndexes) {
+                cloned.addMutationIndexes(mutationIndex);
             }
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
@@ -32,10 +31,11 @@ public class FitnessLocus extends Locus {
         return cloned;
     }
 
-    protected void initFitnessEffects() {
-        fitnessEffects = new ArrayList<Float>();
+    protected void initMutationIndexes() {
+        mutationIndexes = new ArrayList<Integer>();
     }
 
+    //TODO: change the way to calculate fitness
     public float getFitnessEffect() {
         float effect = 1;
         for (float e : fitnessEffects) {
