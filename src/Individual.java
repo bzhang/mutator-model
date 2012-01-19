@@ -39,11 +39,11 @@ public class Individual implements Cloneable{
         }
     }
 
-    public void mutate(int currentGeneration, Map mutationMap, Map mutationProperties, float mutatorStrength) {
+    public void mutate(int currentGeneration, Map mutationMap, Map mutationProperties) {
         lethalMutate();
         if (isAlive()) {
-            deleteriousMutate(currentGeneration, mutationMap, mutationProperties, mutatorStrength);
-            beneficialMutate(currentGeneration, mutationMap, mutationProperties, mutatorStrength);
+            deleteriousMutate(currentGeneration, mutationMap, mutationProperties);
+            beneficialMutate(currentGeneration, mutationMap, mutationProperties);
             mutatorMutate(currentGeneration);
         }
         if (getFitness() <= 0) {
@@ -66,7 +66,7 @@ public class Individual implements Cloneable{
         return alive;
     }
 
-    private void deleteriousMutate(int currentGeneration, Map mutationMap, Map mutationProperties, float mutatorStrength) {
+    private void deleteriousMutate(int currentGeneration, Map mutationMap, Map mutationProperties) {
         double mutationRate = ModelParameters.getDouble("BASE_DELETERIOUS_MUTATION_RATE") * getMutatorStrength();
         Poisson poisson = new Poisson(mutationRate, Rand.getEngine());
         int poissonObs = poisson.nextInt();
@@ -76,13 +76,13 @@ public class Individual implements Cloneable{
             FitnessLocus locus = getRandomFitnessLocus();
             locus.addMutationIDs(mutationID);
             mutationProperties.put("FitnessEffect", ModelParameters.getFloat("DEFAULT_DELETERIOUS_EFFECT"));
-            mutationProperties.put("MutatorStrength", mutatorStrength);
+            mutationProperties.put("MutatorStrength", getMutatorStrength());
             mutationProperties.put("Generation", currentGeneration);
             mutationMap.put(mutationID, mutationProperties);
         }
     }
 
-    private void beneficialMutate(int currentGeneration, Map mutationMap, Map mutationProperties, float mutatorStrength) {
+    private void beneficialMutate(int currentGeneration, Map mutationMap, Map mutationProperties) {
         double mutationRate = ModelParameters.getDouble("BASE_BENEFICIAL_MUTATION_RATE") * getMutatorStrength();
         Poisson poisson = new Poisson(mutationRate, Rand.getEngine());
         int poissonObs = poisson.nextInt();
@@ -91,7 +91,7 @@ public class Individual implements Cloneable{
             FitnessLocus locus = getRandomFitnessLocus();
             locus.addMutationIDs(mutationID);
             mutationProperties.put("FitnessEffect", ModelParameters.getFloat("DEFAULT_BENEFICIAL_EFFECT"));
-            mutationProperties.put("MutatorStrength", mutatorStrength);
+            mutationProperties.put("MutatorStrength", getMutatorStrength());
             mutationProperties.put("Generation", currentGeneration);
             mutationMap.put(mutationID, mutationProperties);
         }
@@ -134,14 +134,14 @@ public class Individual implements Cloneable{
         return (FitnessLocus) getLocus(position);
     }
 
-    public void setFitnessLocus(int position, float fitnessEffect) {
-        FitnessLocus fitnessLocus = new FitnessLocus(fitnessEffect);
+    public void setFitnessLocus(int position) {
+        FitnessLocus fitnessLocus = new FitnessLocus();
         loci[position] = fitnessLocus;
     }
 
-    public void setFitnessLocus(int position) {
-        setFitnessLocus(position, ModelParameters.getFloat("BASE_FITNESS_EFFECT"));
-    }
+//    public void setFitnessLocus(int position) {
+//        setFitnessLocus(position, ModelParameters.getFloat("BASE_FITNESS_EFFECT"));
+//    }
 
     public void setMutatorLocus(int position, int strength) {
         MutatorLocus mutatorLocus = new MutatorLocus(strength);
