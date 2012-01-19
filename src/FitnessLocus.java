@@ -35,7 +35,11 @@ public class FitnessLocus extends Locus {
         mutationIndexes = new ArrayList<Integer>();
     }
 
+    //TODO: add new method to retrieve fitness effect from hashmap for each mutation.
+
     //TODO: change the way to calculate fitness
+
+
     public float getFitnessEffect() {
         float effect = 1;
         for (float e : fitnessEffects) {
