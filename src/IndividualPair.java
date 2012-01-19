@@ -23,8 +23,10 @@ public class IndividualPair {
     }
 
     public void mutate(int currentGeneration, Map mutationMap, Map mutationProperties) {
-        getIndividualA().mutate(currentGeneration, mutationMap, mutationProperties);
-        getIndividualB().mutate(currentGeneration, mutationMap, mutationProperties);
+        float mutatorStrengthA = getIndividualA().getMutatorStrength();
+        getIndividualA().mutate(currentGeneration, mutationMap, mutationProperties, mutatorStrengthA);
+        float mutatorStrengthB = getIndividualB().getMutatorStrength();
+        getIndividualB().mutate(currentGeneration, mutationMap, mutationProperties, mutatorStrengthB);
     }
 
     public IndividualPair reproduce() {
