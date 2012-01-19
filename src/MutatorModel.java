@@ -33,7 +33,8 @@ public class MutatorModel {
             for (int i = 2; i <= ModelParameters.getInt("N_GENERATIONS"); i++) {
                 // Create the next generation
                 population = new Population(population, i);
-                output += outputPopulationStat(i, population);
+                //output += outputPopulationStat(i, population);
+                writeFile(resultFilename, output);
                 System.out.println("Generation " + i);
             }
 
