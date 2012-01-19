@@ -71,9 +71,15 @@ public class Individual implements Cloneable{
         double mutationRate = ModelParameters.getDouble("BASE_DELETERIOUS_MUTATION_RATE") * getMutatorStrength();
         Poisson poisson = new Poisson(mutationRate, Rand.getEngine());
         int poissonObs = poisson.nextInt();
+
         for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
+            long mutationID = System.nanoTime();
             FitnessLocus locus = getRandomFitnessLocus();
-            locus.addFitnessEffect(ModelParameters.getFloat("DEFAULT_DELETERIOUS_EFFECT"));
+            locus.addMutationIDs(mutationID);
+            mutationProperties.put("FitnessEffect", ModelParameters.getFloat("DEFAULT_DELETERIOUS_EFFECT"));
+            mutationProperties.put("MutatorStrength", mutatorStrength);
+            mutationProperties.put("Generation", currentGeneration);
+            mutationMap.put(mutationID, mutationProperties);
         }
     }
 
@@ -82,8 +88,13 @@ public class Individual implements Cloneable{
         Poisson poisson = new Poisson(mutationRate, Rand.getEngine());
         int poissonObs = poisson.nextInt();
         for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
+            long mutationID = System.nanoTime();
             FitnessLocus locus = getRandomFitnessLocus();
-            locus.addFitnessEffect(ModelParameters.getFloat("DEFAULT_BENEFICIAL_EFFECT"));
+            locus.addMutationIDs(mutationID);
+            mutationProperties.put("FitnessEffect", ModelParameters.getFloat("DEFAULT_BENEFICIAL_EFFECT"));
+            mutationProperties.put("MutatorStrength", mutatorStrength);
+            mutationProperties.put("Generation", currentGeneration);
+            mutationMap.put(mutationID, mutationProperties);
         }
     }
 
