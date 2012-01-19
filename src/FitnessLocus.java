@@ -6,24 +6,21 @@ import java.util.ArrayList;
 
 public class FitnessLocus extends Locus {
 
-    private ArrayList<Integer> mutationIndices;
+    private ArrayList<Long> mutationIDs = new ArrayList<Long>();
 
-    public FitnessLocus(int mutationIndex) {
-        mutationIndices = new ArrayList<Integer>();
-        mutationIndices.add(mutationIndex);
-    }
+    public FitnessLocus() {}
 
-    public void addMutationIndexes(int mutationIndex) {
-        mutationIndices.add(mutationIndex);
+    public void addMutationIDs(long mutationID) {
+        mutationIDs.add(mutationID);
     }
 
     public Object clone() throws CloneNotSupportedException {
         FitnessLocus cloned = null;
         try {
             cloned = (FitnessLocus) super.clone();
-            cloned.initMutationIndexes();
-            for (int mutationIndex : mutationIndices) {
-                cloned.addMutationIndexes(mutationIndex);
+            cloned.initMutationIDs();
+            for (long mutationID : mutationIDs) {
+                cloned.addMutationIDs(mutationID);
             }
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
@@ -31,8 +28,8 @@ public class FitnessLocus extends Locus {
         return cloned;
     }
 
-    protected void initMutationIndexes() {
-        mutationIndices = new ArrayList<Integer>();
+    protected void initMutationIDs() {
+        mutationIDs = new ArrayList<Long>();
     }
 
     //TODO: add new method to retrieve fitness effect from hashmap for each mutation.
