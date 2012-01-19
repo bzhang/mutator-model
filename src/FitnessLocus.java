@@ -37,6 +37,7 @@ public class FitnessLocus extends Locus {
 
     //TODO: add new method to retrieve fitness effect from hashmap for each mutation.
 
+
     //TODO: change the way to calculate fitness
 
 

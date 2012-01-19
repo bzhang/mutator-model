@@ -23,22 +23,24 @@ public class MutatorModel {
             String output = "Generation\tFitnessMean\tFitnessSD\tMutatorStrengthMean\tMutatorStrengthSD" +
                             "\tnDeleMutMean\tnDeleMutSD\tnBeneMutMean\tnBeneMutSD\n";
 
+
+
             // Founder population
             System.out.println("Output file: " + resultFilename + "\nFounder population creating...");
             Population population = new Population(ModelParameters.getInt("POPULATION_SIZE"));
             output += outputPopulationStat(1, population);
+            writeFile(resultFilename, output);
 
             System.out.println("Founder population created.");
 
             for (int i = 2; i <= ModelParameters.getInt("N_GENERATIONS"); i++) {
                 // Create the next generation
                 population = new Population(population, i);
-                //output += outputPopulationStat(i, population);
+                output = outputPopulationStat(i, population);
                 writeFile(resultFilename, output);
                 System.out.println("Generation " + i);
             }
 
-            writeFile(resultFilename, output);
         }
     }
 
@@ -62,7 +64,7 @@ public class MutatorModel {
 
     public static void writeFile(String outputFileName, String output) {
         try {
-            FileWriter fileWriter = new FileWriter(outputFileName);
+            FileWriter fileWriter = new FileWriter(outputFileName, true);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
             bufferedWriter.write(output);
             bufferedWriter.close();
