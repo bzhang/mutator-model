@@ -1,3 +1,5 @@
+import java.util.Map;
+
 /**
  * @author Bingjun
  * A pair of individuals
@@ -20,9 +22,9 @@ public class IndividualPair {
         return individualB;
     }
 
-    public void mutate(int currentGeneration) {
-        getIndividualA().mutate(currentGeneration);
-        getIndividualB().mutate(currentGeneration);
+    public void mutate(int currentGeneration, Map mutationMap, Map mutationProperties) {
+        getIndividualA().mutate(currentGeneration, mutationMap, mutationProperties);
+        getIndividualB().mutate(currentGeneration, mutationMap, mutationProperties);
     }
 
     public IndividualPair reproduce() {

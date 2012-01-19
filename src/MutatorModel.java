@@ -8,6 +8,9 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MutatorModel {
 
@@ -23,7 +26,8 @@ public class MutatorModel {
             String output = "Generation\tFitnessMean\tFitnessSD\tMutatorStrengthMean\tMutatorStrengthSD" +
                             "\tnDeleMutMean\tnDeleMutSD\tnBeneMutMean\tnBeneMutSD\n";
 
-
+            Map<Integer, Map<String, Float>> mutationMap = new HashMap<Integer, Map<String, Float>>();
+            Map<String, Float> mutationProperties = new HashMap<String, Float>();
 
             // Founder population
             System.out.println("Output file: " + resultFilename + "\nFounder population creating...");
@@ -35,7 +39,7 @@ public class MutatorModel {
 
             for (int i = 2; i <= ModelParameters.getInt("N_GENERATIONS"); i++) {
                 // Create the next generation
-                population = new Population(population, i);
+                population = new Population(population, i, mutationMap, mutationProperties);
                 output = outputPopulationStat(i, population);
                 writeFile(resultFilename, output);
                 System.out.println("Generation " + i);
@@ -44,6 +48,7 @@ public class MutatorModel {
         }
     }
 
+    //TODO: output mutationMap.
     private static String outputPopulationStat(int i, Population population) {
         float[] fitnessArray = population.getFitnessArray();
         int[] mutatorStrengthArray = population.getMutatorStrengthArray();

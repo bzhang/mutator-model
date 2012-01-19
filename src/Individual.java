@@ -1,6 +1,7 @@
 import cern.jet.random.Poisson;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * @author Bingjun
@@ -38,11 +39,11 @@ public class Individual implements Cloneable{
         }
     }
 
-    public void mutate(int currentGeneration) {
+    public void mutate(int currentGeneration, Map mutationMap, Map mutationProperties) {
         lethalMutate();
         if (isAlive()) {
-            deleteriousMutate();
-            beneficialMutate();
+            deleteriousMutate(currentGeneration, mutationMap, mutationProperties);
+            beneficialMutate(currentGeneration, mutationMap, mutationProperties);
             mutatorMutate(currentGeneration);
         }
         if (getFitness() <= 0) {
@@ -65,7 +66,8 @@ public class Individual implements Cloneable{
         return alive;
     }
 
-    private void deleteriousMutate() {
+    //TODO: modify method addFitnessEffect to addMutationIndices.
+    private void deleteriousMutate(int currentGeneration, Map mutationMap, Map mutationProperties) {
         double mutationRate = ModelParameters.getDouble("BASE_DELETERIOUS_MUTATION_RATE") * getMutatorStrength();
         Poisson poisson = new Poisson(mutationRate, Rand.getEngine());
         int poissonObs = poisson.nextInt();
@@ -75,7 +77,7 @@ public class Individual implements Cloneable{
         }
     }
 
-    private void beneficialMutate() {
+    private void beneficialMutate(int currentGeneration, Map mutationMap, Map mutationProperties) {
         double mutationRate = ModelParameters.getDouble("BASE_BENEFICIAL_MUTATION_RATE") * getMutatorStrength();
         Poisson poisson = new Poisson(mutationRate, Rand.getEngine());
         int poissonObs = poisson.nextInt();

@@ -4,6 +4,8 @@
  */
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class Population {
@@ -36,7 +38,7 @@ public class Population {
         }
     }
 
-    public Population(Population parent, int currentGeneration) {
+    public Population(Population parent, int currentGeneration, Map mutationMap, Map mutationProperties) {
         // Create the next generation
         lociPattern = parent.lociPattern;
         individuals = new ArrayList<Individual>();
@@ -46,7 +48,7 @@ public class Population {
             int previousSize = getSize();
             IndividualPair parentPair = parent.getRandomIndividualPair();
             IndividualPair offspringPair = parentPair.reproduce();
-            offspringPair.mutate(currentGeneration);
+            offspringPair.mutate(currentGeneration, mutationMap, mutationProperties);
             addIndividualPair(offspringPair, parent.getSize());
 //            System.out.println("# of individuals: " + getSize());
             if (getSize() - previousSize == 0) {
