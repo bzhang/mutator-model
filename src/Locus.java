@@ -15,4 +15,5 @@ public abstract class Locus implements Cloneable{
         return cloned;
     }
 
+
 }

@@ -73,8 +73,9 @@ public class Individual implements Cloneable{
 
         for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
             long mutationID = System.nanoTime();
-            FitnessLocus locus = getRandomFitnessLocus();
-            locus.addMutationIDs(mutationID);
+            LocusPosition locusPosition = getRandomFitnessLocus();
+            FitnessLocus fitnessLocus = (FitnessLocus) locusPosition.getFitnessLocus();
+            fitnessLocus.addMutationIDs(mutationID);
             mutationProperties.put("FitnessEffect", ModelParameters.getFloat("DEFAULT_DELETERIOUS_EFFECT"));
             mutationProperties.put("MutatorStrength", getMutatorStrength());
             mutationProperties.put("Generation", currentGeneration);
@@ -88,11 +89,13 @@ public class Individual implements Cloneable{
         int poissonObs = poisson.nextInt();
         for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
             long mutationID = System.nanoTime();
-            FitnessLocus locus = getRandomFitnessLocus();
-            locus.addMutationIDs(mutationID);
+            LocusPosition locusPosition = getRandomFitnessLocus();
+            FitnessLocus fitnessLocus = (FitnessLocus) locusPosition.getFitnessLocus();
+            fitnessLocus.addMutationIDs(mutationID);
             mutationProperties.put("FitnessEffect", ModelParameters.getFloat("DEFAULT_BENEFICIAL_EFFECT"));
             mutationProperties.put("MutatorStrength", getMutatorStrength());
             mutationProperties.put("Generation", currentGeneration);
+
             mutationMap.put(mutationID, mutationProperties);
         }
     }
@@ -129,9 +132,9 @@ public class Individual implements Cloneable{
         return (MutatorLocus) getLocus(position);
     }
 
-    private FitnessLocus getRandomFitnessLocus() {
+    private LocusPosition getRandomFitnessLocus() {
         int position = lociPattern.getRandomFitnessPosition();
-        return (FitnessLocus) getLocus(position);
+        return new LocusPosition((FitnessLocus) getLocus(position), position);
     }
 
     public void setFitnessLocus(int position) {
