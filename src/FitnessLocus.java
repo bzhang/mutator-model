@@ -50,16 +50,8 @@ public class FitnessLocus extends Locus {
         }
         return effect;
     }
-//    public float getFitnessEffect() {
-//        float effect = 1;
-//        for (float e : fitnessEffects) {
-//            effect *= e;
-//        }
-//        return effect;
-//    }
-//
-//    public ArrayList<Float> getFitnessEffectsArray() {
-//        return fitnessEffects;
-//    }
 
+    public ArrayList<Long> getMutationIDsArray() {
+        return mutationIDs;
+    }
 }

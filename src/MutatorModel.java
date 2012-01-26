@@ -8,7 +8,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,9 +49,9 @@ public class MutatorModel {
 
     //TODO: output mutationMap.
     private static String outputPopulationStat(int i, Population population) {
-        float[] fitnessArray = population.getFitnessArray();
+        float[] fitnessArray = population.getFitnessArray(null);
         int[] mutatorStrengthArray = population.getMutatorStrengthArray();
-        int[] nDeleMutArray = population.getNDeleMutArray();
+        int[] nDeleMutArray = population.getNDeleMutArray(null);
         int[] nBeneMutArray = population.getBeneMutArray();
 
 

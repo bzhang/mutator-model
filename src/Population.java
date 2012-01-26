@@ -4,7 +4,6 @@
  */
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
@@ -60,10 +59,10 @@ public class Population {
         }
     }
 
-    public float[] getFitnessArray() {
+    public float[] getFitnessArray(Map mutationMap) {
         float[] fitnessArray = new float[getSize()];
         for (int i = 0; i < getSize(); i++) {
-            fitnessArray[i] = getIndividual(i).getFitness();
+            fitnessArray[i] = getIndividual(i).getFitness(mutationMap);
         }
         return fitnessArray;
     }
@@ -76,10 +75,10 @@ public class Population {
         return mutatorStrengthArray;
     }
 
-    public int[] getNDeleMutArray() {
+    public int[] getNDeleMutArray(Map mutationMap) {
         int[] nDeleMutArray = new int[getSize()];
         for (int i = 0; i < getSize(); i++) {
-            nDeleMutArray[i] = getIndividual(i).getNDeleMut();
+            nDeleMutArray[i] = getIndividual(i).getNDeleMut(mutationMap);
         }
         return nDeleMutArray;
     }
@@ -104,7 +103,7 @@ public class Population {
     }
 
     private IndividualPair getRandomIndividualPair() {
-        float[] randomWeights = getFitnessArray();
+        float[] randomWeights = getFitnessArray(null);
         WeightedRandomGenerator wrg = new WeightedRandomGenerator(randomWeights);
         int indexA = wrg.nextInt();
         int indexB = wrg.nextInt();

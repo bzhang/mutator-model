@@ -196,13 +196,18 @@ public class Individual implements Cloneable{
         return ((RecombinationLocus) getLocus(recombinationLocusPosition)).getStrength(); // refactor
     }
 
-    public int getNDeleMut() {
+    public int getNDeleMut(Map mutationMap) {
         int nDeleMut = 0;
+        Map mutationProperties;
+        float fitnessEffect;
+
         for (int i = 0; i < getGenomeSize(); i++) {
             if (lociPattern.getLocusType(i) == LociPattern.LocusType.Fitness) {
                 FitnessLocus locus = (FitnessLocus) getLocus(i);
-                ArrayList<Float> fitnessEffects = locus.getFitnessEffectsArray();
-                for (float fitnessEffect : fitnessEffects) {
+                ArrayList<Long> mutationIDs = locus.getMutationIDsArray();
+                for (long mutationID : mutationIDs) {
+                    mutationProperties = (Map) mutationMap.get(mutationID);
+                    fitnessEffect = (Float) mutationProperties.get("FitnessEffect");
                     if (fitnessEffect < 1) {
                         nDeleMut++;
                     }
@@ -212,13 +217,18 @@ public class Individual implements Cloneable{
         return nDeleMut;
     }
 
-    public int getNBeneMut() {
+    public int getNBeneMut(Map mutationMap) {
         int nBeneMut = 0;
+        Map mutationProperties;
+        float fitnessEffect;
+
         for (int i = 0; i < getGenomeSize(); i++) {
             if (lociPattern.getLocusType(i) == LociPattern.LocusType.Fitness) {
                 FitnessLocus locus = (FitnessLocus) getLocus(i);
-                ArrayList<Float> fitnessEffects = locus.getFitnessEffectsArray();
-                for (float fitnessEffect : fitnessEffects) {
+                ArrayList<Long> mutationIDs = locus.getMutationIDsArray();
+                for (long mutationID : mutationIDs) {
+                    mutationProperties = (Map) mutationMap.get(mutationID);
+                    fitnessEffect = (Float) mutationProperties.get("FitnessEffect");
                     if (fitnessEffect > 1) {
                         nBeneMut++;
                     }
