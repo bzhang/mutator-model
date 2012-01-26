@@ -46,7 +46,7 @@ public class Individual implements Cloneable{
             beneficialMutate(currentGeneration, mutationMap, mutationProperties);
             mutatorMutate(currentGeneration);
         }
-        if (getFitness() <= 0) {
+        if (getFitness(mutationMap) <= 0) {
             die();
         }
     }
@@ -173,12 +173,12 @@ public class Individual implements Cloneable{
         return loci.length;
     }
 
-    public float getFitness() {
+    public float getFitness(Map mutationMap) {
         float fitness = 1;
         for (int i = 0; i < getGenomeSize(); i++) {
             if (lociPattern.getLocusType(i) == LociPattern.LocusType.Fitness) {
                 FitnessLocus locus = (FitnessLocus)getLocus(i);
-                fitness *= locus.getFitnessEffect();
+                fitness *= locus.getFitnessEffect(mutationMap);
             }
         }
         return fitness;

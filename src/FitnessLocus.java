@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Created by bingjun at 7/8/11 11:43 AM
@@ -37,6 +38,18 @@ public class FitnessLocus extends Locus {
     //TODO: change the way to calculate fitness
 
 
+    public float getFitnessEffect(Map mutationMap) {
+        float effect = 1;
+        float currentEffect;
+        Map mutationProperties;
+
+        for (long mutationID : mutationIDs) {
+            mutationProperties = (Map) mutationMap.get(mutationID);
+            currentEffect = (Float) mutationProperties.get("FitnessEffect");
+            effect *= currentEffect;
+        }
+        return effect;
+    }
 //    public float getFitnessEffect() {
 //        float effect = 1;
 //        for (float e : fitnessEffects) {
