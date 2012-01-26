@@ -79,6 +79,7 @@ public class Individual implements Cloneable{
             mutationProperties.put("FitnessEffect", ModelParameters.getFloat("DEFAULT_DELETERIOUS_EFFECT"));
             mutationProperties.put("MutatorStrength", getMutatorStrength());
             mutationProperties.put("Generation", currentGeneration);
+            mutationProperties.put("Locus", locusPosition.getPosition());
             mutationMap.put(mutationID, mutationProperties);
         }
     }
@@ -95,7 +96,7 @@ public class Individual implements Cloneable{
             mutationProperties.put("FitnessEffect", ModelParameters.getFloat("DEFAULT_BENEFICIAL_EFFECT"));
             mutationProperties.put("MutatorStrength", getMutatorStrength());
             mutationProperties.put("Generation", currentGeneration);
-
+            mutationProperties.put("Locus", locusPosition.getPosition());
             mutationMap.put(mutationID, mutationProperties);
         }
     }
