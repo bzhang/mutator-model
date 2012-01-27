@@ -37,7 +37,8 @@ public class MutatorModel {
             System.out.println("Output file: " + popFilename + "\nFounder population creating...");
             Population population = new Population(ModelParameters.getInt("POPULATION_SIZE"));
             popFileOutput += outputPopulationStat(1, population, mutationMap);
-            writePopFile(popFilename, popFileOutput);
+            writeFile(popFilename, popFileOutput);
+            writeFile(mutStructureFilename, mutStructureFileOutput);
 
             System.out.println("Founder population created.");
 
@@ -45,10 +46,14 @@ public class MutatorModel {
                 // Create the next generation
                 population = new Population(population, i, mutationMap, mutationProperties);
                 popFileOutput = outputPopulationStat(i, population, mutationMap);
-                writePopFile(popFilename, popFileOutput);
+                writeFile(popFilename, popFileOutput);
+                mutStructureFileOutput = outputMutStructure(i, population);
+                writeFile(mutStructureFilename, mutStructureFileOutput);
                 System.out.println("Generation " + i);
             }
 
+            mutMapFileOutput += outputMutMap(mutationMap);
+            writeFile(mutMapFilename, mutMapFileOutput);
         }
     }
 
@@ -71,7 +76,7 @@ public class MutatorModel {
                  + "\n";
     }
 
-    public static void writePopFile(String outputFileName, String output) {
+    public static void writeFile(String outputFileName, String output) {
         try {
             FileWriter fileWriter = new FileWriter(outputFileName, true);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
