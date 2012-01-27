@@ -68,7 +68,7 @@ public class MutatorModel {
             individual = population.getIndividual(j);
             for (int k = 0; k < individual.getGenomeSize(); k++) {
                 LociPattern lociPattern = individual.getLociPattern();
-                while (lociPattern.getLocusType(k) == LociPattern.LocusType.Fitness) {
+                if (lociPattern.getLocusType(k) == LociPattern.LocusType.Fitness) {
                     FitnessLocus locus = (FitnessLocus) individual.getLocus(k);
                     mutationIDsArray = locus.getMutationIDsArray();
                     for (Long mutationID : mutationIDsArray) {
@@ -105,7 +105,7 @@ public class MutatorModel {
         return output;
     }
 
-    //TODO: output mutationMap.
+
     private static String outputPopulationStat(int i, Population population, Map mutationMap) {
         float[] fitnessArray = population.getFitnessArray(mutationMap);
         int[] mutatorStrengthArray = population.getMutatorStrengthArray();
