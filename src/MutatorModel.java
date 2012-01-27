@@ -31,7 +31,7 @@ public class MutatorModel {
             // Founder population
             System.out.println("Output file: " + resultFilename + "\nFounder population creating...");
             Population population = new Population(ModelParameters.getInt("POPULATION_SIZE"));
-            output += outputPopulationStat(1, population);
+            output += outputPopulationStat(1, population, mutationMap);
             writeFile(resultFilename, output);
 
             System.out.println("Founder population created.");
@@ -39,7 +39,7 @@ public class MutatorModel {
             for (int i = 2; i <= ModelParameters.getInt("N_GENERATIONS"); i++) {
                 // Create the next generation
                 population = new Population(population, i, mutationMap, mutationProperties);
-                output = outputPopulationStat(i, population);
+                output = outputPopulationStat(i, population, mutationMap);
                 writeFile(resultFilename, output);
                 System.out.println("Generation " + i);
             }
@@ -48,11 +48,11 @@ public class MutatorModel {
     }
 
     //TODO: output mutationMap.
-    private static String outputPopulationStat(int i, Population population) {
-        float[] fitnessArray = population.getFitnessArray(null);
+    private static String outputPopulationStat(int i, Population population, Map mutationMap) {
+        float[] fitnessArray = population.getFitnessArray(mutationMap);
         int[] mutatorStrengthArray = population.getMutatorStrengthArray();
-        int[] nDeleMutArray = population.getNDeleMutArray(null);
-        int[] nBeneMutArray = population.getBeneMutArray();
+        int[] nDeleMutArray = population.getNDeleMutArray(mutationMap);
+        int[] nBeneMutArray = population.getBeneMutArray(mutationMap);
 
 
         return i + "\t" + Util.mean(fitnessArray)
