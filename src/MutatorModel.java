@@ -52,7 +52,7 @@ public class MutatorModel {
         float[] fitnessArray = population.getFitnessArray(mutationMap);
         int[] mutatorStrengthArray = population.getMutatorStrengthArray();
         int[] nDeleMutArray = population.getNDeleMutArray(mutationMap);
-        int[] nBeneMutArray = population.getBeneMutArray(mutationMap);
+        int[] nBeneMutArray = population.getNBeneMutArray(mutationMap);
 
 
         return i + "\t" + Util.mean(fitnessArray)

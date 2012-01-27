@@ -83,10 +83,10 @@ public class Population {
         return nDeleMutArray;
     }
 
-    public int[] getBeneMutArray() {
+    public int[] getNBeneMutArray(Map mutationMap) {
         int[] nBeneMutArray = new int[getSize()];
         for (int i = 0; i < getSize(); i++) {
-            nBeneMutArray[i] = getIndividual(i).getNBeneMut();
+            nBeneMutArray[i] = getIndividual(i).getNBeneMut(mutationMap);
         }
         return nBeneMutArray;
     }
