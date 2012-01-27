@@ -8,6 +8,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,14 +53,54 @@ public class MutatorModel {
                 System.out.println("Generation " + i);
             }
 
-            mutMapFileOutput += outputMutMap(mutationMap);
+            mutMapFileOutput += outputMutMap(mutationMap, mutMapFileOutput);
             writeFile(mutMapFilename, mutMapFileOutput);
         }
     }
 
-    private static String outputMutMap(Map<Long, Map<String, Object>> mutationMap) {
-        String output;
+    private static String outputMutStructure(int i, Population population) {
+        String output = "";
+        Map<Long, Integer> tempMap = new HashMap<Long, Integer>();
+        Individual individual;
+        ArrayList<Long> mutationIDsArray;
 
+        for (int j = 0; j < population.getSize(); j++) {
+            individual = population.getIndividual(j);
+            for (int k = 0; k < individual.getGenomeSize(); k++) {
+                LociPattern lociPattern = individual.getLociPattern();
+                while (lociPattern.getLocusType(k) == LociPattern.LocusType.Fitness) {
+                    FitnessLocus locus = (FitnessLocus) individual.getLocus(k);
+                    mutationIDsArray = locus.getMutationIDsArray();
+                    for (Long mutationID : mutationIDsArray) {
+                        if (tempMap.containsKey(mutationID)) {
+                            tempMap.put(mutationID, tempMap.get(mutationID) + 1);
+                        } else {
+                            tempMap.put(mutationID, 1);
+                        }
+                    }
+                }
+
+            }
+
+        }
+
+        for (Map.Entry<Long, Integer> longIntegerEntry : tempMap.entrySet()) {
+            output += i + "\t" + longIntegerEntry.getKey() + "\t" + longIntegerEntry.getValue() +"\n";
+        }
+        return output;
+    }
+
+    private static String outputMutMap(Map<Long, Map<String, Object>> mutationMap, String output) {
+        Map mutationProperties;
+        for (Map.Entry<Long, Map<String, Object>> longMapEntry : mutationMap.entrySet()) {
+            output += longMapEntry.getKey() + "\t";
+            mutationProperties = longMapEntry.getValue();
+//            String mutMapFileOutput = "MutationID\tGeneration\tFitnessEffect\tMutatorStrength\tLocus\n";
+            output += mutationProperties.get("Generation") + "\t"
+                    + mutationProperties.get("FitnessEffect") + "\t"
+                    + mutationProperties.get("MutatorStrength") + "\t"
+                    + mutationProperties.get("Locus") + "\n";
+        }
 
         return output;
     }
