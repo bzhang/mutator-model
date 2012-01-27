@@ -30,8 +30,8 @@ public class MutatorModel {
             String mutMapFileOutput = "MutationID\tGeneration\tFitnessEffect\tMutatorStrength\tLocus\n";
             String mutStructureFileOutput = "Generation\tMutationID\tNIndividual\n";
 
-            Map<Integer, Map<String, Float>> mutationMap = new HashMap<Integer, Map<String, Float>>();
-            Map<String, Float> mutationProperties = new HashMap<String, Float>();
+            Map<Long, Map<String, Object>> mutationMap = new HashMap<Long, Map<String, Object>>();
+            Map<String, Object> mutationProperties = new HashMap<String, Object>();
 
             // Founder population
             System.out.println("Output file: " + popFilename + "\nFounder population creating...");
