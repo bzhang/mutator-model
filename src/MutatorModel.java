@@ -57,6 +57,13 @@ public class MutatorModel {
         }
     }
 
+    private static String outputMutMap(Map<Long, Map<String, Object>> mutationMap) {
+        String output;
+
+
+        return output;
+    }
+
     //TODO: output mutationMap.
     private static String outputPopulationStat(int i, Population population, Map mutationMap) {
         float[] fitnessArray = population.getFitnessArray(mutationMap);
