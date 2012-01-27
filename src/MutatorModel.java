@@ -18,29 +18,34 @@ public class MutatorModel {
         String propertiesFileName = args.length > 0 ? args[0] : "MutatorModel.properties";
         ModelParameters.setPropertiesFileName(propertiesFileName);
 
-        String resultFilename = prepareOutputDirectory();
+        String resultFileNamePrefix = prepareOutputDirectory();
+        String popFilename = resultFileNamePrefix + "_Pop.txt";
+        String mutMapFilename = resultFileNamePrefix + "_MutMap.txt";
+        String mutStructureFilename = resultFileNamePrefix + "_MutStructure.txt";
 
         for (int nExperiment = 0; nExperiment < ModelParameters.getInt("N_EXPERIMENT"); nExperiment++) {
 
-            String output = "Generation\tFitnessMean\tFitnessSD\tMutatorStrengthMean\tMutatorStrengthSD" +
+            String popFileOutput = "Generation\tFitnessMean\tFitnessSD\tMutatorStrengthMean\tMutatorStrengthSD" +
                             "\tnDeleMutMean\tnDeleMutSD\tnBeneMutMean\tnBeneMutSD\n";
+            String mutMapFileOutput = "MutationID\tGeneration\tFitnessEffect\tMutatorStrength\tLocus\n";
+            String mutStructureFileOutput = "Generation\tMutationID\tNIndividual\n";
 
             Map<Integer, Map<String, Float>> mutationMap = new HashMap<Integer, Map<String, Float>>();
             Map<String, Float> mutationProperties = new HashMap<String, Float>();
 
             // Founder population
-            System.out.println("Output file: " + resultFilename + "\nFounder population creating...");
+            System.out.println("Output file: " + popFilename + "\nFounder population creating...");
             Population population = new Population(ModelParameters.getInt("POPULATION_SIZE"));
-            output += outputPopulationStat(1, population, mutationMap);
-            writeFile(resultFilename, output);
+            popFileOutput += outputPopulationStat(1, population, mutationMap);
+            writePopFile(popFilename, popFileOutput);
 
             System.out.println("Founder population created.");
 
             for (int i = 2; i <= ModelParameters.getInt("N_GENERATIONS"); i++) {
                 // Create the next generation
                 population = new Population(population, i, mutationMap, mutationProperties);
-                output = outputPopulationStat(i, population, mutationMap);
-                writeFile(resultFilename, output);
+                popFileOutput = outputPopulationStat(i, population, mutationMap);
+                writePopFile(popFilename, popFileOutput);
                 System.out.println("Generation " + i);
             }
 
@@ -66,7 +71,7 @@ public class MutatorModel {
                  + "\n";
     }
 
-    public static void writeFile(String outputFileName, String output) {
+    public static void writePopFile(String outputFileName, String output) {
         try {
             FileWriter fileWriter = new FileWriter(outputFileName, true);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
@@ -94,6 +99,6 @@ public class MutatorModel {
             }
         }
 
-        return directoryName + "/" + System.nanoTime() + ".txt";
+        return directoryName + "/" + System.nanoTime();
     }
 }
