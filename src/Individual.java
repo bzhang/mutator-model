@@ -1,6 +1,7 @@
 import cern.jet.random.Poisson;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -39,11 +40,11 @@ public class Individual implements Cloneable{
         }
     }
 
-    public void mutate(int currentGeneration, Map mutationMap, Map mutationProperties) {
+    public void mutate(int currentGeneration, Map mutationMap) {
         lethalMutate();
         if (isAlive()) {
-            deleteriousMutate(currentGeneration, mutationMap, mutationProperties);
-            beneficialMutate(currentGeneration, mutationMap, mutationProperties);
+            deleteriousMutate(currentGeneration, mutationMap);
+            beneficialMutate(currentGeneration, mutationMap);
             mutatorMutate(currentGeneration);
         }
         if (getFitness(mutationMap) <= 0) {
@@ -66,12 +67,13 @@ public class Individual implements Cloneable{
         return alive;
     }
 
-    private void deleteriousMutate(int currentGeneration, Map mutationMap, Map mutationProperties) {
+    private void deleteriousMutate(int currentGeneration, Map mutationMap) {
         double mutationRate = ModelParameters.getDouble("BASE_DELETERIOUS_MUTATION_RATE") * getMutatorStrength();
         Poisson poisson = new Poisson(mutationRate, Rand.getEngine());
         int poissonObs = poisson.nextInt();
 
         for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
+            Map<String, Object> mutationProperties = new HashMap<String, Object>();
             long mutationID = System.nanoTime();
             LocusPosition locusPosition = getRandomFitnessLocus();
             FitnessLocus fitnessLocus = (FitnessLocus) locusPosition.getFitnessLocus();
@@ -84,11 +86,12 @@ public class Individual implements Cloneable{
         }
     }
 
-    private void beneficialMutate(int currentGeneration, Map mutationMap, Map mutationProperties) {
+    private void beneficialMutate(int currentGeneration, Map mutationMap) {
         double mutationRate = ModelParameters.getDouble("BASE_BENEFICIAL_MUTATION_RATE") * getMutatorStrength();
         Poisson poisson = new Poisson(mutationRate, Rand.getEngine());
         int poissonObs = poisson.nextInt();
         for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
+            Map<String, Object> mutationProperties = new HashMap<String, Object>();
             long mutationID = System.nanoTime();
             LocusPosition locusPosition = getRandomFitnessLocus();
             FitnessLocus fitnessLocus = (FitnessLocus) locusPosition.getFitnessLocus();

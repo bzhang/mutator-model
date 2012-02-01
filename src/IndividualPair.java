@@ -22,9 +22,9 @@ public class IndividualPair {
         return individualB;
     }
 
-    public void mutate(int currentGeneration, Map mutationMap, Map mutationProperties) {
-        getIndividualA().mutate(currentGeneration, mutationMap, mutationProperties);
-        getIndividualB().mutate(currentGeneration, mutationMap, mutationProperties);
+    public void mutate(int currentGeneration, Map mutationMap) {
+        getIndividualA().mutate(currentGeneration, mutationMap);
+        getIndividualB().mutate(currentGeneration, mutationMap);
     }
 
     public IndividualPair reproduce() {
