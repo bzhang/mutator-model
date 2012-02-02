@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -33,18 +34,14 @@ public class FitnessLocus extends Locus {
         mutationIDs = new ArrayList<Long>();
     }
 
-    //TODO: add new method to retrieve fitness effect from hashmap for each mutation.
-
-    //TODO: change the way to calculate fitness
-
 
     public float getFitnessEffect(Map mutationMap) {
         float effect = 1;
         float currentEffect;
-        Map mutationProperties;
+        Map<String, Object> mutationProperties;
 
         for (long mutationID : mutationIDs) {
-            mutationProperties = (Map) mutationMap.get(mutationID);
+            mutationProperties = (Map<String, Object>) mutationMap.get(mutationID);
             currentEffect = (Float) mutationProperties.get("FitnessEffect");
             effect *= currentEffect;
         }
