@@ -45,7 +45,7 @@ public class Population {
 
         while (getSize() < parent.getSize()) {
             int previousSize = getSize();
-            IndividualPair parentPair = parent.getRandomIndividualPair();
+            IndividualPair parentPair = parent.getRandomIndividualPair(mutationMap);
             IndividualPair offspringPair = parentPair.reproduce();
             offspringPair.mutate(currentGeneration, mutationMap);
             addIndividualPair(offspringPair, parent.getSize());
@@ -102,8 +102,8 @@ public class Population {
         }
     }
 
-    private IndividualPair getRandomIndividualPair() {
-        float[] randomWeights = getFitnessArray(null);
+    private IndividualPair getRandomIndividualPair(Map mutationMap) {
+        float[] randomWeights = getFitnessArray(mutationMap);
         WeightedRandomGenerator wrg = new WeightedRandomGenerator(randomWeights);
         int indexA = wrg.nextInt();
         int indexB = wrg.nextInt();

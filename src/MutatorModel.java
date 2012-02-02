@@ -32,7 +32,6 @@ public class MutatorModel {
             String mutStructureFileOutput = "Generation\tMutationID\tNIndividual\n";
 
             Map<Long, Map<String, Object>> mutationMap = new HashMap<Long, Map<String, Object>>();
-//            Map<String, Object> mutationProperties = new HashMap<String, Object>();
 
             // Founder population
             System.out.println("Output file: " + popFilename + "\nFounder population creating...");
@@ -45,12 +44,14 @@ public class MutatorModel {
 
             for (int i = 2; i <= ModelParameters.getInt("N_GENERATIONS"); i++) {
                 // Create the next generation
+
                 population = new Population(population, i, mutationMap);
                 popFileOutput = outputPopulationStat(i, population, mutationMap);
                 writeFile(popFilename, popFileOutput);
                 mutStructureFileOutput = outputMutStructure(i, population);
                 writeFile(mutStructureFilename, mutStructureFileOutput);
                 System.out.println("Generation " + i);
+
             }
 
             mutMapFileOutput += outputMutMap(mutationMap, mutMapFileOutput);
@@ -91,7 +92,7 @@ public class MutatorModel {
     }
 
     private static String outputMutMap(Map<Long, Map<String, Object>> mutationMap, String output) {
-        Map<String, Object> mutationProperties = new HashMap<String, Object>();
+        Map<String, Object> mutationProperties;
         for (Map.Entry<Long, Map<String, Object>> longMapEntry : mutationMap.entrySet()) {
             output += longMapEntry.getKey() + "\t";
             mutationProperties = longMapEntry.getValue();
