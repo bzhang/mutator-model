@@ -111,7 +111,7 @@ public class Individual implements Cloneable{
 //      startingEvolvingGeneration ranges [1,21];
 //      1 means evolving mutators from beginning; 21 means fixed mu all the time.
         if (currentGeneration >= startingEvolvingGeneration) {
-            mutationRate = ModelParameters.getDouble("EVOLVING_MUTATOR_MUTATION_RATE");
+            mutationRate = ModelParameters.getDouble("EVOLVING_MUTATOR_MUTATION_RATE") * getMutatorStrength();
         }
 
         Poisson poisson = new Poisson(mutationRate, Rand.getEngine());
