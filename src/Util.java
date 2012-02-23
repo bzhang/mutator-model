@@ -1,4 +1,9 @@
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Created by Bingjun at 7/21/11 1:29 AM
@@ -42,5 +47,34 @@ public class Util {
         }
         return floatArray;
     }
+
+    public static void writeFile(String outputFileName, String output) {
+        try {
+            FileWriter fileWriter = new FileWriter(outputFileName, true);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            bufferedWriter.write(output);
+            bufferedWriter.close();
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage());
+        }
+    }
+
+    private static String outputMutMap(ArrayList mutationProperties) {
+        Iterator iterator = mutationProperties.iterator();
+        String output = "";
+
+        while (iterator.hasNext()) {
+            output += longMapEntry.getKey() + "\t";
+            mutationProperties = longMapEntry.getValue();
+//            String mutMapFileOutput = "MutationID\tGeneration\tFitnessEffect\tMutatorStrength\tLocus\n";
+            output += mutationProperties.get("Generation") + "\t"
+                    + mutationProperties.get("FitnessEffect") + "\t"
+                    + mutationProperties.get("MutatorStrength") + "\t"
+                    + mutationProperties.get("Locus") + "\n";
+
+        }
+        return output;
+    }
+
 
 }

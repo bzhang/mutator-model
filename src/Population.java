@@ -37,17 +37,19 @@ public class Population {
         }
     }
 
-    public Population(Population parent, int currentGeneration, Map mutationMap) {
+    public Population(Population parent, int currentGeneration, Map mutFitnessMap) {
         // Create the next generation
         lociPattern = parent.lociPattern;
         individuals = new ArrayList<Individual>();
         int counter = 0;
+        ArrayList<Object> mutationProperties = new ArrayList<Object>();
+        String mutMapFileOutput = "";
 
         while (getSize() < parent.getSize()) {
             int previousSize = getSize();
-            IndividualPair parentPair = parent.getRandomIndividualPair(mutationMap);
+            IndividualPair parentPair = parent.getRandomIndividualPair(mutFitnessMap);
             IndividualPair offspringPair = parentPair.reproduce();
-            offspringPair.mutate(currentGeneration, mutationMap);
+            offspringPair.mutate(currentGeneration, mutFitnessMap, mutationProperties);
             addIndividualPair(offspringPair, parent.getSize());
 //            System.out.println("# of individuals: " + getSize());
             if (getSize() - previousSize == 0) {
@@ -57,6 +59,9 @@ public class Population {
                 }
             }
         }
+        mutMapFileOutput = Util.outputMutMap(mutationProperties);
+        Util.writeFile(mutMapFilename, mutMapFileOutput);
+
     }
 
     public float[] getFitnessArray(Map mutationMap) {
@@ -102,8 +107,8 @@ public class Population {
         }
     }
 
-    private IndividualPair getRandomIndividualPair(Map mutationMap) {
-        float[] randomWeights = getFitnessArray(mutationMap);
+    private IndividualPair getRandomIndividualPair(Map mutFitnessMap) {
+        float[] randomWeights = getFitnessArray(mutFitnessMap);
         WeightedRandomGenerator wrg = new WeightedRandomGenerator(randomWeights);
         int indexA = wrg.nextInt();
         int indexB = wrg.nextInt();

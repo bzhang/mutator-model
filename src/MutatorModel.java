@@ -31,31 +31,28 @@ public class MutatorModel {
             String mutMapFileOutput = "MutationID\tGeneration\tFitnessEffect\tMutatorStrength\tLocus\n";
             String mutStructureFileOutput = "Generation\tMutationID\tNIndividual\n";
 
-            Map<Long, Map<String, Object>> mutationMap = new HashMap<Long, Map<String, Object>>();
+            Map<Long, Float> mutFitnessMap = new HashMap<Long, Float>();
 
             // Founder population
             System.out.println("Output file: " + popFilename + "\nFounder population creating...");
             Population population = new Population(ModelParameters.getInt("POPULATION_SIZE"));
-            popFileOutput += outputPopulationStat(1, population, mutationMap);
-            writeFile(popFilename, popFileOutput);
-            writeFile(mutStructureFilename, mutStructureFileOutput);
+            popFileOutput += outputPopulationStat(1, population, mutFitnessMap);
+            Util.writeFile(popFilename, popFileOutput);
+            Util.writeFile(mutStructureFilename, mutStructureFileOutput);
 
             System.out.println("Founder population created.");
 
             for (int i = 2; i <= ModelParameters.getInt("N_GENERATIONS"); i++) {
                 // Create the next generation
 
-                population = new Population(population, i, mutationMap);
-                popFileOutput = outputPopulationStat(i, population, mutationMap);
-                writeFile(popFilename, popFileOutput);
+                population = new Population(population, i, mutFitnessMap);
+                popFileOutput = outputPopulationStat(i, population, mutFitnessMap);
+                Util.writeFile(popFilename, popFileOutput);
                 mutStructureFileOutput = outputMutStructure(i, population);
-                writeFile(mutStructureFilename, mutStructureFileOutput);
+                Util.writeFile(mutStructureFilename, mutStructureFileOutput);
                 System.out.println("Generation " + i);
 
             }
-
-            mutMapFileOutput += outputMutMap(mutationMap, mutMapFileOutput);
-            writeFile(mutMapFilename, mutMapFileOutput);
         }
     }
 
@@ -91,27 +88,11 @@ public class MutatorModel {
         return output;
     }
 
-    private static String outputMutMap(Map<Long, Map<String, Object>> mutationMap, String output) {
-        Map<String, Object> mutationProperties;
-        for (Map.Entry<Long, Map<String, Object>> longMapEntry : mutationMap.entrySet()) {
-            output += longMapEntry.getKey() + "\t";
-            mutationProperties = longMapEntry.getValue();
-//            String mutMapFileOutput = "MutationID\tGeneration\tFitnessEffect\tMutatorStrength\tLocus\n";
-            output += mutationProperties.get("Generation") + "\t"
-                    + mutationProperties.get("FitnessEffect") + "\t"
-                    + mutationProperties.get("MutatorStrength") + "\t"
-                    + mutationProperties.get("Locus") + "\n";
-        }
-
-        return output;
-    }
-
-
-    private static String outputPopulationStat(int i, Population population, Map mutationMap) {
-        float[] fitnessArray = population.getFitnessArray(mutationMap);
+    private static String outputPopulationStat(int i, Population population, Map mutFitnessMap) {
+        float[] fitnessArray = population.getFitnessArray(mutFitnessMap);
         int[] mutatorStrengthArray = population.getMutatorStrengthArray();
-        int[] nDeleMutArray = population.getNDeleMutArray(mutationMap);
-        int[] nBeneMutArray = population.getNBeneMutArray(mutationMap);
+        int[] nDeleMutArray = population.getNDeleMutArray(mutFitnessMap);
+        int[] nBeneMutArray = population.getNBeneMutArray(mutFitnessMap);
 
 
         return i + "\t" + Util.mean(fitnessArray)
@@ -125,16 +106,6 @@ public class MutatorModel {
                  + "\n";
     }
 
-    public static void writeFile(String outputFileName, String output) {
-        try {
-            FileWriter fileWriter = new FileWriter(outputFileName, true);
-            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-            bufferedWriter.write(output);
-            bufferedWriter.close();
-        } catch (Exception e) {
-            System.err.println("Error: " + e.getMessage());
-        }
-    }
 
     private static String prepareOutputDirectory() {
         String directoryName = ModelParameters.getDirectoryName();

@@ -1,4 +1,5 @@
 import cern.jet.random.Poisson;
+import com.sun.tools.internal.ws.processor.model.ModelProperties;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,14 +41,14 @@ public class Individual implements Cloneable{
         }
     }
 
-    public void mutate(int currentGeneration, Map mutationMap) {
+    public void mutate(int currentGeneration, Map mutFitnessMap, ArrayList mutationProperties) {
         lethalMutate();
         if (isAlive()) {
-            deleteriousMutate(currentGeneration, mutationMap);
-            beneficialMutate(currentGeneration, mutationMap);
+            deleteriousMutate(currentGeneration, mutFitnessMap, mutationProperties);
+            beneficialMutate(currentGeneration, mutFitnessMap, mutationProperties);
             mutatorMutate(currentGeneration);
         }
-        if (getFitness(mutationMap) <= 0) {
+        if (getFitness(mutFitnessMap) <= 0) {
             die();
         }
     }
@@ -67,40 +68,39 @@ public class Individual implements Cloneable{
         return alive;
     }
 
-    private void deleteriousMutate(int currentGeneration, Map mutationMap) {
+    private void deleteriousMutate(int currentGeneration, Map mutFitnessMap, ArrayList mutationProperties) {
         double mutationRate = ModelParameters.getDouble("BASE_DELETERIOUS_MUTATION_RATE") * getMutatorStrength();
         Poisson poisson = new Poisson(mutationRate, Rand.getEngine());
         int poissonObs = poisson.nextInt();
 
         for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
-            Map<String, Object> mutationProperties = new HashMap<String, Object>();
             long mutationID = System.nanoTime();
             LocusPosition locusPosition = getRandomFitnessLocus();
             FitnessLocus fitnessLocus = (FitnessLocus) locusPosition.getFitnessLocus();
             fitnessLocus.addMutationIDs(mutationID);
-            mutationProperties.put("FitnessEffect", ModelParameters.getFloat("DEFAULT_DELETERIOUS_EFFECT"));
-            mutationProperties.put("MutatorStrength", getMutatorStrength());
-            mutationProperties.put("Generation", currentGeneration);
-            mutationProperties.put("Locus", locusPosition.getPosition());
-            mutationMap.put(mutationID, mutationProperties);
+            mutationProperties.add(mutationID);
+            mutationProperties.add(ModelParameters.getFloat("DEFAULT_DELETERIOUS_EFFECT"));
+            mutationProperties.add(getMutatorStrength());
+            mutationProperties.add(currentGeneration);
+            mutationProperties.add(locusPosition.getPosition());
+            mutFitnessMap.put(mutationID, ModelParameters.getFloat("DEFAULT_DELETERIOUS_EFFECT"));
         }
     }
 
-    private void beneficialMutate(int currentGeneration, Map mutationMap) {
+    private void beneficialMutate(int currentGeneration, Map mutFitnessMap, ArrayList mutationProperties) {
         double mutationRate = ModelParameters.getDouble("BASE_BENEFICIAL_MUTATION_RATE") * getMutatorStrength();
         Poisson poisson = new Poisson(mutationRate, Rand.getEngine());
         int poissonObs = poisson.nextInt();
         for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
-            Map<String, Object> mutationProperties = new HashMap<String, Object>();
             long mutationID = System.nanoTime();
             LocusPosition locusPosition = getRandomFitnessLocus();
             FitnessLocus fitnessLocus = (FitnessLocus) locusPosition.getFitnessLocus();
             fitnessLocus.addMutationIDs(mutationID);
-            mutationProperties.put("FitnessEffect", ModelParameters.getFloat("DEFAULT_BENEFICIAL_EFFECT"));
-            mutationProperties.put("MutatorStrength", getMutatorStrength());
-            mutationProperties.put("Generation", currentGeneration);
-            mutationProperties.put("Locus", locusPosition.getPosition());
-            mutationMap.put(mutationID, mutationProperties);
+            mutationProperties.add(ModelParameters.getFloat("DEFAULT_BENEFICIAL_EFFECT"));
+            mutationProperties.add(getMutatorStrength());
+            mutationProperties.add(currentGeneration);
+            mutationProperties.add(locusPosition.getPosition());
+            mutFitnessMap.put(mutationID, ModelParameters.getFloat("DEFAULT_BENEFICIAL_EFFECT"));
         }
     }
 
