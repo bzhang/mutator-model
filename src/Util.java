@@ -63,15 +63,19 @@ public class Util {
         Iterator iterator = mutationProperties.iterator();
         String output = "";
 
-        while (iterator.hasNext()) {
-            output += longMapEntry.getKey() + "\t";
-            mutationProperties = longMapEntry.getValue();
-//            String mutMapFileOutput = "MutationID\tGeneration\tFitnessEffect\tMutatorStrength\tLocus\n";
-            output += mutationProperties.get("Generation") + "\t"
-                    + mutationProperties.get("FitnessEffect") + "\t"
-                    + mutationProperties.get("MutatorStrength") + "\t"
-                    + mutationProperties.get("Locus") + "\n";
-
+        if (mutationProperties.size() % 5 == 0) {
+            for (int i = 0; i < mutationProperties.size(); i += 5) {
+                while (iterator.hasNext()) {
+                    output = "";
+                    for (int j = 0; j < 4; j++) {
+                        output += iterator.next() + "\t";
+                    }
+                    output += "\n";
+                }
+            }
+        } else {
+            System.err.println("The number of elements in mutationProperties" +
+                                " can not be completely divided by 5!");
         }
         return output;
     }
