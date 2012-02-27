@@ -19,13 +19,11 @@ public class MutatorModel {
         String propertiesFileName = args.length > 0 ? args[0] : "MutatorModel.properties";
         ModelParameters.setPropertiesFileName(propertiesFileName);
 
-        String resultFileNamePrefix = prepareOutputDirectory();
-        String popFilename = resultFileNamePrefix + "_Pop.txt";
-        String mutMapFilename = resultFileNamePrefix + "_MutMap.txt";
-        String mutStructureFilename = resultFileNamePrefix + "_MutStructure.txt";
-
         for (int nExperiment = 0; nExperiment < ModelParameters.getInt("N_EXPERIMENT"); nExperiment++) {
-
+            String resultFileNamePrefix = prepareOutputDirectory();
+            String popFilename = resultFileNamePrefix + "_Pop.txt";
+            String mutMapFilename = resultFileNamePrefix + "_MutMap.txt";
+            String mutStructureFilename = resultFileNamePrefix + "_MutStructure.txt";
             String popFileOutput = "Generation\tFitnessMean\tFitnessSD\tMutatorStrengthMean\tMutatorStrengthSD" +
                                    "\tnDeleMutMean\tnDeleMutSD\tnBeneMutMean\tnBeneMutSD\n";
             String mutMapFileOutput = "MutationID\tGeneration\tFitnessEffect\tMutatorStrength\tLocus\n";
@@ -46,14 +44,12 @@ public class MutatorModel {
 
             for (int i = 2; i <= ModelParameters.getInt("N_GENERATIONS"); i++) {
                 // Create the next generation
-
                 population = new Population(population, i, mutFitnessMap, mutMapFilename);
                 popFileOutput = outputPopulationStat(i, population, mutFitnessMap);
                 Util.writeFile(popFilename, popFileOutput);
                 mutStructureFileOutput = outputMutStructure(i, population);
                 Util.writeFile(mutStructureFilename, mutStructureFileOutput);
                 System.out.println("Generation " + i);
-
             }
         }
     }

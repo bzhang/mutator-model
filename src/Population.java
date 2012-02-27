@@ -43,7 +43,7 @@ public class Population {
         individuals = new ArrayList<Individual>();
         int counter = 0;
         ArrayList<Object> mutationProperties = new ArrayList<Object>();
-        String mutMapFileOutput = "";
+        String mutMapFileOutput;
 
         while (getSize() < parent.getSize()) {
             int previousSize = getSize();
