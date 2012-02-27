@@ -73,7 +73,7 @@ public class ModelParameters {
                 + "_EvolMutaMR" + getDouble("EVOLVING_MUTATOR_MUTATION_RATE")
                 + "_StartEvol"  + getInt("START_EVOLVING_GENERATION")
                 + "_Prob2M" + getDouble("PROBABILITY_TO_MUTATOR")
-                + "_MutaE"  + getInt("MUTATOR_MUTATION_EFFECT");
+                + "_MutaE"  + getFloat("MUTATOR_MUTATION_EFFECT");
     }
 
 }
