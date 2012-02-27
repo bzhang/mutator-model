@@ -79,18 +79,18 @@ public class Population {
         return mutatorStrengthArray;
     }
 
-    public int[] getNDeleMutArray(Map mutationMap) {
+    public int[] getNDeleMutArray(Map mutFitnessMap) {
         int[] nDeleMutArray = new int[getSize()];
         for (int i = 0; i < getSize(); i++) {
-            nDeleMutArray[i] = getIndividual(i).getNDeleMut(mutationMap);
+            nDeleMutArray[i] = getIndividual(i).getNDeleMut(mutFitnessMap);
         }
         return nDeleMutArray;
     }
 
-    public int[] getNBeneMutArray(Map mutationMap) {
+    public int[] getNBeneMutArray(Map mutFitnessMap) {
         int[] nBeneMutArray = new int[getSize()];
         for (int i = 0; i < getSize(); i++) {
-            nBeneMutArray[i] = getIndividual(i).getNBeneMut(mutationMap);
+            nBeneMutArray[i] = getIndividual(i).getNBeneMut(mutFitnessMap);
         }
         return nBeneMutArray;
     }

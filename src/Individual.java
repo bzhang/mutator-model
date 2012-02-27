@@ -200,9 +200,8 @@ public class Individual implements Cloneable{
         return ((RecombinationLocus) getLocus(recombinationLocusPosition)).getStrength(); // refactor
     }
 
-    public int getNDeleMut(Map mutationMap) {
+    public int getNDeleMut(Map mutFitnessMap) {
         int nDeleMut = 0;
-        Map mutationProperties;
         float fitnessEffect;
 
         for (int i = 0; i < getGenomeSize(); i++) {
@@ -210,8 +209,7 @@ public class Individual implements Cloneable{
                 FitnessLocus locus = (FitnessLocus) getLocus(i);
                 ArrayList<Long> mutationIDs = locus.getMutationIDsArray();
                 for (long mutationID : mutationIDs) {
-                    mutationProperties = (Map) mutationMap.get(mutationID);
-                    fitnessEffect = (Float) mutationProperties.get("FitnessEffect");
+                    fitnessEffect = (Float) mutFitnessMap.get(mutationID);
                     if (fitnessEffect < 1) {
                         nDeleMut++;
                     }
@@ -221,9 +219,8 @@ public class Individual implements Cloneable{
         return nDeleMut;
     }
 
-    public int getNBeneMut(Map mutationMap) {
+    public int getNBeneMut(Map mutFitnessMap) {
         int nBeneMut = 0;
-        Map mutationProperties;
         float fitnessEffect;
 
         for (int i = 0; i < getGenomeSize(); i++) {
@@ -231,8 +228,7 @@ public class Individual implements Cloneable{
                 FitnessLocus locus = (FitnessLocus) getLocus(i);
                 ArrayList<Long> mutationIDs = locus.getMutationIDsArray();
                 for (long mutationID : mutationIDs) {
-                    mutationProperties = (Map) mutationMap.get(mutationID);
-                    fitnessEffect = (Float) mutationProperties.get("FitnessEffect");
+                    fitnessEffect = (Float) mutFitnessMap.get(mutationID);
                     if (fitnessEffect > 1) {
                         nBeneMut++;
                     }
