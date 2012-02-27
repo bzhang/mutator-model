@@ -16,11 +16,11 @@ public class MutatorLocus extends Locus {
     }
 
     public void increaseStrength() {
-        this.strength *= ModelParameters.getInt("MUTATOR_MUTATION_EFFECT");
+        this.strength *= ModelParameters.getFloat("MUTATOR_MUTATION_EFFECT");
     }
 
     public void decreaseStrength() {
-        this.strength /= ModelParameters.getInt("MUTATOR_MUTATION_EFFECT");
+        this.strength /= ModelParameters.getFloat("MUTATOR_MUTATION_EFFECT");
     }
 }
 

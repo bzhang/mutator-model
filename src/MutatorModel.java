@@ -15,6 +15,7 @@ import java.util.Map;
 public class MutatorModel {
 
     public static void main(String[] args) {
+        Long start = System.currentTimeMillis();
 
         String propertiesFileName = args.length > 0 ? args[0] : "MutatorModel.properties";
         ModelParameters.setPropertiesFileName(propertiesFileName);
@@ -52,6 +53,10 @@ public class MutatorModel {
                 System.out.println("Generation " + i);
             }
         }
+
+        int reminder = (int) ((System.currentTimeMillis() - start) % (24L * 3600 * 1000));
+        Float hoursElapsed = (float) reminder / (3600 * 1000);
+        System.out.println(hoursElapsed);
     }
 
     private static String outputMutStructure(int i, Population population) {
