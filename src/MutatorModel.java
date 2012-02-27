@@ -26,7 +26,7 @@ public class MutatorModel {
             String mutStructureFilename = resultFileNamePrefix + "_MutStructure.txt";
             String popFileOutput = "Generation\tFitnessMean\tFitnessSD\tMutatorStrengthMean\tMutatorStrengthSD" +
                                    "\tnDeleMutMean\tnDeleMutSD\tnBeneMutMean\tnBeneMutSD\n";
-            String mutMapFileOutput = "MutationID\tGeneration\tFitnessEffect\tMutatorStrength\tLocus\n";
+            String mutMapFileOutput = "MutationID\tFitnessEffect\tMutatorStrength\tGeneration\tLocus\n";
             String mutStructureFileOutput = "Generation\tMutationID\tNIndividual\n";
             Map<Long, Float> mutFitnessMap = new HashMap<Long, Float>();
 
