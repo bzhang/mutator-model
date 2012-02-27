@@ -37,7 +37,7 @@ public class Population {
         }
     }
 
-    public Population(Population parent, int currentGeneration, Map mutFitnessMap) {
+    public Population(Population parent, int currentGeneration, Map mutFitnessMap, String mutMapFilename) {
         // Create the next generation
         lociPattern = parent.lociPattern;
         individuals = new ArrayList<Individual>();

@@ -59,19 +59,16 @@ public class Util {
         }
     }
 
-    private static String outputMutMap(ArrayList mutationProperties) {
+    public static String outputMutMap(ArrayList mutationProperties) {
         Iterator iterator = mutationProperties.iterator();
         String output = "";
 
         if (mutationProperties.size() % 5 == 0) {
             for (int i = 0; i < mutationProperties.size(); i += 5) {
-                while (iterator.hasNext()) {
-                    output = "";
-                    for (int j = 0; j < 4; j++) {
-                        output += iterator.next() + "\t";
-                    }
-                    output += "\n";
+                for (int j = 0; j < 4; j++) {
+                    output += iterator.next() + "\t";
                 }
+                output += iterator.next() + "\n";
             }
         } else {
             System.err.println("The number of elements in mutationProperties" +

@@ -30,8 +30,10 @@ public class MutatorModel {
                                    "\tnDeleMutMean\tnDeleMutSD\tnBeneMutMean\tnBeneMutSD\n";
             String mutMapFileOutput = "MutationID\tGeneration\tFitnessEffect\tMutatorStrength\tLocus\n";
             String mutStructureFileOutput = "Generation\tMutationID\tNIndividual\n";
-
             Map<Long, Float> mutFitnessMap = new HashMap<Long, Float>();
+
+            // Write file headers for mutMapFile
+            Util.writeFile(mutMapFilename, mutMapFileOutput);
 
             // Founder population
             System.out.println("Output file: " + popFilename + "\nFounder population creating...");
@@ -45,7 +47,7 @@ public class MutatorModel {
             for (int i = 2; i <= ModelParameters.getInt("N_GENERATIONS"); i++) {
                 // Create the next generation
 
-                population = new Population(population, i, mutFitnessMap);
+                population = new Population(population, i, mutFitnessMap, mutMapFilename);
                 popFileOutput = outputPopulationStat(i, population, mutFitnessMap);
                 Util.writeFile(popFilename, popFileOutput);
                 mutStructureFileOutput = outputMutStructure(i, population);
