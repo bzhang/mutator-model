@@ -96,6 +96,7 @@ public class Individual implements Cloneable{
             LocusPosition locusPosition = getRandomFitnessLocus();
             FitnessLocus fitnessLocus = (FitnessLocus) locusPosition.getFitnessLocus();
             fitnessLocus.addMutationIDs(mutationID);
+            mutationProperties.add(mutationID);
             mutationProperties.add(ModelParameters.getFloat("DEFAULT_BENEFICIAL_EFFECT"));
             mutationProperties.add(getMutatorStrength());
             mutationProperties.add(currentGeneration);
