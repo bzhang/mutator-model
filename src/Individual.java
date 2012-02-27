@@ -176,12 +176,12 @@ public class Individual implements Cloneable{
         return loci.length;
     }
 
-    public float getFitness(Map mutationMap) {
+    public float getFitness(Map mutFitnessMap) {
         float fitness = 1;
         for (int i = 0; i < getGenomeSize(); i++) {
             if (lociPattern.getLocusType(i) == LociPattern.LocusType.Fitness) {
                 FitnessLocus locus = (FitnessLocus)getLocus(i);
-                fitness *= locus.getFitnessEffect(mutationMap);
+                fitness *= locus.getFitnessEffect(mutFitnessMap);
             }
         }
         return fitness;

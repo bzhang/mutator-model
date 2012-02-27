@@ -38,11 +38,9 @@ public class FitnessLocus extends Locus {
     public float getFitnessEffect(Map mutationMap) {
         float effect = 1;
         float currentEffect;
-        Map<String, Object> mutationProperties;
 
         for (long mutationID : mutationIDs) {
-            mutationProperties = (Map<String, Object>) mutationMap.get(mutationID);
-            currentEffect = (Float) mutationProperties.get("FitnessEffect");
+            currentEffect = (Float) mutationMap.get(mutationID);
             effect *= currentEffect;
         }
         return effect;

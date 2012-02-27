@@ -51,7 +51,6 @@ public class Population {
             IndividualPair offspringPair = parentPair.reproduce();
             offspringPair.mutate(currentGeneration, mutFitnessMap, mutationProperties);
             addIndividualPair(offspringPair, parent.getSize());
-//            System.out.println("# of individuals: " + getSize());
             if (getSize() - previousSize == 0) {
                 counter++;
                 if (counter == 500) {
@@ -64,10 +63,10 @@ public class Population {
 
     }
 
-    public float[] getFitnessArray(Map mutationMap) {
+    public float[] getFitnessArray(Map mutFitnessMap) {
         float[] fitnessArray = new float[getSize()];
         for (int i = 0; i < getSize(); i++) {
-            fitnessArray[i] = getIndividual(i).getFitness(mutationMap);
+            fitnessArray[i] = getIndividual(i).getFitness(mutFitnessMap);
         }
         return fitnessArray;
     }
