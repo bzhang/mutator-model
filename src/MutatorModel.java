@@ -56,7 +56,7 @@ public class MutatorModel {
 
         int reminder = (int) ((System.currentTimeMillis() - start) % (24L * 3600 * 1000));
         Float hoursElapsed = (float) reminder / (3600 * 1000);
-        System.out.println(hoursElapsed);
+        System.out.println("Hours elapsed = " + hoursElapsed);
     }
 
     private static String outputMutStructure(int i, Population population) {
