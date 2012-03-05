@@ -4,9 +4,7 @@
 
 import org.apache.commons.io.FileUtils;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,6 +41,13 @@ public class MutatorModel {
 
             System.out.println("Founder population created.");
 
+            int reminderFounder = (int) ((System.currentTimeMillis() - start) % (24L * 3600 * 1000));
+//        Float hoursElapsed = (float) reminder / (3600 * 1000);
+//        System.out.println("Hours elapsed = " + hoursElapsed);
+            Float secondsElapsedFounder = (float) reminderFounder / 1000;
+            System.out.println("Seconds elapsed for founder pop = " + secondsElapsedFounder);
+
+
             for (int i = 2; i <= ModelParameters.getInt("N_GENERATIONS"); i++) {
                 // Create the next generation
                 population = new Population(population, i, mutFitnessMap, mutMapFilename);
@@ -51,13 +56,20 @@ public class MutatorModel {
                 mutStructureFileOutput = outputMutStructure(i, population);
                 Util.writeFile(mutStructureFilename, mutStructureFileOutput);
                 System.out.println("Generation " + i);
+
+                int reminderGen = (int) ((System.currentTimeMillis() - start) % (24L * 3600 * 1000));
+//        Float hoursElapsed = (float) reminder / (3600 * 1000);
+//        System.out.println("Hours elapsed = " + hoursElapsed);
+                Float secondsElapsedGen = (float) reminderGen / 1000;
+                System.out.println("Seconds elapsed = " + secondsElapsedGen);
+
             }
         }
 
         int reminder = (int) ((System.currentTimeMillis() - start) % (24L * 3600 * 1000));
 //        Float hoursElapsed = (float) reminder / (3600 * 1000);
 //        System.out.println("Hours elapsed = " + hoursElapsed);
-        Float secondsElapsed = (float) reminder;
+        Float secondsElapsed = (float) reminder / 1000;
         System.out.println("Seconds elapsed = " + secondsElapsed);
 
     }
