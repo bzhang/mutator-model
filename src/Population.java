@@ -62,7 +62,7 @@ public class Population {
             IndividualPair offspringPair = parentPair.reproduce();
 
             Long timeAfterReproduce = System.currentTimeMillis();
-            int reminderReproduce = (int) (timeAfterReproduce - timeAfterRanIndividualPair) % (24L * 3600 * 1000));
+            int reminderReproduce = (int) ((timeAfterReproduce - timeAfterRanIndividualPair) % (24L * 3600 * 1000));
 //        Float hoursElapsed = (float) reminder / (3600 * 1000);
 //        System.out.println("Hours elapsed = " + hoursElapsed);
             Float secondsElapsedReproduce = (float) reminderReproduce / 1000;
@@ -89,7 +89,7 @@ public class Population {
         }
 
         Long timeAfterOneGen = System.currentTimeMillis();
-        int reminderOneGen = (int) (timeAfterOneGen - start) % (24L * 3600 * 1000));
+        int reminderOneGen = (int) ((timeAfterOneGen - start) % (24L * 3600 * 1000));
 //        Float hoursElapsed = (float) reminder / (3600 * 1000);
 //        System.out.println("Hours elapsed = " + hoursElapsed);
         Float secondsElapsedOneGen = (float) reminderOneGen / 1000;
