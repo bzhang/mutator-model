@@ -139,7 +139,16 @@ public class Population {
     }
 
     private IndividualPair getRandomIndividualPair(Map mutFitnessMap) {
+        Long timeB4GetFitnessArray = System.currentTimeMillis();
+
         float[] randomWeights = getFitnessArray(mutFitnessMap);
+
+        Long timeAfterGetFitnessArray = System.currentTimeMillis();
+        int reminderGetFitnessArray = (int) ((timeAfterGetFitnessArray - timeB4GetFitnessArray) % (24L * 3600 * 1000));
+        Float secondsElapsedGetFitnessArray = (float) reminderGetFitnessArray / 1000;
+        System.out.println("Seconds elapsed for getting fitness array = " + secondsElapsedGetFitnessArray);
+
+
         WeightedRandomGenerator wrg = new WeightedRandomGenerator(randomWeights);
         int indexA = wrg.nextInt();
         int indexB = wrg.nextInt();
@@ -148,6 +157,12 @@ public class Population {
         }
         Individual individualA = getIndividual(indexA);
         Individual individualB = getIndividual(indexB);
+
+        Long timeAfterGeneratingRanIndividuals = System.currentTimeMillis();
+        int reminderGeneratingRanIndividuals = (int) ((timeAfterGeneratingRanIndividuals - timeAfterGeneratingRanIndividuals) % (24L * 3600 * 1000));
+        Float secondsElapsedGeneratingRanIndividuals = (float) reminderGeneratingRanIndividuals / 1000;
+        System.out.println("Seconds elapsed for randomly getting parents = " + secondsElapsedGeneratingRanIndividuals);
+
         return new IndividualPair(individualA, individualB);
     }
 
