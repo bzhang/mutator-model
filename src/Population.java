@@ -97,9 +97,20 @@ public class Population {
 
     public float[] getFitnessArray(Map mutFitnessMap) {
         float[] fitnessArray = new float[getSize()];
+
+        Long timeB4IteratingAllIndividuals = System.currentTimeMillis();
         for (int i = 0; i < getSize(); i++) {
+            Long timeB4GettingFitness = System.currentTimeMillis();
             fitnessArray[i] = getIndividual(i).getFitness(mutFitnessMap);
+            int reminderGettingFitness = (int) ((System.currentTimeMillis() - timeB4GettingFitness) % (24L * 3600 * 1000));
+            Float secondsElapsedGettingFitness = (float) reminderGettingFitness / 1000;
+            System.out.println("Seconds elapsed for get fitness of one individual = " + secondsElapsedGettingFitness);
+
         }
+        int reminderIteraringAllIndividuals = (int) ((System.currentTimeMillis() - timeB4IteratingAllIndividuals) % (24L * 3600 * 1000));
+        Float secondsElapsedIteratingAllIndividuals = (float) reminderIteraringAllIndividuals / 1000;
+        System.out.println("Seconds elapsed for get fitness of all individuals = " + secondsElapsedIteratingAllIndividuals);
+
         return fitnessArray;
     }
 
@@ -139,14 +150,14 @@ public class Population {
     }
 
     private IndividualPair getRandomIndividualPair(Map mutFitnessMap) {
-        Long timeB4GetFitnessArray = System.currentTimeMillis();
+//        Long timeB4GetFitnessArray = System.currentTimeMillis();
 
         float[] randomWeights = getFitnessArray(mutFitnessMap);
 
-        Long timeAfterGetFitnessArray = System.currentTimeMillis();
-        int reminderGetFitnessArray = (int) ((timeAfterGetFitnessArray - timeB4GetFitnessArray) % (24L * 3600 * 1000));
-        Float secondsElapsedGetFitnessArray = (float) reminderGetFitnessArray / 1000;
-        System.out.println("Seconds elapsed for getting fitness array = " + secondsElapsedGetFitnessArray);
+//        Long timeAfterGetFitnessArray = System.currentTimeMillis();
+//        int reminderGetFitnessArray = (int) ((timeAfterGetFitnessArray - timeB4GetFitnessArray) % (24L * 3600 * 1000));
+//        Float secondsElapsedGetFitnessArray = (float) reminderGetFitnessArray / 1000;
+//        System.out.println("Seconds elapsed for getting fitness array = " + secondsElapsedGetFitnessArray);
 
 
         WeightedRandomGenerator wrg = new WeightedRandomGenerator(randomWeights);
@@ -158,10 +169,10 @@ public class Population {
         Individual individualA = getIndividual(indexA);
         Individual individualB = getIndividual(indexB);
 
-        Long timeAfterGeneratingRanIndividuals = System.currentTimeMillis();
-        int reminderGeneratingRanIndividuals = (int) ((timeAfterGeneratingRanIndividuals - timeAfterGeneratingRanIndividuals) % (24L * 3600 * 1000));
-        Float secondsElapsedGeneratingRanIndividuals = (float) reminderGeneratingRanIndividuals / 1000;
-        System.out.println("Seconds elapsed for randomly getting parents = " + secondsElapsedGeneratingRanIndividuals);
+//        Long timeAfterGeneratingRanIndividuals = System.currentTimeMillis();
+//        int reminderGeneratingRanIndividuals = (int) ((timeAfterGeneratingRanIndividuals - timeAfterGeneratingRanIndividuals) % (24L * 3600 * 1000));
+//        Float secondsElapsedGeneratingRanIndividuals = (float) reminderGeneratingRanIndividuals / 1000;
+//        System.out.println("Seconds elapsed for randomly getting parents = " + secondsElapsedGeneratingRanIndividuals);
 
         return new IndividualPair(individualA, individualB);
     }
