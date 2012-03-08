@@ -48,34 +48,34 @@ public class Population {
         String mutMapFileOutput;
 
         while (getSize() < parent.getSize()) {
-            Long init = System.currentTimeMillis();
+//            Long init = System.currentTimeMillis();
             int previousSize = getSize();
             IndividualPair parentPair = parent.getRandomIndividualPair(mutFitnessMap);
 
-            Long timeAfterRanIndividualPair = System.currentTimeMillis();
-            int reminderRandomIndividualPair = (int) ((timeAfterRanIndividualPair - init) % (24L * 3600 * 1000));
+//            Long timeAfterRanIndividualPair = System.currentTimeMillis();
+//            int reminderRandomIndividualPair = (int) ((timeAfterRanIndividualPair - init) % (24L * 3600 * 1000));
 //        Float hoursElapsed = (float) reminder / (3600 * 1000);
 //        System.out.println("Hours elapsed = " + hoursElapsed);
-            Float secondsElapsedRandomIndividualPair = (float) reminderRandomIndividualPair / 1000;
-            System.out.println("Seconds elapsed for getRandomIndividualPair = " + secondsElapsedRandomIndividualPair);
+//            Float secondsElapsedRandomIndividualPair = (float) reminderRandomIndividualPair / 1000;
+//            System.out.println("Seconds elapsed for getRandomIndividualPair = " + secondsElapsedRandomIndividualPair);
 
             IndividualPair offspringPair = parentPair.reproduce();
 
-            Long timeAfterReproduce = System.currentTimeMillis();
-            int reminderReproduce = (int) ((timeAfterReproduce - timeAfterRanIndividualPair) % (24L * 3600 * 1000));
-//        Float hoursElapsed = (float) reminder / (3600 * 1000);
-//        System.out.println("Hours elapsed = " + hoursElapsed);
-            Float secondsElapsedReproduce = (float) reminderReproduce / 1000;
-            System.out.println("Seconds elapsed for reproduce = " + secondsElapsedReproduce);
+//            Long timeAfterReproduce = System.currentTimeMillis();
+//            int reminderReproduce = (int) ((timeAfterReproduce - timeAfterRanIndividualPair) % (24L * 3600 * 1000));
+////        Float hoursElapsed = (float) reminder / (3600 * 1000);
+////        System.out.println("Hours elapsed = " + hoursElapsed);
+//            Float secondsElapsedReproduce = (float) reminderReproduce / 1000;
+//            System.out.println("Seconds elapsed for reproduce = " + secondsElapsedReproduce);
 
             offspringPair.mutate(currentGeneration, mutFitnessMap, mutationProperties);
 
-            Long timeAfterMutate = System.currentTimeMillis();
-            int reminderMutate = (int) ((timeAfterMutate - timeAfterReproduce) % (24L * 3600 * 1000));
-//        Float hoursElapsed = (float) reminder / (3600 * 1000);
-//        System.out.println("Hours elapsed = " + hoursElapsed);
-            Float secondsElapsedMutate = (float) reminderMutate / 1000;
-            System.out.println("Seconds elapsed for mutate = " + secondsElapsedMutate);
+//            Long timeAfterMutate = System.currentTimeMillis();
+//            int reminderMutate = (int) ((timeAfterMutate - timeAfterReproduce) % (24L * 3600 * 1000));
+////        Float hoursElapsed = (float) reminder / (3600 * 1000);
+////        System.out.println("Hours elapsed = " + hoursElapsed);
+//            Float secondsElapsedMutate = (float) reminderMutate / 1000;
+//            System.out.println("Seconds elapsed for mutate = " + secondsElapsedMutate);
 
 
             addIndividualPair(offspringPair, parent.getSize());
@@ -88,21 +88,21 @@ public class Population {
             }
         }
 
-        Long timeAfterOneGen = System.currentTimeMillis();
-        int reminderOneGen = (int) ((timeAfterOneGen - start) % (24L * 3600 * 1000));
-//        Float hoursElapsed = (float) reminder / (3600 * 1000);
-//        System.out.println("Hours elapsed = " + hoursElapsed);
-        Float secondsElapsedOneGen = (float) reminderOneGen / 1000;
-        System.out.println("Seconds elapsed for creating a new pop for next generation = " + secondsElapsedOneGen);
+//        Long timeAfterOneGen = System.currentTimeMillis();
+//        int reminderOneGen = (int) ((timeAfterOneGen - start) % (24L * 3600 * 1000));
+////        Float hoursElapsed = (float) reminder / (3600 * 1000);
+////        System.out.println("Hours elapsed = " + hoursElapsed);
+//        Float secondsElapsedOneGen = (float) reminderOneGen / 1000;
+//        System.out.println("Seconds elapsed for creating a new pop for next generation = " + secondsElapsedOneGen);
 
         mutMapFileOutput = Util.outputMutMap(mutationProperties);
         Util.writeFile(mutMapFilename, mutMapFileOutput);
 
-        int reminderOutputMutMap = (int) ((System.currentTimeMillis() - timeAfterOneGen) % (24L * 3600 * 1000));
-//        Float hoursElapsed = (float) reminder / (3600 * 1000);
-//        System.out.println("Hours elapsed = " + hoursElapsed);
-        Float secondsElapsedOutputMutMap = (float) reminderOutputMutMap / 1000;
-        System.out.println("Seconds elapsed for outputMutMap = " + secondsElapsedOutputMutMap);
+//        int reminderOutputMutMap = (int) ((System.currentTimeMillis() - timeAfterOneGen) % (24L * 3600 * 1000));
+////        Float hoursElapsed = (float) reminder / (3600 * 1000);
+////        System.out.println("Hours elapsed = " + hoursElapsed);
+//        Float secondsElapsedOutputMutMap = (float) reminderOutputMutMap / 1000;
+//        System.out.println("Seconds elapsed for outputMutMap = " + secondsElapsedOutputMutMap);
     }
 
     public float[] getFitnessArray(Map mutFitnessMap) {
