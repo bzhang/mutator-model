@@ -203,12 +203,7 @@ public class Individual implements Cloneable{
         for (int i = 0; i < getGenomeSize(); i++) {
             if (lociPattern.getLocusType(i) == LociPattern.LocusType.Fitness) {
                 FitnessLocus locus = (FitnessLocus) getLocus(i);
-                ArrayList<Float> fitnessEffectsArray = locus.getFitnessEffectsArray();
-                for (float fitnessEffect : fitnessEffectsArray) {
-                    if (fitnessEffect < 1) {
-                        nDeleMut++;
-                    }
-                }
+                nDeleMut += locus.getNDeleteriousMutations();
             }
         }
         return nDeleMut;
@@ -220,12 +215,7 @@ public class Individual implements Cloneable{
         for (int i = 0; i < getGenomeSize(); i++) {
             if (lociPattern.getLocusType(i) == LociPattern.LocusType.Fitness) {
                 FitnessLocus locus = (FitnessLocus) getLocus(i);
-                ArrayList<Float> fitnessEffectsArray = locus.getFitnessEffectsArray();
-                for (float fitnessEffect : fitnessEffectsArray) {
-                    if (fitnessEffect > 1) {
-                        nBeneMut++;
-                    }
-                }
+                nBeneMut += locus.getNBeneficialMutations();
             }
         }
         return nBeneMut;

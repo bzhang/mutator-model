@@ -66,13 +66,13 @@ public class Population {
     public float[] getFitnessArray() {
         float[] fitnessArray = new float[getSize()];
 
-        Long timeB4IteratingAllIndividuals = System.currentTimeMillis();
+//        Long timeB4IteratingAllIndividuals = System.currentTimeMillis();
         for (int i = 0; i < getSize(); i++) {
             fitnessArray[i] = getIndividual(i).getFitness();
         }
-        int reminderIteraringAllIndividuals = (int) ((System.currentTimeMillis() - timeB4IteratingAllIndividuals) % (24L * 3600 * 1000));
-        Float secondsElapsedIteratingAllIndividuals = (float) reminderIteraringAllIndividuals / 1000;
-        System.out.println("Seconds elapsed for getting fitness of all individuals = " + secondsElapsedIteratingAllIndividuals);
+//        int reminderIteraringAllIndividuals = (int) ((System.currentTimeMillis() - timeB4IteratingAllIndividuals) % (24L * 3600 * 1000));
+//        Float secondsElapsedIteratingAllIndividuals = (float) reminderIteraringAllIndividuals / 1000;
+//        System.out.println("Seconds elapsed for getting fitness of all individuals = " + secondsElapsedIteratingAllIndividuals);
 
         return fitnessArray;
     }
