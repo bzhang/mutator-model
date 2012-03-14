@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Map;
 
 /**
  * @author Bingjun
@@ -23,9 +22,9 @@ public class IndividualPair {
         return individualB;
     }
 
-    public void mutate(int currentGeneration, Map mutFitnessMap, ArrayList mutationProperties) {
-        getIndividualA().mutate(currentGeneration, mutFitnessMap, mutationProperties);
-        getIndividualB().mutate(currentGeneration, mutFitnessMap, mutationProperties);
+    public void mutate(int currentGeneration, ArrayList mutationProperties) {
+        getIndividualA().mutate(currentGeneration, mutationProperties);
+        getIndividualB().mutate(currentGeneration, mutationProperties);
     }
 
     public IndividualPair reproduce() {

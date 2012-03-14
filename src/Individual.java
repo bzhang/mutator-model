@@ -1,7 +1,6 @@
 import cern.jet.random.Poisson;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 /**
  * @author Bingjun
@@ -39,14 +38,14 @@ public class Individual implements Cloneable{
         }
     }
 
-    public void mutate(int currentGeneration, Map mutFitnessMap, ArrayList mutationProperties) {
+    public void mutate(int currentGeneration, ArrayList mutationProperties) {
         lethalMutate();
         if (isAlive()) {
-            deleteriousMutate(currentGeneration, mutFitnessMap, mutationProperties);
-            beneficialMutate(currentGeneration, mutFitnessMap, mutationProperties);
+            deleteriousMutate(currentGeneration, mutationProperties);
+            beneficialMutate(currentGeneration, mutationProperties);
             mutatorMutate(currentGeneration);
         }
-        if (getFitness(mutFitnessMap) <= 0) {
+        if (getFitness() <= 0) {
             die();
         }
     }
@@ -66,7 +65,7 @@ public class Individual implements Cloneable{
         return alive;
     }
 
-    private void deleteriousMutate(int currentGeneration, Map mutFitnessMap, ArrayList mutationProperties) {
+    private void deleteriousMutate(int currentGeneration, ArrayList mutationProperties) {
         double mutationRate = ModelParameters.getDouble("BASE_DELETERIOUS_MUTATION_RATE") * getMutatorStrength();
         Poisson poisson = new Poisson(mutationRate, Rand.getEngine());
         int poissonObs = poisson.nextInt();
@@ -75,17 +74,17 @@ public class Individual implements Cloneable{
             long mutationID = System.nanoTime();
             LocusPosition locusPosition = getRandomFitnessLocus();
             FitnessLocus fitnessLocus = (FitnessLocus) locusPosition.getFitnessLocus();
-            fitnessLocus.addFitnessEffect(mutationID);
+            fitnessLocus.addMutationID(mutationID);
+            fitnessLocus.addFitnessEffect(ModelParameters.getFloat("DEFAULT_DELETERIOUS_EFFECT"));
             mutationProperties.add(mutationID);
             mutationProperties.add(ModelParameters.getFloat("DEFAULT_DELETERIOUS_EFFECT"));
             mutationProperties.add(getMutatorStrength());
             mutationProperties.add(currentGeneration);
             mutationProperties.add(locusPosition.getPosition());
-            mutFitnessMap.put(mutationID, ModelParameters.getFloat("DEFAULT_DELETERIOUS_EFFECT"));
         }
     }
 
-    private void beneficialMutate(int currentGeneration, Map mutFitnessMap, ArrayList mutationProperties) {
+    private void beneficialMutate(int currentGeneration, ArrayList mutationProperties) {
         double mutationRate = ModelParameters.getDouble("BASE_BENEFICIAL_MUTATION_RATE") * getMutatorStrength();
         Poisson poisson = new Poisson(mutationRate, Rand.getEngine());
         int poissonObs = poisson.nextInt();
@@ -93,13 +92,13 @@ public class Individual implements Cloneable{
             long mutationID = System.nanoTime();
             LocusPosition locusPosition = getRandomFitnessLocus();
             FitnessLocus fitnessLocus = (FitnessLocus) locusPosition.getFitnessLocus();
-            fitnessLocus.addFitnessEffect(mutationID);
+            fitnessLocus.addMutationID(mutationID);
+            fitnessLocus.addFitnessEffect(ModelParameters.getFloat("DEFAULT_BENEFICIAL_EFFECT"));
             mutationProperties.add(mutationID);
             mutationProperties.add(ModelParameters.getFloat("DEFAULT_BENEFICIAL_EFFECT"));
             mutationProperties.add(getMutatorStrength());
             mutationProperties.add(currentGeneration);
             mutationProperties.add(locusPosition.getPosition());
-            mutFitnessMap.put(mutationID, ModelParameters.getFloat("DEFAULT_BENEFICIAL_EFFECT"));
         }
     }
 
@@ -198,16 +197,14 @@ public class Individual implements Cloneable{
         return ((RecombinationLocus) getLocus(recombinationLocusPosition)).getStrength(); // refactor
     }
 
-    public int getNDeleMut(Map mutFitnessMap) {
+    public int getNDeleMut() {
         int nDeleMut = 0;
-        float fitnessEffect;
 
         for (int i = 0; i < getGenomeSize(); i++) {
             if (lociPattern.getLocusType(i) == LociPattern.LocusType.Fitness) {
                 FitnessLocus locus = (FitnessLocus) getLocus(i);
-                ArrayList<Long> mutationIDs = locus.getFitnessEffectsArray();
-                for (long mutationID : mutationIDs) {
-                    fitnessEffect = (Float) mutFitnessMap.get(mutationID);
+                ArrayList<Float> fitnessEffectsArray = locus.getFitnessEffectsArray();
+                for (float fitnessEffect : fitnessEffectsArray) {
                     if (fitnessEffect < 1) {
                         nDeleMut++;
                     }
@@ -217,16 +214,14 @@ public class Individual implements Cloneable{
         return nDeleMut;
     }
 
-    public int getNBeneMut(Map mutFitnessMap) {
+    public int getNBeneMut() {
         int nBeneMut = 0;
-        float fitnessEffect;
 
         for (int i = 0; i < getGenomeSize(); i++) {
             if (lociPattern.getLocusType(i) == LociPattern.LocusType.Fitness) {
                 FitnessLocus locus = (FitnessLocus) getLocus(i);
-                ArrayList<Long> mutationIDs = locus.getFitnessEffectsArray();
-                for (long mutationID : mutationIDs) {
-                    fitnessEffect = (Float) mutFitnessMap.get(mutationID);
+                ArrayList<Float> fitnessEffectsArray = locus.getFitnessEffectsArray();
+                for (float fitnessEffect : fitnessEffectsArray) {
                     if (fitnessEffect > 1) {
                         nBeneMut++;
                     }
