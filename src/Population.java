@@ -37,8 +37,6 @@ public class Population {
     }
 
     public Population(Population parent, int currentGeneration, String mutMapFilename) {
-//        Long start = System.currentTimeMillis();
-
         // Create the next generation
         lociPattern = parent.lociPattern;
         individuals = new ArrayList<Individual>();
@@ -74,7 +72,7 @@ public class Population {
         }
         int reminderIteraringAllIndividuals = (int) ((System.currentTimeMillis() - timeB4IteratingAllIndividuals) % (24L * 3600 * 1000));
         Float secondsElapsedIteratingAllIndividuals = (float) reminderIteraringAllIndividuals / 1000;
-        System.out.println("Seconds elapsed for get fitness of all individuals = " + secondsElapsedIteratingAllIndividuals);
+        System.out.println("Seconds elapsed for getting fitness of all individuals = " + secondsElapsedIteratingAllIndividuals);
 
         return fitnessArray;
     }

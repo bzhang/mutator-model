@@ -7,6 +7,8 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MutatorModel {
 
@@ -69,7 +71,7 @@ public class MutatorModel {
         String output = "";
         Individual individual;
         ArrayList<Long> mutationIDsArray;
-        ArrayList<Float> fitnessEffectsArray;
+        Map<Long, Integer> counterMap = new HashMap<Long, Integer>();
 
         for (int j = 0; j < population.getSize(); j++) {
             individual = population.getIndividual(j);
@@ -78,23 +80,23 @@ public class MutatorModel {
                 if (lociPattern.getLocusType(k) == LociPattern.LocusType.Fitness) {
                     FitnessLocus locus = (FitnessLocus) individual.getLocus(k);
                     mutationIDsArray = locus.getMutationIDsArray();
-                    fitnessEffectsArray = locus.getFitnessEffectsArray();
-                    if (mutationIDsArray.size() == fitnessEffectsArray.size()) {
-                        for (int nMutations = 0; nMutations < mutationIDsArray.size(); nMutations++) {
-                            output += i
-                                    + "\t" + mutationIDsArray.get(nMutations)
-                                    + "\t" + fitnessEffectsArray.get(nMutations)
-                                    + "\n";
+                    for (Long mutationID : mutationIDsArray) {
+                        if (counterMap.containsKey(mutationID)) {
+                            counterMap.put(mutationID, counterMap.get(mutationID) + 1);
+                        } else {
+                            counterMap.put(mutationID, 1);
                         }
-                    } else {
-                        System.err.println("The locus has unequal number of mutationIDs and fitnessEffects!");
-                        System.exit(0);
-                    } 
+                    }
                 }
 
             }
 
         }
+
+        for (Map.Entry<Long, Integer> longIntegerEntry : counterMap.entrySet()) {
+            output += i + "\t" + longIntegerEntry.getKey() + "\t" + longIntegerEntry.getValue() +"\n";
+        }
+
         return output;
     }
 
