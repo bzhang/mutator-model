@@ -37,7 +37,7 @@ public class Population {
         }
     }
 
-    public Population(Population parent, int currentGeneration, Map mutFitnessMap, String mutMapFilename) {
+    public Population(Population parent, int currentGeneration, String mutMapFilename) {
 //        Long start = System.currentTimeMillis();
 
         // Create the next generation
@@ -48,30 +48,10 @@ public class Population {
         String mutMapFileOutput;
 
         while (getSize() < parent.getSize()) {
-//            Long init = System.currentTimeMillis();
             int previousSize = getSize();
-            IndividualPair parentPair = parent.getRandomIndividualPair(mutFitnessMap);
-
-//            Long timeAfterRanIndividualPair = System.currentTimeMillis();
-//            int reminderRandomIndividualPair = (int) ((timeAfterRanIndividualPair - init) % (24L * 3600 * 1000));
-//            Float secondsElapsedRandomIndividualPair = (float) reminderRandomIndividualPair / 1000;
-//            System.out.println("Seconds elapsed for getRandomIndividualPair = " + secondsElapsedRandomIndividualPair);
-
+            IndividualPair parentPair = parent.getRandomIndividualPair();
             IndividualPair offspringPair = parentPair.reproduce();
-
-//            Long timeAfterReproduce = System.currentTimeMillis();
-//            int reminderReproduce = (int) ((timeAfterReproduce - timeAfterRanIndividualPair) % (24L * 3600 * 1000));
-//            Float secondsElapsedReproduce = (float) reminderReproduce / 1000;
-//            System.out.println("Seconds elapsed for reproduce = " + secondsElapsedReproduce);
-
-            offspringPair.mutate(currentGeneration, mutFitnessMap, mutationProperties);
-
-//            Long timeAfterMutate = System.currentTimeMillis();
-//            int reminderMutate = (int) ((timeAfterMutate - timeAfterReproduce) % (24L * 3600 * 1000));
-//            Float secondsElapsedMutate = (float) reminderMutate / 1000;
-//            System.out.println("Seconds elapsed for mutate = " + secondsElapsedMutate);
-
-
+            offspringPair.mutate(currentGeneration, mutationProperties);
             addIndividualPair(offspringPair, parent.getSize());
             if (getSize() - previousSize == 0) {
                 counter++;
@@ -82,30 +62,16 @@ public class Population {
             }
         }
 
-//        Long timeAfterOneGen = System.currentTimeMillis();
-//        int reminderOneGen = (int) ((timeAfterOneGen - start) % (24L * 3600 * 1000));
-//        Float secondsElapsedOneGen = (float) reminderOneGen / 1000;
-//        System.out.println("Seconds elapsed for creating a new pop for next generation = " + secondsElapsedOneGen);
-
         mutMapFileOutput = Util.outputMutMap(mutationProperties);
         Util.writeFile(mutMapFilename, mutMapFileOutput);
-
-//        int reminderOutputMutMap = (int) ((System.currentTimeMillis() - timeAfterOneGen) % (24L * 3600 * 1000));
-//        Float secondsElapsedOutputMutMap = (float) reminderOutputMutMap / 1000;
-//        System.out.println("Seconds elapsed for outputMutMap = " + secondsElapsedOutputMutMap);
     }
 
-    public float[] getFitnessArray(Map mutFitnessMap) {
+    public float[] getFitnessArray() {
         float[] fitnessArray = new float[getSize()];
 
         Long timeB4IteratingAllIndividuals = System.currentTimeMillis();
         for (int i = 0; i < getSize(); i++) {
-            Long timeB4GettingFitness = System.currentTimeMillis();
-            fitnessArray[i] = getIndividual(i).getFitness(mutFitnessMap);
-            int reminderGettingFitness = (int) ((System.currentTimeMillis() - timeB4GettingFitness) % (24L * 3600 * 1000));
-            Float secondsElapsedGettingFitness = (float) reminderGettingFitness / 1000;
-            System.out.println("Seconds elapsed for get fitness of one individual = " + secondsElapsedGettingFitness);
-
+            fitnessArray[i] = getIndividual(i).getFitness();
         }
         int reminderIteraringAllIndividuals = (int) ((System.currentTimeMillis() - timeB4IteratingAllIndividuals) % (24L * 3600 * 1000));
         Float secondsElapsedIteratingAllIndividuals = (float) reminderIteraringAllIndividuals / 1000;
@@ -122,18 +88,18 @@ public class Population {
         return mutatorStrengthArray;
     }
 
-    public int[] getNDeleMutArray(Map mutFitnessMap) {
+    public int[] getNDeleMutArray() {
         int[] nDeleMutArray = new int[getSize()];
         for (int i = 0; i < getSize(); i++) {
-            nDeleMutArray[i] = getIndividual(i).getNDeleMut(mutFitnessMap);
+            nDeleMutArray[i] = getIndividual(i).getNDeleMut();
         }
         return nDeleMutArray;
     }
 
-    public int[] getNBeneMutArray(Map mutFitnessMap) {
+    public int[] getNBeneMutArray() {
         int[] nBeneMutArray = new int[getSize()];
         for (int i = 0; i < getSize(); i++) {
-            nBeneMutArray[i] = getIndividual(i).getNBeneMut(mutFitnessMap);
+            nBeneMutArray[i] = getIndividual(i).getNBeneMut();
         }
         return nBeneMutArray;
     }
@@ -149,10 +115,10 @@ public class Population {
         }
     }
 
-    private IndividualPair getRandomIndividualPair(Map mutFitnessMap) {
+    private IndividualPair getRandomIndividualPair() {
 //        Long timeB4GetFitnessArray = System.currentTimeMillis();
 
-        float[] randomWeights = getFitnessArray(mutFitnessMap);
+        float[] randomWeights = getFitnessArray();
 
 //        Long timeAfterGetFitnessArray = System.currentTimeMillis();
 //        int reminderGetFitnessArray = (int) ((timeAfterGetFitnessArray - timeB4GetFitnessArray) % (24L * 3600 * 1000));

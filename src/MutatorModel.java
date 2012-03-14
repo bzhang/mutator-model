@@ -7,8 +7,6 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class MutatorModel {
 
@@ -27,7 +25,6 @@ public class MutatorModel {
                                    "\tnDeleMutMean\tnDeleMutSD\tnBeneMutMean\tnBeneMutSD\n";
             String mutMapFileOutput = "MutationID\tFitnessEffect\tMutatorStrength\tGeneration\tLocus\n";
             String mutStructureFileOutput = "Generation\tMutationID\tNIndividual\n";
-            Map<Long, Float> mutFitnessMap = new HashMap<Long, Float>();
 
             // Write file headers for mutMapFile
             Util.writeFile(mutMapFilename, mutMapFileOutput);
@@ -35,31 +32,27 @@ public class MutatorModel {
             // Founder population
             System.out.println("Output file: " + popFilename + "\nFounder population creating...");
             Population population = new Population(ModelParameters.getInt("POPULATION_SIZE"));
-            popFileOutput += outputPopulationStat(1, population, mutFitnessMap);
+            popFileOutput += outputPopulationStat(1, population);
             Util.writeFile(popFilename, popFileOutput);
             Util.writeFile(mutStructureFilename, mutStructureFileOutput);
 
             System.out.println("Founder population created.");
 
             int reminderFounder = (int) ((System.currentTimeMillis() - start) % (24L * 3600 * 1000));
-//        Float hoursElapsed = (float) reminder / (3600 * 1000);
-//        System.out.println("Hours elapsed = " + hoursElapsed);
             Float secondsElapsedFounder = (float) reminderFounder / 1000;
             System.out.println("Seconds elapsed for founder pop = " + secondsElapsedFounder);
 
 
             for (int i = 2; i <= ModelParameters.getInt("N_GENERATIONS"); i++) {
                 // Create the next generation
-                population = new Population(population, i, mutFitnessMap, mutMapFilename);
-                popFileOutput = outputPopulationStat(i, population, mutFitnessMap);
+                population = new Population(population, i, mutMapFilename);
+                popFileOutput = outputPopulationStat(i, population);
                 Util.writeFile(popFilename, popFileOutput);
                 mutStructureFileOutput = outputMutStructure(i, population);
                 Util.writeFile(mutStructureFilename, mutStructureFileOutput);
                 System.out.println("Generation " + i);
 
                 int reminderGen = (int) ((System.currentTimeMillis() - start) % (24L * 3600 * 1000));
-//        Float hoursElapsed = (float) reminder / (3600 * 1000);
-//        System.out.println("Hours elapsed = " + hoursElapsed);
                 Float secondsElapsedGen = (float) reminderGen / 1000;
                 System.out.println("Seconds elapsed = " + secondsElapsedGen);
 
@@ -67,8 +60,6 @@ public class MutatorModel {
         }
 
         int reminder = (int) ((System.currentTimeMillis() - start) % (24L * 3600 * 1000));
-//        Float hoursElapsed = (float) reminder / (3600 * 1000);
-//        System.out.println("Hours elapsed = " + hoursElapsed);
         Float secondsElapsed = (float) reminder / 1000;
         System.out.println("Seconds elapsed = " + secondsElapsed);
 
@@ -76,9 +67,9 @@ public class MutatorModel {
 
     private static String outputMutStructure(int i, Population population) {
         String output = "";
-        Map<Long, Integer> tempMap = new HashMap<Long, Integer>();
         Individual individual;
         ArrayList<Long> mutationIDsArray;
+        ArrayList<Float> fitnessEffectsArray;
 
         for (int j = 0; j < population.getSize(); j++) {
             individual = population.getIndividual(j);
@@ -87,30 +78,31 @@ public class MutatorModel {
                 if (lociPattern.getLocusType(k) == LociPattern.LocusType.Fitness) {
                     FitnessLocus locus = (FitnessLocus) individual.getLocus(k);
                     mutationIDsArray = locus.getMutationIDsArray();
-                    for (Long mutationID : mutationIDsArray) {
-                        if (tempMap.containsKey(mutationID)) {
-                            tempMap.put(mutationID, tempMap.get(mutationID) + 1);
-                        } else {
-                            tempMap.put(mutationID, 1);
+                    fitnessEffectsArray = locus.getFitnessEffectsArray();
+                    if (mutationIDsArray.size() == fitnessEffectsArray.size()) {
+                        for (int nMutations = 0; nMutations < mutationIDsArray.size(); nMutations++) {
+                            output += i
+                                    + "\t" + mutationIDsArray.get(nMutations)
+                                    + "\t" + fitnessEffectsArray.get(nMutations)
+                                    + "\n";
                         }
-                    }
+                    } else {
+                        System.err.println("The locus has unequal number of mutationIDs and fitnessEffects!");
+                        System.exit(0);
+                    } 
                 }
 
             }
 
         }
-
-        for (Map.Entry<Long, Integer> longIntegerEntry : tempMap.entrySet()) {
-            output += i + "\t" + longIntegerEntry.getKey() + "\t" + longIntegerEntry.getValue() +"\n";
-        }
         return output;
     }
 
-    private static String outputPopulationStat(int i, Population population, Map mutFitnessMap) {
-        float[] fitnessArray = population.getFitnessArray(mutFitnessMap);
+    private static String outputPopulationStat(int i, Population population) {
+        float[] fitnessArray = population.getFitnessArray();
         int[] mutatorStrengthArray = population.getMutatorStrengthArray();
-        int[] nDeleMutArray = population.getNDeleMutArray(mutFitnessMap);
-        int[] nBeneMutArray = population.getNBeneMutArray(mutFitnessMap);
+        int[] nDeleMutArray = population.getNDeleMutArray();
+        int[] nBeneMutArray = population.getNBeneMutArray();
 
 
         return i + "\t" + Util.mean(fitnessArray)

@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -8,11 +7,16 @@ import java.util.Map;
 
 public class FitnessLocus extends Locus {
 
+    private ArrayList<Float> fitnessEffects = new ArrayList<Float>();
     private ArrayList<Long> mutationIDs = new ArrayList<Long>();
 
     public FitnessLocus() {}
 
-    public void addMutationIDs(long mutationID) {
+    public void addFitnessEffect(float fitnessEffect) {
+        fitnessEffects.add(fitnessEffect);
+    }
+
+    public void addMutationID(Long mutationID) {
         mutationIDs.add(mutationID);
     }
 
@@ -20,9 +24,13 @@ public class FitnessLocus extends Locus {
         FitnessLocus cloned = null;
         try {
             cloned = (FitnessLocus) super.clone();
+            cloned.initFitnessEffects();
+            for (Float fitnessEffect : fitnessEffects) {
+                cloned.addFitnessEffect(fitnessEffect);
+            }
             cloned.initMutationIDs();
-            for (long mutationID : mutationIDs) {
-                cloned.addMutationIDs(mutationID);
+            for (Long mutationID : mutationIDs) {
+                cloned.addMutationID(mutationID);
             }
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
@@ -30,20 +38,26 @@ public class FitnessLocus extends Locus {
         return cloned;
     }
 
-    protected void initMutationIDs() {
+    private void initMutationIDs() {
         mutationIDs = new ArrayList<Long>();
     }
 
+    protected void initFitnessEffects() {
+        fitnessEffects = new ArrayList<Float>();
+    }
 
-    public float getFitnessEffect(Map mutationMap) {
+
+    public float getFitnessEffect() {
         float effect = 1;
-        float currentEffect;
 
-        for (long mutationID : mutationIDs) {
-            currentEffect = (Float) mutationMap.get(mutationID);
-            effect *= currentEffect;
+        for (float fitnessEffect : fitnessEffects) {
+            effect *= fitnessEffect;
         }
         return effect;
+    }
+
+    public ArrayList<Float> getFitnessEffectsArray() {
+        return fitnessEffects;
     }
 
     public ArrayList<Long> getMutationIDsArray() {

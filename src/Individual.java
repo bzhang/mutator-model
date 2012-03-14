@@ -1,8 +1,6 @@
 import cern.jet.random.Poisson;
-import com.sun.tools.internal.ws.processor.model.ModelProperties;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -77,7 +75,7 @@ public class Individual implements Cloneable{
             long mutationID = System.nanoTime();
             LocusPosition locusPosition = getRandomFitnessLocus();
             FitnessLocus fitnessLocus = (FitnessLocus) locusPosition.getFitnessLocus();
-            fitnessLocus.addMutationIDs(mutationID);
+            fitnessLocus.addFitnessEffect(mutationID);
             mutationProperties.add(mutationID);
             mutationProperties.add(ModelParameters.getFloat("DEFAULT_DELETERIOUS_EFFECT"));
             mutationProperties.add(getMutatorStrength());
@@ -95,7 +93,7 @@ public class Individual implements Cloneable{
             long mutationID = System.nanoTime();
             LocusPosition locusPosition = getRandomFitnessLocus();
             FitnessLocus fitnessLocus = (FitnessLocus) locusPosition.getFitnessLocus();
-            fitnessLocus.addMutationIDs(mutationID);
+            fitnessLocus.addFitnessEffect(mutationID);
             mutationProperties.add(mutationID);
             mutationProperties.add(ModelParameters.getFloat("DEFAULT_BENEFICIAL_EFFECT"));
             mutationProperties.add(getMutatorStrength());
@@ -177,12 +175,12 @@ public class Individual implements Cloneable{
         return loci.length;
     }
 
-    public float getFitness(Map mutFitnessMap) {
+    public float getFitness() {
         float fitness = 1;
         for (int i = 0; i < getGenomeSize(); i++) {
             if (lociPattern.getLocusType(i) == LociPattern.LocusType.Fitness) {
                 FitnessLocus locus = (FitnessLocus)getLocus(i);
-                fitness *= locus.getFitnessEffect(mutFitnessMap);
+                fitness *= locus.getFitnessEffect();
             }
         }
         return fitness;
@@ -207,7 +205,7 @@ public class Individual implements Cloneable{
         for (int i = 0; i < getGenomeSize(); i++) {
             if (lociPattern.getLocusType(i) == LociPattern.LocusType.Fitness) {
                 FitnessLocus locus = (FitnessLocus) getLocus(i);
-                ArrayList<Long> mutationIDs = locus.getMutationIDsArray();
+                ArrayList<Long> mutationIDs = locus.getFitnessEffectsArray();
                 for (long mutationID : mutationIDs) {
                     fitnessEffect = (Float) mutFitnessMap.get(mutationID);
                     if (fitnessEffect < 1) {
@@ -226,7 +224,7 @@ public class Individual implements Cloneable{
         for (int i = 0; i < getGenomeSize(); i++) {
             if (lociPattern.getLocusType(i) == LociPattern.LocusType.Fitness) {
                 FitnessLocus locus = (FitnessLocus) getLocus(i);
-                ArrayList<Long> mutationIDs = locus.getMutationIDsArray();
+                ArrayList<Long> mutationIDs = locus.getFitnessEffectsArray();
                 for (long mutationID : mutationIDs) {
                     fitnessEffect = (Float) mutFitnessMap.get(mutationID);
                     if (fitnessEffect > 1) {
