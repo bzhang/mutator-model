@@ -9,9 +9,10 @@ public class FitnessLocus extends Locus {
     public static final int FITNESS_EFFECTS_INITIAL_SIZE = 3;
 
     //    private ArrayList<Float> fitnessEffects = new ArrayList<Float>();
-    private ArrayList<Long> mutationIDs = new ArrayList<Long>();
+//    private ArrayList<Long> mutationIDs = new ArrayList<Long>();
     
     private float[] fitnessEffects = new float[FITNESS_EFFECTS_INITIAL_SIZE];
+    private int[] mutationIDs = new int[FITNESS_EFFECTS_INITIAL_SIZE];
     private float currentFitness = 1f;
     private int nMutations = 0;
     private int nDeleteriousMutations = 0;
@@ -36,8 +37,8 @@ public class FitnessLocus extends Locus {
         }
     }
 
-    public void addMutationID(Long mutationID) {
-        mutationIDs.add(mutationID);
+    public void addMutationID(int mutationID) {
+        mutationIDs[nMutations] = mutationID;
     }
 
     public Object clone() throws CloneNotSupportedException {
