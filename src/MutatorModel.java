@@ -73,7 +73,7 @@ public class MutatorModel {
     private static String outputMutStructure(int i, Population population) {
         String output = "";
         Individual individual;
-        ArrayList<Long> mutationIDsArray;
+        long[] mutationIDsArray;
         Map<Long, Integer> counterMap = new HashMap<Long, Integer>();
 
         for (int j = 0; j < population.getSize(); j++) {
@@ -83,7 +83,7 @@ public class MutatorModel {
                 if (lociPattern.getLocusType(k) == LociPattern.LocusType.Fitness) {
                     FitnessLocus locus = (FitnessLocus) individual.getLocus(k);
                     mutationIDsArray = locus.getMutationIDsArray();
-                    for (Long mutationID : mutationIDsArray) {
+                    for (long mutationID : mutationIDsArray) {
                         if (counterMap.containsKey(mutationID)) {
                             counterMap.put(mutationID, counterMap.get(mutationID) + 1);
                         } else {
