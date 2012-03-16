@@ -1,14 +1,12 @@
-import java.util.ArrayList;
-
 /**
- * Created by bingjun at 7/8/11 11:43 AM
+ * @author Bingjun Zhang
  */
 
 public class FitnessLocus extends Locus {
 
     public static final int FITNESS_EFFECTS_INITIAL_SIZE = 3;
 
-    private float[] fitnessEffects = new float[FITNESS_EFFECTS_INITIAL_SIZE];
+//    private float[] fitnessEffects = new float[FITNESS_EFFECTS_INITIAL_SIZE];
     private long[]   mutationIDs    = new long[FITNESS_EFFECTS_INITIAL_SIZE];
     private float currentFitness = 1f;
     private int   nMutations     = 0;
@@ -19,22 +17,28 @@ public class FitnessLocus extends Locus {
 
     public void updateFitnessEffect(float fitnessEffect) {
         currentFitness *= fitnessEffect;
+        updateNMutations(fitnessEffect);
+
     }
-    
-//  use this method to calculate fitnessEffect for each locus if need to store fitnessEffects array
-    public void addFitnessEffect(float fitnessEffect) {
-        fitnessEffects[nMutations] = fitnessEffect;
-        currentFitness *= fitnessEffect;
+
+    private void updateNMutations(float fitnessEffect) {
         nMutations++;
         if (fitnessEffect > 1) {
             nBeneficialMutations++;
         } else if (fitnessEffect < 1) {
             nDeleteriousMutations++;
         }
-        if (nMutations == fitnessEffects.length) {
-            resizeArray(fitnessEffects);
-        }
     }
+
+    //  use this method to calculate fitnessEffect for each locus if need to store fitnessEffects array
+//    public void addFitnessEffect(float fitnessEffect) {
+//        fitnessEffects[nMutations] = fitnessEffect;
+//        currentFitness *= fitnessEffect;
+//        updateNMutations(fitnessEffect);
+//        if (nMutations == fitnessEffects.length) {
+//            resizeArray(fitnessEffects);
+//        }
+//    }
 
     public void addMutationID(long mutationID) {
         mutationIDs[nMutations] = mutationID;
@@ -60,8 +64,8 @@ public class FitnessLocus extends Locus {
         FitnessLocus cloned = null;
         try {
             cloned = (FitnessLocus) super.clone();
-            cloned.initFitnessEffects();
-            cloned.fitnessEffects = this.fitnessEffects.clone();
+//            cloned.initFitnessEffects();
+//            cloned.fitnessEffects = this.fitnessEffects.clone();
             cloned.initMutationIDs();
             cloned.mutationIDs = this.mutationIDs.clone();
             cloned.nDeleteriousMutations = this.nDeleteriousMutations;
@@ -77,13 +81,13 @@ public class FitnessLocus extends Locus {
         mutationIDs = new long[FITNESS_EFFECTS_INITIAL_SIZE];
     }
 
-    protected void initFitnessEffects() {
-        fitnessEffects = new float[FITNESS_EFFECTS_INITIAL_SIZE];
-        currentFitness = 1f;
-        nMutations = 0;
-        nDeleteriousMutations = 0;
-        nBeneficialMutations = 0;
-    }
+//    protected void initFitnessEffects() {
+//        fitnessEffects = new float[FITNESS_EFFECTS_INITIAL_SIZE];
+//        currentFitness = 1f;
+//        nMutations = 0;
+//        nDeleteriousMutations = 0;
+//        nBeneficialMutations = 0;
+//    }
 
 
     public float getFitnessEffect() {
