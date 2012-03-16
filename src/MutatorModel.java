@@ -6,13 +6,10 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class MutatorModel {
-
-    long mutationID = 0;
 
     public static void main(String[] args) {
         Long start = System.currentTimeMillis();
@@ -142,8 +139,4 @@ public class MutatorModel {
         return directoryName + "/" + System.nanoTime();
     }
 
-    public long getMutationID() {
-        mutationID += 1;
-        return mutationID;
-    }
 }
