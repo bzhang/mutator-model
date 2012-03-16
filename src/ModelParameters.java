@@ -10,6 +10,7 @@ public class ModelParameters {
     private static String propertiesFilename = "MutatorModel.properties";
     private static Properties properties = new Properties();
     private static boolean initialized = false;
+    private static long muationID = 0;
 
     public static void setPropertiesFileName(String filename) {
         propertiesFilename = filename;
@@ -76,4 +77,8 @@ public class ModelParameters {
                 + "_MutaE"  + getFloat("MUTATOR_MUTATION_EFFECT");
     }
 
+    public static long getMutationID() {
+        muationID++;
+        return muationID;
+    }
 }
