@@ -71,11 +71,11 @@ public class Individual implements Cloneable{
         int poissonObs = poisson.nextInt();
 
         for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
-            long mutationID = System.nanoTime();
+            int mutationID = MutatorModel.getMutationID;
             LocusPosition locusPosition = getRandomFitnessLocus();
             FitnessLocus fitnessLocus = (FitnessLocus) locusPosition.getFitnessLocus();
             fitnessLocus.addMutationID(mutationID);
-            fitnessLocus.addFitnessEffect(ModelParameters.getFloat("DEFAULT_DELETERIOUS_EFFECT"));
+            fitnessLocus.updateFitnessEffect(ModelParameters.getFloat("DEFAULT_DELETERIOUS_EFFECT"));
             mutationProperties.add(mutationID);
             mutationProperties.add(ModelParameters.getFloat("DEFAULT_DELETERIOUS_EFFECT"));
             mutationProperties.add(getMutatorStrength());
@@ -93,7 +93,7 @@ public class Individual implements Cloneable{
             LocusPosition locusPosition = getRandomFitnessLocus();
             FitnessLocus fitnessLocus = (FitnessLocus) locusPosition.getFitnessLocus();
             fitnessLocus.addMutationID(mutationID);
-            fitnessLocus.addFitnessEffect(ModelParameters.getFloat("DEFAULT_BENEFICIAL_EFFECT"));
+            fitnessLocus.updateFitnessEffect(ModelParameters.getFloat("DEFAULT_BENEFICIAL_EFFECT"));
             mutationProperties.add(mutationID);
             mutationProperties.add(ModelParameters.getFloat("DEFAULT_BENEFICIAL_EFFECT"));
             mutationProperties.add(getMutatorStrength());
