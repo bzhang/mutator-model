@@ -1,6 +1,5 @@
 /**
- * @author Bingjun
- * 5/16/11 12:32 AM
+ * @author Bingjun Zhang
  */
 
 import java.util.ArrayList;

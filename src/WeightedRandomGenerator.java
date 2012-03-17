@@ -2,10 +2,10 @@ import java.util.Arrays;
 import java.util.Random;
 
 /**
- * @author Bingjun
- * Generated weighted random numbers according to the weights array.
+ * @author Bingjun Zhang
  */
 
+//Generated weighted random numbers according to the weights array.
 public class WeightedRandomGenerator {
 
     private Random random = new Random(System.nanoTime());

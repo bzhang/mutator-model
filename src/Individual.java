@@ -1,10 +1,9 @@
+/**
+ * @author Bingjun Zhang
+ */
+
 import cern.jet.random.Poisson;
 import java.util.ArrayList;
-
-/**
- * @author Bingjun
- * Created by bingjun at 5/16/11 9:42 AM
-*/
 
 public class Individual implements Cloneable{
 

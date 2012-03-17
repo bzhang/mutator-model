@@ -1,8 +1,7 @@
 import java.util.ArrayList;
 
 /**
- * @author Bingjun
- * A pair of individuals
+ * @author Bingjun Zhang
  */
 
 public class IndividualPair {

@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
- * Created by Bingjun at 7/21/11 1:29 AM
+ * @author Bingjun Zhang
  */
 
 public class Util {

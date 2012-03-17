@@ -1,6 +1,5 @@
 /**
- * @author Bingjun
- * 7/7/11 11:52 AM
+ * @author Bingjun Zhang
  */
 
 public class MutatorLocus extends Locus {
