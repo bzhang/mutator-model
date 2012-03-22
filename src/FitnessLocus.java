@@ -47,12 +47,13 @@ public class FitnessLocus extends Locus {
         }
     }
 
-    private void resizeArray(float[] floatArray) {
-            System.out.println("FitnessLocus: resizing mutations array");
-            float[] newFloatArray = new float[floatArray.length + FITNESS_EFFECTS_INITIAL_SIZE];
-            System.arraycopy(floatArray, 0, newFloatArray, 0, floatArray.length);
-            floatArray = newFloatArray;
-    }
+//    private void resizeArray(float[] floatArray) {
+//            System.out.println("FitnessLocus: resizing mutations array");
+//            float[] newFloatArray = new float[floatArray.length + FITNESS_EFFECTS_INITIAL_SIZE];
+//            System.arraycopy(floatArray, 0, newFloatArray, 0, floatArray.length);
+//            floatArray = newFloatArray;
+//    }
+
     private void resizeArray(long[] longArray) {
             System.out.println("FitnessLocus: resizing mutations array");
             long[] newLongArray = new long[longArray.length + FITNESS_EFFECTS_INITIAL_SIZE];
