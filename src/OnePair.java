@@ -1,20 +1,27 @@
 /**
  * @author Bingjun Zhang
  */
-public class Pair {
+public class OnePair {
     private FitnessLocus fitnessLocus;
     private int position;
     private int nDeleteriousMutations;
     private int nBeneficialMutations;
+    private int[] nDeleMutArray;
+    private int[] nBeneMutArray;
 
-    public Pair(int nDeleteriousMutations, int nBeneficialMutations) {
+    public OnePair(FitnessLocus fitnessLocus, int position) {
+        this.fitnessLocus = fitnessLocus;
+        this.position = position;
+    }
+
+    public OnePair(int nDeleteriousMutations, int nBeneficialMutations) {
         this.nDeleteriousMutations = nDeleteriousMutations;
         this.nBeneficialMutations = nBeneficialMutations;
     }
 
-    public Pair(FitnessLocus fitnessLocus, int position) {
-        this.fitnessLocus = fitnessLocus;
-        this.position = position;
+    public OnePair(int[] nDeleMutArray, int[] nBeneMutArray) {
+        this.nDeleMutArray = nDeleMutArray;
+        this.nBeneMutArray = nBeneMutArray;
     }
 
     public Locus getFitnessLocus() {
@@ -31,6 +38,14 @@ public class Pair {
 
     public int getNBeneficialMutations() {
         return nBeneficialMutations;
+    }
+
+    public int[] getNDeleMutArray() {
+        return nDeleMutArray;
+    }
+
+    public int[] getnBeneMutArray() {
+        return nBeneMutArray;
     }
 
 }
