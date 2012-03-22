@@ -193,27 +193,18 @@ public class Individual implements Cloneable{
         return ((RecombinationLocus) getLocus(recombinationLocusPosition)).getStrength(); // refactor
     }
 
-    public int getNDeleMut() {
-        int nDeleMut = 0;
+    public IntegerPair getNMutations() {
+        int nDeleteriousMutations = 0;
+        int nBeneficialMutations = 0;
 
         for (int i = 0; i < getGenomeSize(); i++) {
             if (lociPattern.getLocusType(i) == LociPattern.LocusType.Fitness) {
                 FitnessLocus locus = (FitnessLocus) getLocus(i);
-                nDeleMut += locus.getNDeleteriousMutations();
+                nDeleteriousMutations += locus.getNDeleteriousMutations();
+                nBeneficialMutations += locus.getNBeneficialMutations();
             }
         }
-        return nDeleMut;
+        return new IntegerPair(nDeleteriousMutations, nBeneficialMutations);
     }
 
-    public int getNBeneMut() {
-        int nBeneMut = 0;
-
-        for (int i = 0; i < getGenomeSize(); i++) {
-            if (lociPattern.getLocusType(i) == LociPattern.LocusType.Fitness) {
-                FitnessLocus locus = (FitnessLocus) getLocus(i);
-                nBeneMut += locus.getNBeneficialMutations();
-            }
-        }
-        return nBeneMut;
-    }
 }
