@@ -7,7 +7,7 @@ import java.util.Random;
 
 //Generated weighted random numbers according to the weights array.
 public class WeightedRandomGenerator {
-
+//  TODO: generate random one-time and use it for all the random numbers to avoid generating same random number in very short time.
     private Random random = new Random(System.nanoTime());
     private float[] totals;
 
