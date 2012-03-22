@@ -87,7 +87,7 @@ public class Individual implements Cloneable{
 
     private void updateMutationInformation(int currentGeneration, ArrayList mutationProperties, float fitnessEffect) {
         long mutationID = ModelParameters.getMutationID();
-        LocusPosition locusPosition = getRandomFitnessLocus();
+        OnePair locusPosition = getRandomFitnessLocus();
         FitnessLocus fitnessLocus = (FitnessLocus) locusPosition.getFitnessLocus();
         fitnessLocus.addMutationID(mutationID);
         fitnessLocus.updateFitnessEffect(fitnessEffect);
@@ -130,9 +130,9 @@ public class Individual implements Cloneable{
         return (MutatorLocus) getLocus(position);
     }
 
-    private LocusPosition getRandomFitnessLocus() {
+    private OnePair getRandomFitnessLocus() {
         int position = lociPattern.getRandomFitnessPosition();
-        return new LocusPosition((FitnessLocus) getLocus(position), position);
+        return new OnePair((FitnessLocus) getLocus(position), position);
     }
 
     public void setFitnessLocus(int position) {
@@ -193,7 +193,7 @@ public class Individual implements Cloneable{
         return ((RecombinationLocus) getLocus(recombinationLocusPosition)).getStrength(); // refactor
     }
 
-    public IntegerPair getNMutations() {
+    public OnePair getNMutations() {
         int nDeleteriousMutations = 0;
         int nBeneficialMutations = 0;
 
@@ -204,7 +204,7 @@ public class Individual implements Cloneable{
                 nBeneficialMutations += locus.getNBeneficialMutations();
             }
         }
-        return new IntegerPair(nDeleteriousMutations, nBeneficialMutations);
+        return new OnePair(nDeleteriousMutations, nBeneficialMutations);
     }
 
 }
