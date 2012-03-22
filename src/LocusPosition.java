@@ -1,5 +1,5 @@
 /*
- @author bingjun at 1/25/12 Time: 1:48 PM
+ @author Bingjun Zhang
  */
 public class LocusPosition {
     private FitnessLocus fitnessLocus;
