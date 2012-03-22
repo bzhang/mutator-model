@@ -102,8 +102,8 @@ public class MutatorModel {
     private static String outputPopulationStat(int i, Population population) {
         float[] fitnessArray = population.getFitnessArray();
         int[] mutatorStrengthArray = population.getMutatorStrengthArray();
-        int[] nDeleMutArray = population.getNDeleMutArray();
-        int[] nBeneMutArray = population.getNBeneMutArray();
+        int[] nDeleMutArray = population.getNMutationsArray().getNDeleMutArray();
+        int[] nBeneMutArray = population.getNMutationsArray().getnBeneMutArray();
 
 
         return i + "\t" + Util.mean(fitnessArray)
