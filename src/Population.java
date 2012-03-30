@@ -113,16 +113,28 @@ public class Population {
 
     private IndividualPair getRandomIndividualPair() {
         float[] randomWeights = getFitnessArray();
-        WeightedRandomGenerator wrg = new WeightedRandomGenerator(randomWeights);
-        int indexA = wrg.nextInt();
-        int indexB = wrg.nextInt();
+        float[] totals = initTotals(randomWeights);
+        WeightedRandomGenerator wrg = new WeightedRandomGenerator();
+        int indexA = wrg.nextInt(totals);
+        int indexB = wrg.nextInt(totals);
         while (indexA == indexB) {
-            indexB = wrg.nextInt();
+            indexB = wrg.nextInt(totals);
         }
         Individual individualA = getIndividual(indexA);
         Individual individualB = getIndividual(indexB);
 
         return new IndividualPair(individualA, individualB);
+    }
+
+    private float[] initTotals(float[] weights) {
+        float[] totals = new float[weights.length];
+        float runningTotal = 0;
+        int i = 0;
+        for (float weight : weights) {
+            runningTotal += weight;
+            totals[i++] = runningTotal;
+        }
+        return totals;
     }
 
     private int getRandomMutatorStrength() {
