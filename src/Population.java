@@ -42,10 +42,12 @@ public class Population {
         int counter = 0;
         ArrayList<Object> mutationProperties = new ArrayList<Object>();
         String mutMapFileOutput;
+        float[] randomWeights = parent.getFitnessArray();
+        float[] totals = initTotals(randomWeights);
 
         while (getSize() < parent.getSize()) {
             int previousSize = getSize();
-            IndividualPair parentPair = parent.getRandomIndividualPair();
+            IndividualPair parentPair = parent.getRandomIndividualPair(totals);
             IndividualPair offspringPair = parentPair.reproduce();
             offspringPair.mutate(currentGeneration, mutationProperties);
             addIndividualPair(offspringPair, parent.getSize());
@@ -111,9 +113,7 @@ public class Population {
         }
     }
 
-    private IndividualPair getRandomIndividualPair() {
-        float[] randomWeights = getFitnessArray();
-        float[] totals = initTotals(randomWeights);
+    private IndividualPair getRandomIndividualPair(float[] totals) {
         WeightedRandomGenerator wrg = new WeightedRandomGenerator();
         int indexA = wrg.nextInt(totals);
         int indexB = wrg.nextInt(totals);
