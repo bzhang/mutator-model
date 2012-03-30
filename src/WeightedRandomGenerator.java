@@ -8,7 +8,8 @@ import java.util.Random;
 //Generated weighted random numbers according to the weights array.
 public class WeightedRandomGenerator {
 
-    private Random random = new Random(System.nanoTime());
+//    private Random random = new Random(System.nanoTime());
+    private float randomNumber;
     private float[] totals;
 
     public WeightedRandomGenerator(float[] weights) {
@@ -18,7 +19,7 @@ public class WeightedRandomGenerator {
 
     public int nextInt() {
         float sumOfWeights = totals[totals.length - 1];
-        float randomNumber = random.nextFloat() * sumOfWeights;
+        randomNumber = Rand.getFloat() * sumOfWeights;
         int index = Arrays.binarySearch(totals, randomNumber);
         index = (index >= 0) ? index : - index - 1;
         return index;
