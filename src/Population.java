@@ -86,21 +86,23 @@ public class Population {
         return mutatorStrengthArray;
     }
 
-    public int[] getNDeleMutArray() {
+    public OnePair getNMutationsArray() {
         int[] nDeleMutArray = new int[getSize()];
-        for (int i = 0; i < getSize(); i++) {
-            nDeleMutArray[i] = getIndividual(i).getNDeleMut();
-        }
-        return nDeleMutArray;
-    }
-
-    public int[] getNBeneMutArray() {
         int[] nBeneMutArray = new int[getSize()];
         for (int i = 0; i < getSize(); i++) {
-            nBeneMutArray[i] = getIndividual(i).getNBeneMut();
+            nDeleMutArray[i] = getIndividual(i).getNMutations().getNDeleteriousMutations();
+            nBeneMutArray[i] = getIndividual(i).getNMutations().getNBeneficialMutations();
         }
-        return nBeneMutArray;
+        return new OnePair(nDeleMutArray, nBeneMutArray);
     }
+
+//    public int[] getNBeneMutArray() {
+//        int[] nBeneMutArray = new int[getSize()];
+//        for (int i = 0; i < getSize(); i++) {
+//            nBeneMutArray[i] = getIndividual(i).getNBeneMut();
+//        }
+//        return nBeneMutArray;
+//    }
 
     private void addIndividualPair(IndividualPair offspringPair, int parentSize) {
         addIndividual(offspringPair.getIndividualA(), parentSize);

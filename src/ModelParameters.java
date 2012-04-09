@@ -10,7 +10,7 @@ public class ModelParameters {
     private static String propertiesFilename = "MutatorModel.properties";
     private static Properties properties = new Properties();
     private static boolean initialized = false;
-    private static long muationID = 0;
+    private static long mutationID = 0;
 
     public static void setPropertiesFileName(String filename) {
         propertiesFilename = filename;
@@ -78,7 +78,7 @@ public class ModelParameters {
     }
 
     public static long getMutationID() {
-        muationID++;
-        return muationID;
+        mutationID++;
+        return mutationID;
     }
 }
