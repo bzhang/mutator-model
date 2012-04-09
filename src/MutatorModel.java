@@ -80,6 +80,9 @@ public class MutatorModel {
                     FitnessLocus locus = (FitnessLocus) individual.getLocus(k);
                     mutationIDsArray = locus.getMutationIDsArray();
                     for (long mutationID : mutationIDsArray) {
+                        if (mutationID == 0) {
+                            continue;
+                        }
                         if (counterMap.containsKey(mutationID)) {
                             counterMap.put(mutationID, counterMap.get(mutationID) + 1);
                         } else {

@@ -7,7 +7,7 @@ public class FitnessLocus extends Locus {
     public static final int FITNESS_EFFECTS_INITIAL_SIZE = 3;
 
 //    private float[] fitnessEffects = new float[FITNESS_EFFECTS_INITIAL_SIZE];
-    private long[]   mutationIDs    = new long[FITNESS_EFFECTS_INITIAL_SIZE];
+    private long[]   mutationIDs = new long[FITNESS_EFFECTS_INITIAL_SIZE];
     private float currentFitness = 1f;
     private int   nMutations     = 0;
     private int   nDeleteriousMutations = 0;
