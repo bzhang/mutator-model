@@ -9,7 +9,7 @@ public class Population {
 
     private ArrayList<Individual> individuals;
     private LociPattern lociPattern;
-    private Random random = new Random(System.nanoTime());
+//    private Random random = new Random(System.nanoTime());
 
     public Population(int nIndividuals) {
         // Create the founder population
@@ -142,8 +142,8 @@ public class Population {
     private int getRandomMutatorStrength() {
         int strength = 1;
         // Generate mutator locus, strength ranging from [2, MUTATOR_STRENGTH_MAX]
-        if (random.nextFloat() < ModelParameters.getFloat("MUTATOR_RATIO")) {
-            strength = random.nextInt(ModelParameters.getInt("MUTATOR_STRENGTH_MAX") - 1) + 2;
+        if (Rand.getFloat() < ModelParameters.getFloat("MUTATOR_RATIO")) {
+            strength = Rand.getInt(ModelParameters.getInt("MUTATOR_STRENGTH_MAX") - 1) + 2;
         }
         return strength;
     }
@@ -151,8 +151,8 @@ public class Population {
     private float getRandomRecombinationStrength() {
         float strength = 0;
         // Generate recombination locus (sexual), strength ranging from (0.0, 1.0]
-        if (random.nextFloat() < ModelParameters.getFloat("RECOMBINATION_RATIO")) {
-            strength = random.nextFloat();
+        if (Rand.getFloat() < ModelParameters.getFloat("RECOMBINATION_RATIO")) {
+            strength = Rand.getFloat();
         }
         return strength;
     }
