@@ -9,7 +9,6 @@ public class Population {
 
     private ArrayList<Individual> individuals;
     private LociPattern lociPattern;
-//    private Random random = new Random(System.nanoTime());
 
     public Population(int nIndividuals) {
         // Create the founder population
@@ -42,8 +41,7 @@ public class Population {
         int counter = 0;
         ArrayList<Object> mutationProperties = new ArrayList<Object>();
         String mutMapFileOutput;
-        float[] randomWeights = parent.getFitnessArray();
-        float[] totals = initTotals(randomWeights);
+        float[] totals = initTotals(parent.getFitnessArray());
 
         while (getSize() < parent.getSize()) {
             int previousSize = getSize();
