@@ -78,7 +78,6 @@ public class ModelParameters {
     }
 
     public static long getMutationID() {
-        mutationID++;
-        return mutationID;
+        return ++mutationID;
     }
 }
