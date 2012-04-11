@@ -11,37 +11,37 @@ import java.util.Map;
 
 public class Util {
 
-    public static float sum(float[] array) {
-        float sum = 0;
-        for (float element : array) {
+    public static double sum(double[] array) {
+        double sum = 0;
+        for (double element : array) {
             sum += element;
         }
         return sum;
     }
 
-    public static float mean(float[] array) {
+    public static double mean(double[] array) {
         return sum(array) / array.length;
     }
 
-    public static float mean(int[] array) {
-        return mean(convertIntToFloat(array));
+    public static double mean(int[] array) {
+        return mean(convertIntToDouble(array));
 
     }
 
-    public static float standardDeviation(float[] array) {
+    public static float standardDeviation(double[] array) {
         float sumOfDiff = 0;
-        for (float element : array) {
+        for (double element : array) {
             sumOfDiff += Math.pow(element - mean(array), 2);
         }
         return (float) Math.sqrt(sumOfDiff / (array.length - 1));
     }
 
-    public static float standardDeviation(int[] array) {
-        return standardDeviation(convertIntToFloat(array));
+    public static double standardDeviation(int[] array) {
+        return standardDeviation(convertIntToDouble(array));
     }
 
-    private static float[] convertIntToFloat(int[] intArray) {
-        float[] floatArray = new float[intArray.length];
+    private static double[] convertIntToDouble(int[] intArray) {
+        double[] floatArray = new double[intArray.length];
         for (int i = 0; i < intArray.length; i++) {
             floatArray[i] = intArray[i];
         }
