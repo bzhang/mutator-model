@@ -4,7 +4,7 @@
 
 public class FitnessLocus extends Locus {
 
-    public static final int FITNESS_EFFECTS_INITIAL_SIZE = 3;
+    public static final int FITNESS_EFFECTS_INITIAL_SIZE = ModelParameters.getInt("FITNESS_EFFECTS_INITIAL_SIZE");
 
 //    private float[] fitnessEffects = new float[FITNESS_EFFECTS_INITIAL_SIZE];
     private long[]   mutationIDs = new long[FITNESS_EFFECTS_INITIAL_SIZE];
@@ -22,7 +22,6 @@ public class FitnessLocus extends Locus {
     }
 
     private void updateNMutations(double fitnessEffect) {
-        nMutations++;
         if (fitnessEffect > 1) {
             nBeneficialMutations++;
         } else if (fitnessEffect < 1) {
@@ -42,8 +41,10 @@ public class FitnessLocus extends Locus {
 
     public void addMutationID(long mutationID) {
         mutationIDs[nMutations] = mutationID;
+        nMutations++;
         if (nMutations == mutationIDs.length) {
-            resizeArray(mutationIDs);
+            mutationIDs = resizeArray(mutationIDs);
+            System.out.println("mutationIDs: " + mutationIDs.length);
         }
     }
 
@@ -54,11 +55,12 @@ public class FitnessLocus extends Locus {
 //            floatArray = newFloatArray;
 //    }
 
-    private void resizeArray(long[] longArray) {
-            System.out.println("FitnessLocus: resizing mutations array");
-            long[] newLongArray = new long[longArray.length + FITNESS_EFFECTS_INITIAL_SIZE];
-            System.arraycopy(longArray, 0, newLongArray, 0, longArray.length);
-            longArray = newLongArray;
+    private long[] resizeArray(long[] longArray) {
+        System.out.println("FitnessLocus: resizing mutations array");
+        long[] newLongArray = new long[longArray.length + FITNESS_EFFECTS_INITIAL_SIZE];
+        System.arraycopy(longArray, 0, newLongArray, 0, longArray.length);
+        longArray = newLongArray;
+        return longArray;
     }
 
     public Object clone() throws CloneNotSupportedException {
