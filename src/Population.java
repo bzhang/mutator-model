@@ -3,7 +3,6 @@
  */
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public class Population {
 
@@ -41,7 +40,7 @@ public class Population {
         int counter = 0;
         ArrayList<Object> mutationProperties = new ArrayList<Object>();
         String mutMapFileOutput;
-        float[] totals = initTotals(parent.getFitnessArray());
+        double[] totals = initTotals(parent.getFitnessArray());
 
         while (getSize() < parent.getSize()) {
             int previousSize = getSize();
@@ -62,8 +61,8 @@ public class Population {
         Util.writeFile(mutMapFilename, mutMapFileOutput);
     }
 
-    public float[] getFitnessArray() {
-        float[] fitnessArray = new float[getSize()];
+    public double[] getFitnessArray() {
+        double[] fitnessArray = new double[getSize()];
 
 //        Long timeB4IteratingAllIndividuals = System.currentTimeMillis();
         for (int i = 0; i < getSize(); i++) {
@@ -113,11 +112,12 @@ public class Population {
         }
     }
 
-    private IndividualPair getRandomIndividualPair(float[] totals) {
+    private IndividualPair getRandomIndividualPair(double[] totals) {
         WeightedRandomGenerator wrg = new WeightedRandomGenerator();
-        int indexA = wrg.nextInt(totals);
-        int indexB = wrg.nextInt(totals);
-        while (indexA == indexB) {
+        int indexA = 0;
+        int indexB = 0;
+        while (indexA == indexB || indexA == totals.length || indexB == totals.length) {
+            indexA = wrg.nextInt(totals);
             indexB = wrg.nextInt(totals);
         }
         Individual individualA = getIndividual(indexA);
@@ -126,11 +126,11 @@ public class Population {
         return new IndividualPair(individualA, individualB);
     }
 
-    private float[] initTotals(float[] weights) {
-        float[] totals = new float[weights.length];
+    private double[] initTotals(double[] weights) {
+        double[] totals = new double[weights.length];
         float runningTotal = 0;
         int i = 0;
-        for (float weight : weights) {
+        for (double weight : weights) {
             runningTotal += weight;
             totals[i++] = runningTotal;
         }
