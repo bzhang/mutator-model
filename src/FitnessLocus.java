@@ -15,13 +15,13 @@ public class FitnessLocus extends Locus {
 
     public FitnessLocus() {}
 
-    public void updateFitnessEffect(float fitnessEffect) {
+    public void updateFitnessEffect(double fitnessEffect) {
         currentFitness *= fitnessEffect;
         updateNMutations(fitnessEffect);
 
     }
 
-    private void updateNMutations(float fitnessEffect) {
+    private void updateNMutations(double fitnessEffect) {
         nMutations++;
         if (fitnessEffect > 1) {
             nBeneficialMutations++;

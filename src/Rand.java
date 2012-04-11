@@ -1,6 +1,5 @@
 import cern.jet.random.engine.DRand;
 import cern.jet.random.engine.RandomEngine;
-
 import java.util.Random;
 
 /**
