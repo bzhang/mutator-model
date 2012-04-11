@@ -60,7 +60,7 @@ public class ModelParameters {
     }
 
     public static String getDirectoryName() {
-        return "/project/worm/MutatorModel/MutMap"
+        return "/project/worm/MutatorModel/Expo"
                 + "_M" + getFloat("MUTATOR_RATIO")
                 + "_R" + getFloat("RECOMBINATION_RATIO")
                 + "_G" + getInt("N_GENERATIONS")
