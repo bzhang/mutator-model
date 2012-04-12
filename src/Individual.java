@@ -70,7 +70,7 @@ public class Individual implements Cloneable{
 
         for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
             double u = Rand.getFloat();
-            double fitnessEffect = ((-ModelParameters.getFloat("DEFAULT_DELETERIOUS_EFFECT")) * Math.log(1 - u));
+            double fitnessEffect = 1 - ((-ModelParameters.getFloat("DEFAULT_DELETERIOUS_EFFECT")) * Math.log(1 - u));
             updateMutationInformation(currentGeneration, mutationProperties, fitnessEffect);
         }
     }
@@ -82,7 +82,7 @@ public class Individual implements Cloneable{
 
         for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
             double u = Rand.getFloat();
-            double fitnessEffect = ((-ModelParameters.getFloat("DEFAULT_BENEFICIAL_EFFECT")) * Math.log(1 - u));
+            double fitnessEffect = 1 + ((-ModelParameters.getFloat("DEFAULT_BENEFICIAL_EFFECT")) * Math.log(1 - u));
             updateMutationInformation(currentGeneration, mutationProperties, fitnessEffect);
         }
     }
