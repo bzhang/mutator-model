@@ -4,13 +4,13 @@
 
 public class MutatorLocus extends Locus {
 
-    private int strength;
+    private double strength;
 
     public MutatorLocus(int strength) {
         this.strength = strength;
     }
 
-    public int getStrength() {
+    public double getStrength() {
         return strength;
     }
 

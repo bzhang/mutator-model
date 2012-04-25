@@ -75,8 +75,8 @@ public class Population {
         return fitnessArray;
     }
 
-    public int[] getMutatorStrengthArray() {
-        int[] mutatorStrengthArray = new int[getSize()];
+    public double[] getMutatorStrengthArray() {
+        double[] mutatorStrengthArray = new double[getSize()];
         for (int i = 0; i < getSize(); i++) {
             mutatorStrengthArray[i] = getIndividual(i).getMutatorStrength();
         }

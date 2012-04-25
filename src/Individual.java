@@ -75,6 +75,32 @@ public class Individual implements Cloneable{
         }
     }
 
+    public double mutate(int nDeleMutation, int nBeneMutation) {
+        double fitnessEffect = 1;
+        for (int i = 0; i < nDeleMutation; i++) {
+            double u = Rand.getFloat();
+            fitnessEffect *= 1 - ((-ModelParameters.getFloat("DEFAULT_DELETERIOUS_EFFECT")) * Math.log(1 - u));
+        }
+        for (int j = 0; j < nBeneMutation; j++) {
+            double u = Rand.getFloat();
+            fitnessEffect *= 1 + ((-ModelParameters.getFloat("DEFAULT_BENEFICIAL_EFFECT")) * Math.log(1 - u));
+        }
+        return (fitnessEffect);
+    }
+
+    public void mutateMutationRate(int nMutatorMutation, int nAntiMutMutation) {
+//        MutatorLocus locus = getRandomMutatorLocus();
+        int position = lociPattern.getRandomMutatorPosition();
+        MutatorLocus locus = (MutatorLocus) loci[position];
+        for (int i = 0; i < nMutatorMutation; i++) {
+            locus.increaseStrength();
+        }
+        for (int j = 0; j < nAntiMutMutation; j++) {
+            locus.decreaseStrength();
+        }
+    }
+
+
     private void beneficialMutate(int currentGeneration, ArrayList mutationProperties) {
         double mutationRate = ModelParameters.getDouble("BASE_BENEFICIAL_MUTATION_RATE") * getMutatorStrength();
         Poisson poisson = new Poisson(mutationRate, Rand.getEngine());
@@ -183,7 +209,7 @@ public class Individual implements Cloneable{
         return fitness;
     }
 
-    public int getMutatorStrength() {
+    public double getMutatorStrength() {
         // TODO: multiple all mutator strength values
         int mutatorLocusPosition = lociPattern.getMutatorLociPositions()[0];
         return ((MutatorLocus) getLocus(mutatorLocusPosition)).getStrength(); // refactor
