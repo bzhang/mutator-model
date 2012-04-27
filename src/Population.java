@@ -33,20 +33,20 @@ public class Population {
         }
     }
 
-    public Population(Population parent, int currentGeneration, String mutMapFilename) {
+    public Population(Population parent, int currentGeneration) {
         // Create the next generation
         lociPattern = parent.lociPattern;
         individuals = new ArrayList<Individual>();
         int counter = 0;
-        ArrayList<Object> mutationProperties = new ArrayList<Object>();
-        String mutMapFileOutput;
+//        ArrayList<Object> mutationProperties = new ArrayList<Object>();
+//        String mutMapFileOutput;
         double[] totals = initTotals(parent.getFitnessArray());
 
         while (getSize() < parent.getSize()) {
             int previousSize = getSize();
             IndividualPair parentPair = parent.getRandomIndividualPair(totals);
             IndividualPair offspringPair = parentPair.reproduce();
-            offspringPair.mutate(currentGeneration, mutationProperties);
+            offspringPair.mutate(currentGeneration);
             addIndividualPair(offspringPair, parent.getSize());
             if (getSize() - previousSize == 0) {
                 counter++;
@@ -57,8 +57,8 @@ public class Population {
             }
         }
 
-        mutMapFileOutput = Util.outputMutMap(mutationProperties);
-        Util.writeFile(mutMapFilename, mutMapFileOutput);
+//        mutMapFileOutput = Util.outputMutMap(mutationProperties);
+//        Util.writeFile(mutMapFilename, mutMapFileOutput);
     }
 
     public double[] getFitnessArray() {

@@ -21,9 +21,9 @@ public class IndividualPair {
         return individualB;
     }
 
-    public void mutate(int currentGeneration, ArrayList mutationProperties) {
-        getIndividualA().mutate(currentGeneration, mutationProperties);
-        getIndividualB().mutate(currentGeneration, mutationProperties);
+    public void mutate(int currentGeneration) {
+        getIndividualA().mutate(currentGeneration);
+        getIndividualB().mutate(currentGeneration);
     }
 
     public IndividualPair reproduce() {
