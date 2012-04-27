@@ -67,7 +67,7 @@ public class MutatorModel {
     }
 
     private static String outputMutStructure(int i, Population population) {
-        String output = "";
+        String output = i + "\t";
         Individual individual;
         long[] mutationIDsArray;
         Map<Long, Integer> counterMap = new HashMap<Long, Integer>();
@@ -95,11 +95,10 @@ public class MutatorModel {
 
         }
 
-        output += i + "\t";
         for (Map.Entry<Long, Integer> longIntegerEntry : counterMap.entrySet()) {
-            output += longIntegerEntry.getKey() + "\t" + longIntegerEntry.getValue() +"\n";
+            output += longIntegerEntry.getKey() + "\t" + longIntegerEntry.getValue() +"\t";
         }
-
+        output += "\n";
         return output;
     }
 
