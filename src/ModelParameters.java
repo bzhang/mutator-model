@@ -60,25 +60,28 @@ public class ModelParameters {
     }
 
     public static String getDirectoryName() {
+        String path = getProperty("OUTPUT_PATH");
 //        return "/project/worm/MutatorModel/Expo"
-        return "out/Expo"
+        return path + "/Expo"
                 + "_M" + getFloat("MUTATOR_RATIO")
                 + "_R" + getFloat("RECOMBINATION_RATIO")
                 + "_G" + getInt("N_GENERATIONS")
                 + "_N" + getInt("POPULATION_SIZE")
                 + "_BeneMR" + getDouble("BASE_BENEFICIAL_MUTATION_RATE")
                 + "_DeleMR" + getDouble("BASE_DELETERIOUS_MUTATION_RATE")
-                + "_BeneE"  + getFloat("DEFAULT_BENEFICIAL_EFFECT")
-                + "_DeleE"  + getFloat("DEFAULT_DELETERIOUS_EFFECT")
+                + "_BeneE" + getFloat("DEFAULT_BENEFICIAL_EFFECT")
+                + "_DeleE" + getFloat("DEFAULT_DELETERIOUS_EFFECT")
                 + "_MutStr" + getInt("MUTATOR_STRENGTH_MAX")
                 + "_InitMutaMR" + getDouble("INITIAL_MUTATOR_MUTATION_RATE")
                 + "_EvolMutaMR" + getDouble("EVOLVING_MUTATOR_MUTATION_RATE")
-                + "_StartEvol"  + getInt("START_EVOLVING_GENERATION")
+                + "_StartEvol" + getInt("START_EVOLVING_GENERATION")
                 + "_Prob2M" + getDouble("PROBABILITY_TO_MUTATOR")
-                + "_MutaE"  + getFloat("MUTATOR_MUTATION_EFFECT");
+                + "_MutaE" + getFloat("MUTATOR_MUTATION_EFFECT");
     }
 
     public static long getMutationID() {
         return ++mutationID;
     }
+
+
 }
