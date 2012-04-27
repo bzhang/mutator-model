@@ -95,8 +95,9 @@ public class MutatorModel {
 
         }
 
+        output += i + "\t";
         for (Map.Entry<Long, Integer> longIntegerEntry : counterMap.entrySet()) {
-            output += i + "\t" + longIntegerEntry.getKey() + "\t" + longIntegerEntry.getValue() +"\n";
+            output += longIntegerEntry.getKey() + "\t" + longIntegerEntry.getValue() +"\n";
         }
 
         return output;
