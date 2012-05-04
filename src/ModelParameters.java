@@ -72,10 +72,8 @@ public class ModelParameters {
                 + "_BeneE" + getFloat("DEFAULT_BENEFICIAL_EFFECT")
                 + "_DeleE" + getFloat("DEFAULT_DELETERIOUS_EFFECT")
                 + "_MutStr" + getInt("MUTATOR_STRENGTH_MAX")
-                + "_InitMutaMR" + getDouble("INITIAL_MUTATOR_MUTATION_RATE")
-                + "_EvolMutaMR" + getDouble("EVOLVING_MUTATOR_MUTATION_RATE")
-                + "_StartEvol" + getInt("START_EVOLVING_GENERATION")
-                + "_Prob2M" + getDouble("PROBABILITY_TO_MUTATOR")
+                + "_MutMR" + getDouble("EVOLVING_MUTATOR_MUTATION_RATE")
+                + "_AntiMutMR" + getDouble("EVOLVING_ANTIMUTATOR_MUTATION_RATE")
                 + "_MutaE" + getFloat("MUTATOR_MUTATION_EFFECT");
     }
 
