@@ -42,6 +42,7 @@ public class Individual implements Cloneable{
             deleteriousMutate(currentGeneration, mutationProperties);
             beneficialMutate(currentGeneration, mutationProperties);
             mutatorMutate(currentGeneration);
+            antimutatorMutate(currentGeneration);
         }
         if (getFitness() <= 0) {
             die();
