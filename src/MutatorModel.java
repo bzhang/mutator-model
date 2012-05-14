@@ -17,7 +17,8 @@ public class MutatorModel {
         ModelParameters.setPropertiesFileName(propertiesFileName);
 
         for (int nExperiment = 0; nExperiment < ModelParameters.getInt("N_EXPERIMENT"); nExperiment++) {
-            String resultFileNamePrefix = prepareOutputDirectory();
+            String resultFileNamePrefix = Util.prepareOutputDirectory();
+            String poissonObsFileName = resultFileNamePrefix + "_Poisson.txt";
             String popFilename = resultFileNamePrefix + "_Pop.txt";
             String mutMapFilename = resultFileNamePrefix + "_MutMap.txt";
             String mutStructureFilename = resultFileNamePrefix + "_MutStructure.txt";
@@ -121,24 +122,5 @@ public class MutatorModel {
     }
 
 
-    private static String prepareOutputDirectory() {
-        String directoryName = ModelParameters.getDirectoryName();
-        File outputDir = new File(directoryName);
-        if (!outputDir.exists() && outputDir.mkdir()) {
-            System.out.println("Directory: " + directoryName + " created.");
-        }
-
-        File propertiesFile  = new File(ModelParameters.getPropertiesFilename());
-        File destinationFile = new File(directoryName + "/" + ModelParameters.getPropertiesFilename());
-        if (!destinationFile.exists()) {
-            try {
-                FileUtils.copyFileToDirectory(propertiesFile, outputDir, false);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return directoryName + "/" + System.nanoTime();
-    }
 
 }

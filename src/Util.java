@@ -1,5 +1,9 @@
+import org.apache.commons.io.FileUtils;
+
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -77,5 +81,27 @@ public class Util {
         return output;
     }
 
+    public static String prepareOutputDirectory() {
+        String directoryName = ModelParameters.getDirectoryName();
+        File outputDir = new File(directoryName);
+        if (!outputDir.exists() && outputDir.mkdir()) {
+            System.out.println("Directory: " + directoryName + " created.");
+        }
 
+        File propertiesFile  = new File(ModelParameters.getPropertiesFilename());
+        File destinationFile = new File(directoryName + "/" + ModelParameters.getPropertiesFilename());
+        if (!destinationFile.exists()) {
+            try {
+                FileUtils.copyFileToDirectory(propertiesFile, outputDir, false);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return directoryName + "/" + System.nanoTime();
+    }
+
+    public static String getResultFileNamePrefix() {
+        return prepareOutputDirectory();
+    }
 }
