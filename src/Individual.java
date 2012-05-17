@@ -137,7 +137,7 @@ public class Individual implements Cloneable{
 //        Poisson poisson = new Poisson(mutationRate, Rand.getEngine());
 //        int poissonObs = poisson.nextInt();
         int poissonObs = Util.getPoisson(mutationRate);
-        System.out.println(poissonObs);
+//        System.out.println(poissonObs);
         for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
             MutatorLocus locus = getRandomMutatorLocus();
             locus.increaseStrength();
