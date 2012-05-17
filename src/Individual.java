@@ -66,9 +66,9 @@ public class Individual implements Cloneable{
 
     private void deleteriousMutate() {
         double mutationRate = ModelParameters.getDouble("BASE_DELETERIOUS_MUTATION_RATE") * getMutatorStrength();
-        Poisson poisson = new Poisson(mutationRate, Rand.getEngine());
-        int poissonObs = poisson.nextInt();
-
+//        Poisson poisson = new Poisson(mutationRate, Rand.getEngine());
+//        int poissonObs = poisson.nextInt();
+        int poissonObs = Util.getPoisson(mutationRate);
         for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
             double u = Rand.getFloat();
             double fitnessEffect = 1 - ((-ModelParameters.getFloat("DEFAULT_DELETERIOUS_EFFECT")) * Math.log(1 - u));
@@ -78,9 +78,9 @@ public class Individual implements Cloneable{
 
     private void beneficialMutate() {
         double mutationRate = ModelParameters.getDouble("BASE_BENEFICIAL_MUTATION_RATE") * getMutatorStrength();
-        Poisson poisson = new Poisson(mutationRate, Rand.getEngine());
-        int poissonObs = poisson.nextInt();
-
+//        Poisson poisson = new Poisson(mutationRate, Rand.getEngine());
+//        int poissonObs = poisson.nextInt();
+        int poissonObs = Util.getPoisson(mutationRate);
         for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
             double u = Rand.getFloat();
             double fitnessEffect = 1 + ((-ModelParameters.getFloat("DEFAULT_BENEFICIAL_EFFECT")) * Math.log(1 - u));
@@ -154,9 +154,10 @@ public class Individual implements Cloneable{
             mutationRate = ModelParameters.getDouble("EVOLVING_MUTATOR_MUTATION_RATE") * getMutatorStrength();
         }
 
-        Poisson poisson = new Poisson(mutationRate, Rand.getEngine());
-        int poissonObs = poisson.nextInt();
-        System.out.println(poissonObs);
+//        Poisson poisson = new Poisson(mutationRate, Rand.getEngine());
+//        int poissonObs = poisson.nextInt();
+        int poissonObs = Util.getPoisson(mutationRate);
+//        System.out.println(poissonObs);
         for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
             MutatorLocus locus = getRandomMutatorLocus();
             locus.increaseStrength();
@@ -172,8 +173,9 @@ public class Individual implements Cloneable{
             mutationRate = ModelParameters.getDouble("EVOLVING_ANTIMUTATOR_MUTATION_RATE") * getMutatorStrength();
         }
 
-        Poisson poisson = new Poisson(mutationRate, Rand.getEngine());
-        int poissonObs = poisson.nextInt();
+//        Poisson poisson = new Poisson(mutationRate, Rand.getEngine());
+//        int poissonObs = poisson.nextInt();
+        int poissonObs = Util.getPoisson(mutationRate);
         for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
             MutatorLocus locus = getRandomMutatorLocus();
             locus.decreaseStrength();
@@ -202,7 +204,7 @@ public class Individual implements Cloneable{
 //        setFitnessLocus(position, ModelParameters.getFloat("BASE_FITNESS_EFFECT"));
 //    }
 
-    public void setMutatorLocus(int position, int strength) {
+    public void setMutatorLocus(int position, double strength) {
         MutatorLocus mutatorLocus = new MutatorLocus(strength);
         setLocus(position, mutatorLocus);
     }

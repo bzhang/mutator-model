@@ -18,7 +18,7 @@ public class MutatorModel {
 
         for (int nExperiment = 0; nExperiment < ModelParameters.getInt("N_EXPERIMENT"); nExperiment++) {
             String resultFileNamePrefix = Util.prepareOutputDirectory();
-            String poissonObsFileName = resultFileNamePrefix + "_Poisson.txt";
+//            String poissonObsFileName = resultFileNamePrefix + "_Poisson.txt";
             String popFilename = resultFileNamePrefix + "_Pop.txt";
 //            String mutMapFilename = resultFileNamePrefix + "_MutMap.txt";
 //            String mutStructureFilename = resultFileNamePrefix + "_MutStructure.txt";
