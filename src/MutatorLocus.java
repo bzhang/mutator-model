@@ -6,7 +6,7 @@ public class MutatorLocus extends Locus {
 
     private double strength;
 
-    public MutatorLocus(int strength) {
+    public MutatorLocus(double strength) {
         this.strength = strength;
     }
 

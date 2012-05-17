@@ -184,7 +184,7 @@ public class Individual implements Cloneable{
 //        setFitnessLocus(position, ModelParameters.getFloat("BASE_FITNESS_EFFECT"));
 //    }
 
-    public void setMutatorLocus(int position, int strength) {
+    public void setMutatorLocus(int position, double strength) {
         MutatorLocus mutatorLocus = new MutatorLocus(strength);
         setLocus(position, mutatorLocus);
     }
