@@ -8,11 +8,26 @@ public class UnitTest {
         String propertiesFileName = args.length > 0 ? args[0] : "MutatorModel.properties";
         ModelParameters.setPropertiesFileName(propertiesFileName);
 
+        float u = Rand.getFloat();
+        double u2 = Rand.getDouble();
+
+        System.out.println(u + "," + u2);
 //        testPoisson();
-        testExponential();
+//        testMutatorEffect();
+//        testFitnessEffect();
     }
 
-    private static void testExponential() {
+    private static void testFitnessEffect() {
+        int rep = 100000;
+        double[] exponentialObs = new double[rep];
+        for (int i = 0; i < rep; i++) {
+            double u = Rand.getDouble();
+            exponentialObs[i] = (-0.03 * Math.log(1 - u));
+        }
+        System.out.println(Arrays.toString(exponentialObs));
+    }
+
+    private static void testMutatorEffect() {
         int rep = 100000;
         double[] exponentialObs = new double[rep];
         for (int i = 0; i < rep; i++) {
