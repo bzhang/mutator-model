@@ -70,7 +70,7 @@ public class Individual implements Cloneable{
 //        int poissonObs = poisson.nextInt();
         int poissonObs = Util.getPoisson(mutationRate);
         for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
-            double u = Rand.getFloat();
+            double u = Rand.getDouble();
             double fitnessEffect = 1 - ((-ModelParameters.getFloat("DEFAULT_DELETERIOUS_EFFECT")) * Math.log(1 - u));
             updateMutationInformation(fitnessEffect);
         }
@@ -82,7 +82,7 @@ public class Individual implements Cloneable{
 //        int poissonObs = poisson.nextInt();
         int poissonObs = Util.getPoisson(mutationRate);
         for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
-            double u = Rand.getFloat();
+            double u = Rand.getDouble();
             double fitnessEffect = 1 + ((-ModelParameters.getFloat("DEFAULT_BENEFICIAL_EFFECT")) * Math.log(1 - u));
             updateMutationInformation(fitnessEffect);
         }
@@ -91,11 +91,11 @@ public class Individual implements Cloneable{
     public double mutate(int nDeleMutation, int nBeneMutation) {
         double fitnessEffect = 1;
         for (int i = 0; i < nDeleMutation; i++) {
-            double u = Rand.getFloat();
+            double u = Rand.getDouble();
             fitnessEffect *= 1 - ((-ModelParameters.getFloat("DEFAULT_DELETERIOUS_EFFECT")) * Math.log(1 - u));
         }
         for (int j = 0; j < nBeneMutation; j++) {
-            double u = Rand.getFloat();
+            double u = Rand.getDouble();
             fitnessEffect *= 1 + ((-ModelParameters.getFloat("DEFAULT_BENEFICIAL_EFFECT")) * Math.log(1 - u));
         }
         return (fitnessEffect);
