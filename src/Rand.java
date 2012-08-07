@@ -8,7 +8,7 @@ import java.util.Random;
 
 public class Rand {
 
-    private static Random random = new Random(System.nanoTime());
+    private static Random random = new Random();
     private static RandomEngine engine = new DRand();
 
     public static int getInt(int i) {
