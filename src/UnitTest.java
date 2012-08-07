@@ -8,13 +8,13 @@ public class UnitTest {
         String propertiesFileName = args.length > 0 ? args[0] : "MutatorModel.properties";
         ModelParameters.setPropertiesFileName(propertiesFileName);
 
-        float u = Rand.getFloat();
-        double u2 = Rand.getDouble();
+//        float u = Rand.getFloat();
+//        double u2 = Rand.getDouble();
+//        System.out.println(u + "," + u2);
 
-        System.out.println(u + "," + u2);
 //        testPoisson();
 //        testMutatorEffect();
-//        testFitnessEffect();
+        testFitnessEffect();
     }
 
     private static void testFitnessEffect() {
