@@ -24,7 +24,7 @@ public class MutatorLocus extends Locus {
     }
 
     public void decreaseStrength() {
-        this.strength *= Math.pow(Rand.getDouble(), ModelParameters.getFloat("MUTATOR_MUTATION_EFFECT"));
+        this.strength *= Math.pow(Rand.getDouble(), ModelParameters.getFloat("ANTIMUTATOR_MUTATION_EFFECT"));
     }
 }
 
