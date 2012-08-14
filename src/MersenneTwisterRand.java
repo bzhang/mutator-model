@@ -5,13 +5,19 @@
 import org.apache.commons.math.random.MersenneTwister;
 
 public class MersenneTwisterRand {
-    public MersenneTwisterRand() {
-        MersenneTwister mt = new MersenneTwister();
-        int rep = 100;
-        for (int i = 0; i < rep; i++){
-            double randDouble = mt.nextDouble();
-            System.out.println(randDouble);
-        }
+    private static MersenneTwister mt = new MersenneTwister();
+
+    public static int getInt(int i) {
+        return mt.nextInt(i);
     }
+
+    public static float getFloat() {
+        return mt.nextFloat();
+    }
+
+    public static double getDouble() {
+        return mt.nextDouble();
+    }
+
 
 }
