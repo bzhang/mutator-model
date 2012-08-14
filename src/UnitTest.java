@@ -12,10 +12,21 @@ public class UnitTest {
 //        double u2 = Rand.getDouble();
 //        System.out.println(u + "," + u2);
 
-        testWeightedRandomGenerator();
+//        testWeightedRandomGenerator();
 //        testPoisson();
 //        testMutatorEffect();
 //        testFitnessEffect();
+        testMersenneTwister();
+
+
+    }
+
+    private static void testMersenneTwister() {
+        int rep = 10;
+        for (int i = 0; i < rep; i++) {
+            double u = MersenneTwisterRand.getDouble();
+            System.out.println(u);
+        }
     }
 
     private static void testWeightedRandomGenerator() {
