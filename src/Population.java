@@ -50,6 +50,7 @@ public class Population {
             addIndividualPair(offspringPair, parent.getSize());
             if (getSize() - previousSize == 0) {
                 counter++;
+                System.err.println("Parent -> offspring loop no." + counter);
                 if (counter == ModelParameters.getInt("LOOP_LIMIT")) {
                     System.err.println("Parent -> offspring loop reach the limit!");
                     System.exit(0);
