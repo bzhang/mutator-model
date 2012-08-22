@@ -152,17 +152,15 @@ public class Individual implements Cloneable{
 
         if (currentGeneration >= startingEvolvingGeneration) {
             mutationRate = ModelParameters.getDouble("EVOLVING_MUTATOR_MUTATION_RATE") * getMutatorStrength();
-        }
-
 //        Poisson poisson = new Poisson(mutationRate, Rand.getEngine());
 //        int poissonObs = poisson.nextInt();
-        int poissonObs = Util.getPoisson(mutationRate);
+            int poissonObs = Util.getPoisson(mutationRate);
 //        System.out.println(poissonObs);
-        for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
-            MutatorLocus locus = getRandomMutatorLocus();
-            locus.increaseStrength();
+            for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
+                MutatorLocus locus = getRandomMutatorLocus();
+                locus.increaseStrength();
+            }
         }
-
     }
 
     private void antimutatorMutate(int currentGeneration) {
@@ -171,16 +169,14 @@ public class Individual implements Cloneable{
 
         if (currentGeneration >= startingEvolvingGeneration) {
             mutationRate = ModelParameters.getDouble("EVOLVING_ANTIMUTATOR_MUTATION_RATE") * getMutatorStrength();
-        }
-
 //        Poisson poisson = new Poisson(mutationRate, Rand.getEngine());
 //        int poissonObs = poisson.nextInt();
-        int poissonObs = Util.getPoisson(mutationRate);
-        for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
-            MutatorLocus locus = getRandomMutatorLocus();
-            locus.decreaseStrength();
+            int poissonObs = Util.getPoisson(mutationRate);
+            for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
+                MutatorLocus locus = getRandomMutatorLocus();
+                locus.decreaseStrength();
+            }
         }
-
     }
 
 
