@@ -62,7 +62,7 @@ public class ModelParameters {
     public static String getDirectoryName() {
         String path = getProperty("OUTPUT_PATH");
 //        return "/project/worm/MutatorModel/Expo"
-        return path + "/Core_Expo"
+        return path + "/Core"
                 + "_M" + getFloat("MUTATOR_RATIO")
                 + "_R" + getFloat("RECOMBINATION_RATIO")
                 + "_G" + getInt("N_GENERATIONS")
@@ -74,7 +74,8 @@ public class ModelParameters {
                 + "_MutStr" + getInt("MUTATOR_STRENGTH_MAX")
                 + "_MutMR" + getDouble("EVOLVING_MUTATOR_MUTATION_RATE")
                 + "_AntiMutMR" + getDouble("EVOLVING_ANTIMUTATOR_MUTATION_RATE")
-                + "_MutaE" + getFloat("MUTATOR_MUTATION_EFFECT");
+                + "_MutaE" + getFloat("MUTATOR_MUTATION_EFFECT")
+                + "_EvlFrom" + getInt("START_EVOLVING_GENERATION");
     }
 
     public static long getMutationID() {
