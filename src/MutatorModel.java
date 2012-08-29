@@ -39,24 +39,24 @@ public class MutatorModel {
 
             System.out.println("Founder population created.");
 
-            int reminderFounder = (int) ((System.currentTimeMillis() - start) % (24L * 3600 * 1000));
-            Float secondsElapsedFounder = (float) reminderFounder / 1000;
-            System.out.println("Seconds elapsed for founder pop = " + secondsElapsedFounder);
+//            int reminderFounder = (int) ((System.currentTimeMillis() - start) % (24L * 3600 * 1000));
+//            Float secondsElapsedFounder = (float) reminderFounder / 1000;
+//            System.out.println("Seconds elapsed for founder pop = " + secondsElapsedFounder);
 
 
             for (int i = 2; i <= ModelParameters.getInt("N_GENERATIONS"); i++) {
                 // Create the next generation
-                Long genStart = System.currentTimeMillis();
+//                Long genStart = System.currentTimeMillis();
                 population = new Population(population, i);
                 popFileOutput = outputPopulationStat(i, population);
                 Util.writeFile(popFilename, popFileOutput);
 //                mutStructureFileOutput = outputMutStructure(i, population);
 //                Util.writeFile(mutStructureFilename, mutStructureFileOutput);
-                System.out.println("Generation " + i);
+//                System.out.println("Generation " + i);
 
-                int reminderGen = (int) ((System.currentTimeMillis() - genStart) % (24L * 3600 * 1000));
-                Float secondsElapsedGen = (float) reminderGen / 1000;
-                System.out.println("Seconds elapsed = " + secondsElapsedGen);
+//                int reminderGen = (int) ((System.currentTimeMillis() - genStart) % (24L * 3600 * 1000));
+//                Float secondsElapsedGen = (float) reminderGen / 1000;
+//                System.out.println("Seconds elapsed = " + secondsElapsedGen);
 
             }
         }
