@@ -1,5 +1,5 @@
 .idea/misc.xml
-src/UnitTest.java.orig
+src/*.orig
 .Rhistory
 out/
 MutatorModel.iml
