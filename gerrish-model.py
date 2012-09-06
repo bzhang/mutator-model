@@ -94,53 +94,67 @@ class Population(object):
     Define population as an object consisting of individuals
     """
 
-    def __init__(self, pop_size, base_mut_rate, f_deleterious, f_beneficial, f_mutator, f_antimutator, f_lethal, M_deleterious, M_beneficial, M_mutator, M_antimutator):
+    def __init__(self, init_pop_size, base_mut_rate, f_deleterious, f_beneficial, f_mutator, f_antimutator, f_lethal, M_deleterious, M_beneficial, M_mutator, M_antimutator):
         self.population = []
-        for i in range(pop_size):
+        for i in range(2 * init_pop_size):
             self.population.append(Individual(base_mut_rate, f_deleterious, f_beneficial, f_mutator, f_antimutator, f_lethal, M_deleterious, M_beneficial, M_mutator, M_antimutator))
-        self.pop_size = pop_size
+        self.get_pop_size()
+
+    def get_pop_size(self):
+        self.pop_size = len(self.population)
 
     def get_pop_fitness(self):
+        self.get_pop_size()
         self.w = np.zeros(self.pop_size)
         for i in range(self.pop_size):
             self.w[i] = self.population[i].fitness
 
     def get_pop_mut_rate(self):
+        self.get_pop_size()
         self.mu = np.zeros(self.pop_size)
         for i in range(self.pop_size):
             self.mu[i] = self.population[i].mut_rate
 
     def get_deleterious(self):
+        self.get_pop_size()
         self.n_deleterious = np.zeros(self.pop_size)
         for i in range(self.pop_size):
             self.n_deleterious[i] = self.population[i].n_deleterious
 
 
     def get_beneficial(self):
+        self.get_pop_size()
         self.n_beneficial = np.zeros(self.pop_size)
         for i in range(self.pop_size):
             self.n_beneficial[i] = self.population[i].n_beneficial
 
     def get_mutator(self):
+        self.get_pop_size()
         self.n_mutator = np.zeros(self.pop_size)
         for i in range(self.pop_size):
             self.n_mutator[i] = self.population[i].n_mutator
 
     def get_antimutator(self):
+        self.get_pop_size()
         self.n_antimutator = np.zeros(self.pop_size)
         for i in range(self.pop_size):
             self.n_antimutator[i] = self.population[i].n_antimutator
 
-    def get_next_generation(self):
+    def get_next_generation(self, nudging_factor, init_pop_size):
         next_generation = copy.deepcopy(self)
         next_generation.population = []
+        self.get_pop_size()
         self.get_pop_fitness()
-        cum_fitness = np.cumsum(self.w)
-        rand_array = np.random.random_sample(self.pop_size)
-        mult_rand_array = np.multiply(rand_array, cum_fitness[self.pop_size - 1])
-        indices = np.searchsorted(cum_fitness, mult_rand_array)
         for i in range(self.pop_size):
-            next_generation.population.append(self.population[indices[i]].generate_offspring())
+#            print i, self.w.mean(), nudging_factor, init_pop_size, self.pop_size
+            mean_offspring = (self.w[i] / self.w.mean()) * (1 + nudging_factor * (init_pop_size - self.pop_size) / init_pop_size)
+#            print mean_offspring
+            n_offspring = np.random.poisson(mean_offspring, 1)
+            if len(next_generation.population) <= 2 * init_pop_size:
+                for j in range(n_offspring):
+                    next_generation.population.append(self.population[i].generate_offspring())
+            else:
+                break
         return next_generation
 
     def get_stats(self):
@@ -155,11 +169,12 @@ class Population(object):
                       "mean_deleterious": self.n_deleterious.mean(), "var_deleterious": self.n_deleterious.var(), 
                       "mean_beneficial" : self.n_beneficial.mean(), "var_beneficial" : self.n_beneficial.var(), 
                       "mean_mutator"    : self.n_mutator.mean(), "var_mutator"    : self.n_mutator.var(), 
-                      "mean_antimutator": self.n_antimutator.mean(), "var_antimutator": self.n_antimutator.var()}
+                      "mean_antimutator": self.n_antimutator.mean(), "var_antimutator": self.n_antimutator.var(),
+                      "pop_size": self.pop_size}
 
 # <codecell>
 
-@staticmethod    
+@staticmethod
 def get_intervals(x):
     y = x / sum(x)
     intervals = {}
@@ -183,7 +198,8 @@ def write_data_to_file(population, file, gen):
                str(population.stats["var_deleterious"])  + "\t" +
                str(population.stats["var_beneficial"])   + "\t" +
                str(population.stats["var_mutator"])      + "\t" +
-               str(population.stats["var_antimutator"])  + "\n")
+               str(population.stats["var_antimutator"])  + "\t" +
+               str(population.stats["pop_size"])         + "\n")
 
 def write_title_to_file(file):
     file.write("generation"       + "\t" +
@@ -198,14 +214,15 @@ def write_title_to_file(file):
                "var_deleterious"  + "\t" +
                "var_beneficial"   + "\t" +
                "var_mutator"      + "\t" +
-               "var_antimutator"  + "\n")
+               "var_antimutator"  + "\t" +
+               "pop_size"         + "\n")
 
 
 class Evolution(object):
     """
     This object manipulates the object population to simulate over generations.
     """
-    def __init__(self, population, n_generations, iteration, period = 1, verbose = False, name = "simulation"):
+    def __init__(self, nudging_factor, init_pop_size, population, n_generations, iteration, period = 1, verbose = False, name = "simulation"):
         gen = 0
         population.get_stats()
         self.curr_population = population
@@ -213,14 +230,14 @@ class Evolution(object):
         write_title_to_file(file)
         write_data_to_file(population, file, gen)
         for i in range(n_generations):
-            next_generation = self.curr_population.get_next_generation()
+            next_generation = self.curr_population.get_next_generation(nudging_factor, init_pop_size)
             self.curr_population = next_generation
             gen += 1
             if gen % period == 0:
                 next_generation.get_stats()
                 write_data_to_file(next_generation, file, gen)
                 if verbose:
-                    print gen
+                    print "Current generation: ", gen
         file.close()
 
 
@@ -228,7 +245,8 @@ class Evolution(object):
 # Type "python gerrish.sh -h" under command line for usage
 
 parser = argparse.ArgumentParser(description="Wright-Fisher model for evolution of mutation rates in asexual populations")
-parser.add_argument("--pop_size", dest="pop_size", help="population size, default = 1000", type=int, default="1000")
+parser.add_argument("--init_pop_size", dest="init_pop_size", help="population size, default = 1000", type=int, default="1000")
+parser.add_argument("--nudging", dest="nudging", help="nudging factor to keep population size approximately constant, default = 0.3", type=float, default="0.3")
 parser.add_argument("--mu", dest="mu", help="base mutation rate, default = 0.1", type=float, default="0.1")
 parser.add_argument("--fd", dest="fd", help="fractions of deleterious mutations, default = 0.5", type=float, default="0.5")
 parser.add_argument("--fb", dest="fb", help="fractions of beneficial mutations, default = 3e-4", type=float, default="3e-4")
@@ -239,14 +257,14 @@ parser.add_argument("--md", dest="md", help="the mean of deleterious mutation fi
 parser.add_argument("--mb", dest="mb", help="the mean of beneficial mutation fitness effects, default = 0.03", type=float, default="0.03")
 parser.add_argument("--mm", dest="mm", help="the mean of mutators' effects on mutation rates, default = 0.03", type=float, default="0.03")
 parser.add_argument("--ma", dest="ma", help="the mean of antimutators' effects on mutation rates, default = 0.03", type=float, default="0.03")
-parser.add_argument("--gen", dest="n_gen", help="number of generations to evolve, default = 400,000", type=int, default="400000")
-parser.add_argument("--rep", dest="replicate", help="replicate number, default = 1", type=int, default="1")
+parser.add_argument("--gen", dest="n_gen", help="number of generations to evolve, default = 60,000", type=int, default="60000")
+parser.add_argument("--rep", dest="replicate", help="replicate number, default = 1", type=int, default="2")
 parser.add_argument("--period", dest="period", help="period to measure, default = 1", type=int, default="1")
 parser.add_argument("--verbose", dest="verbose", help="print out current generation if present", action="store_true")
 parser.add_argument("--name", dest="name", help="name of the running job, will be part of the output file name, default = sims", type=str, default="sims")
 args = parser.parse_args()
 
-Evolution(Population(args.pop_size, args.mu, args.fd, args.fb, args.fm, args.fa, args.fl, args.md, args.mb, args.mm, args.ma),
+Evolution(args.nudging, args.init_pop_size, Population(args.init_pop_size, args.mu, args.fd, args.fb, args.fm, args.fa, args.fl, args.md, args.mb, args.mm, args.ma),
           args.n_gen, args.replicate, args.period, args.verbose, args.name)
 
 
