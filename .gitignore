@@ -3,7 +3,7 @@
 src/*.orig
 .Rhistory
 out/
-MutatorModel.iml
+Mutator-model.iml
 *.R
 *.txt
 *.pdf
