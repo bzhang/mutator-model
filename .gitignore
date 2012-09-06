@@ -1,9 +1,9 @@
-.idea/misc.xml
+.idea/*.xml
+.idea/*
 src/*.orig
 .Rhistory
 out/
 MutatorModel.iml
-.idea/*
 *.R
 *.txt
 *.pdf
