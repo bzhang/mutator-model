@@ -71,7 +71,7 @@ public class ModelParameters {
                 + "_DeleMR" + getDouble("BASE_DELETERIOUS_MUTATION_RATE")
                 + "_BeneE" + getFloat("DEFAULT_BENEFICIAL_EFFECT")
                 + "_DeleE" + getFloat("DEFAULT_DELETERIOUS_EFFECT")
-                + "_MutStr" + getInt("MUTATOR_STRENGTH_MAX")
+                + "_MutStr" + getInt("FOUNDER_MUTATOR_STRENGTH_MAX")
                 + "_MutMR" + getDouble("EVOLVING_MUTATOR_MUTATION_RATE")
                 + "_AntiMutMR" + getDouble("EVOLVING_ANTIMUTATOR_MUTATION_RATE")
                 + "_MutaE" + getFloat("MUTATOR_MUTATION_EFFECT")
