@@ -1,5 +1,8 @@
-# Modified by Bingjun Zhang, version 2.0
-# What's new:
+# Release notes
+# version 2.1
+# 1. Implement the Gerrish model
+# --------------------------------
+# version 2.0
 # 1. Write results to text file
 # 2. Pass arguments from command line to specify certain parameters (type "python gerrish_v2.py -h" for usage)
 
@@ -96,7 +99,7 @@ class Population(object):
 
     def __init__(self, init_pop_size, base_mut_rate, f_deleterious, f_beneficial, f_mutator, f_antimutator, f_lethal, M_deleterious, M_beneficial, M_mutator, M_antimutator):
         self.population = []
-        for i in range(2 * init_pop_size):
+        for i in range(init_pop_size):
             self.population.append(Individual(base_mut_rate, f_deleterious, f_beneficial, f_mutator, f_antimutator, f_lethal, M_deleterious, M_beneficial, M_mutator, M_antimutator))
         self.get_pop_size()
 
@@ -226,7 +229,7 @@ class Evolution(object):
         gen = 0
         population.get_stats()
         self.curr_population = population
-        file = open(str(iteration) + "_" + name + ".txt", "w")
+        file = open('/project/worm/MutatorModel/' + str(iteration) + "_" + name + ".txt", "w")
         write_title_to_file(file)
         write_data_to_file(population, file, gen)
         for i in range(n_generations):
