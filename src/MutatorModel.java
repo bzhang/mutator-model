@@ -21,8 +21,8 @@ public class MutatorModel {
             String popFilename = resultFileNamePrefix + "_Pop.txt";
             String mutMapFilename = resultFileNamePrefix + "_MutMap.txt";
             String mutStructureFilename = resultFileNamePrefix + "_MutStructure.txt";
-            String popFileOutput = "Generation\tFitnessMean\tFitnessSD\tMutatorStrengthMean\tMutatorStrengthSD" +
-                                   "\tnDeleMutMean\tnDeleMutSD\tnBeneMutMean\tnBeneMutSD\n";
+            String popFileOutput = "Generation\tFitnessMean\tMutatorStrengthMean\tnDeleMutMean\tnBeneMutMean\t" +
+                                   "FitnessSD\tMutatorStrengthSD\tnDeleMutSD\tnBeneMutSD\n";
             String mutMapFileOutput = "MutationID\tFitnessEffect\tMutatorStrength\tGeneration\tLocus\n";
             String mutStructureFileOutput = "Generation\tMutationID\tNIndividual\n";
 
@@ -112,12 +112,12 @@ public class MutatorModel {
 
 
         return i + "\t" + Util.mean(fitnessArray)
-                 + "\t" + Util.standardDeviation(fitnessArray)
                  + "\t" + Util.mean(mutatorStrengthArray)
-                 + "\t" + Util.standardDeviation(mutatorStrengthArray)
                  + "\t" + Util.mean(nDeleMutArray)
-                 + "\t" + Util.standardDeviation(nDeleMutArray)
                  + "\t" + Util.mean(nBeneMutArray)
+                 + "\t" + Util.standardDeviation(fitnessArray)
+                 + "\t" + Util.standardDeviation(mutatorStrengthArray)
+                 + "\t" + Util.standardDeviation(nDeleMutArray)
                  + "\t" + Util.standardDeviation(nBeneMutArray)
                  + "\n";
     }
