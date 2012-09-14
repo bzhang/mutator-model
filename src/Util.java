@@ -32,12 +32,8 @@ public class Util {
 
     }
 
-    public static float standardDeviation(double[] array) {
-        float sumOfDiff = 0;
-        for (double element : array) {
-            sumOfDiff += Math.pow(element - mean(array), 2);
-        }
-        return (float) Math.sqrt(sumOfDiff / (array.length - 1));
+    public static double standardDeviation(double[] array) {
+        return Math.sqrt(variance(array));
     }
 
     public static double standardDeviation(int[] array) {
@@ -50,6 +46,15 @@ public class Util {
             floatArray[i] = intArray[i];
         }
         return floatArray;
+    }
+
+    public static double variance(double[] array) {
+        double mean = mean(array);
+        float sumOfDiff = 0;
+        for (double element : array) {
+            sumOfDiff += Math.pow(element - mean, 2);
+        }
+        return sumOfDiff / array.length;
     }
 
     public static void writeFile(String outputFileName, String output) {
