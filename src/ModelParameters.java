@@ -75,6 +75,7 @@ public class ModelParameters {
                 + "_MutMR" + getDouble("EVOLVING_MUTATOR_MUTATION_RATE")
                 + "_AntiMutMR" + getDouble("EVOLVING_ANTIMUTATOR_MUTATION_RATE")
                 + "_MutaE" + getFloat("MUTATOR_MUTATION_EFFECT")
+                + "_AntiMutE" + getFloat("ANTIMUTATOR_MUTATION_EFFECT")
                 + "_EvlFrom" + getInt("START_EVOLVING_GENERATION");
     }
 
