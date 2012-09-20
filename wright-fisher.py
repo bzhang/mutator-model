@@ -167,9 +167,9 @@ class Population(object):
 
     Attributes:
 
-        mu -- mutation rate of every individual in the population
+        mu       -- mutation rate of every individual in the population
         pop_size -- population size
-        w -- fitness of every individual in the population
+        w        -- fitness of every individual in the population
     """
 
     def __init__(self, pop_size, base_mut_rate, f_deleterious, f_beneficial, f_mutator, f_antimutator, f_lethal, M_deleterious, M_beneficial, M_mutator, M_antimutator):
@@ -178,16 +178,16 @@ class Population(object):
 
         Parameters:
 
-            pop_size -- population size
+            pop_size      -- population size
             base_mut_rate -- base genomic mutation rate
             f_deleterious -- fraction of deleterious mutations
-            f_beneficial -- fraction of beneficial mutations
-            f_mutator -- fraction of mutator mutations
+            f_beneficial  -- fraction of beneficial mutations
+            f_mutator     -- fraction of mutator mutations
             f_antimutator -- fraction of antimutator mutations
-            f_lethal -- fraction of lethal mutations out of the deleterious mutations
+            f_lethal      -- fraction of lethal mutations out of the deleterious mutations
             M_deleterious -- average fitness effect of a deleterious mutation
-            M_beneficial -- average fitness effect of a beneficial mutation
-            M_mutator -- average fitness effect of a mutator mutation
+            M_beneficial  -- average fitness effect of a beneficial mutation
+            M_mutator     -- average fitness effect of a mutator mutation
             M_antimutator -- average fitness effect of a antimutator mutation
         """
         self.population = []
@@ -251,7 +251,8 @@ class Population(object):
 
     def get_next_generation(self):
         """
-        Generate the following generation by sampling Individuals with replacement in proportion to their fitness and generating individual offspring from each until a certain size is reached.
+        Generate the following generation by sampling Individuals with replacement in proportion to their fitness and
+        generating individual offspring from each until a certain size is reached.
         """
         next_generation = copy.deepcopy(self)
         next_generation.population = []
@@ -331,12 +332,12 @@ class Evolution(object):
 
         Parameters:
 
-            population -- Population object
+            population    -- Population object
             n_generations -- number of generations to run simulation
-            replicate -- replicate number for current simulation, part of the output file name to differentiate from other replicates
-            period -- number of generations between output of summary stats (default = 1)
-            verbose -- bool specifying whether to print generation number to the console (default = False)
-            name -- file name for output (default = "simulation")
+            replicate     -- replicate number of current simulation, part of the output file name to differentiate from other replicates
+            period        -- number of generations between output of summary stats (default = 1)
+            verbose       -- bool specifying whether to print generation number to the console (default = False)
+            name          -- file name for output (default = "simulation")
         """
         gen = 0
         population.get_stats()
