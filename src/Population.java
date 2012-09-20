@@ -64,19 +64,29 @@ public class Population {
 
     public double[] getFitnessArray() {
         double[] fitnessArray = new double[getSize()];
-
-//        Long timeB4IteratingAllIndividuals = System.currentTimeMillis();
         for (int i = 0; i < getSize(); i++) {
             fitnessArray[i] = getIndividual(i).getFitness();
         }
-//        int reminderIteraringAllIndividuals = (int) ((System.currentTimeMillis() - timeB4IteratingAllIndividuals) % (24L * 3600 * 1000));
-//        Float secondsElapsedIteratingAllIndividuals = (float) reminderIteraringAllIndividuals / 1000;
-//        System.out.println("Seconds elapsed for getting fitness of all individuals = " + secondsElapsedIteratingAllIndividuals);
-
         return fitnessArray;
     }
 
-
+    public GroupReturn getFitnessPropertiesArray() {
+        int popSize = getSize();
+        double[] fitnessArray = new double[popSize];
+        double[] meanDeleFitnessEffectArray = new double[popSize];
+        double[] meanBeneFitnessEffectArray = new double[popSize];
+        int[] nDeleMutArray = new int[popSize];
+        int[] nBeneMutArray = new int[popSize];
+        for (int i = 0; i < popSize; i++) {
+            GroupReturn fitnessProperties = getIndividual(i).getFitnessProperties();
+            fitnessArray[i] = fitnessProperties.getFitness();
+            meanDeleFitnessEffectArray[i] = fitnessProperties.getMeanDeleFitnessEffect();
+            meanBeneFitnessEffectArray[i] = fitnessProperties.getMeanBeneFitnessEffect();
+            nDeleMutArray[i] = fitnessProperties.getNDeleteriousMutations();
+            nBeneMutArray[i] = fitnessProperties.getNBeneficialMutations();
+        }
+        return new GroupReturn(fitnessArray, meanDeleFitnessEffectArray, meanBeneFitnessEffectArray, nDeleMutArray, nBeneMutArray);
+    }
 
     public GroupReturn getFitnessEffectArrayPair() {
         double[] deleFitnessEffectArray = new double[getSize()];
@@ -109,12 +119,6 @@ public class Population {
         return new GroupReturn(nDeleMutArray, nBeneMutArray);
     }
 
-//    public int[] getNBeneMutArray() {
-//        int[] nBeneMutArray = new int[getSize()];
-//        for (int i = 0; i < getSize(); i++) {
-//            nBeneMutArray[i] = getIndividual(i).getNBeneMut();
-//        }
-//        return nBeneMutArray;
 //    }
 
     private void addIndividualPair(IndividualPair offspringPair, int parentSize) {
