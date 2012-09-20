@@ -177,48 +177,50 @@ class Population(object):
 
 # <codecell>
 
-@staticmethod
-def get_intervals(x):
-    y = x / sum(x)
-    intervals = {}
-    sumy = 0
-    for i in range(len(y)):
-        next_sumy = sumy + y[i]
-        intervals.update({i: (sumy, next_sumy)})
-        sumy = next_sumy
-    return intervals
+    @staticmethod
+    def get_intervals(x):
+        y = x / sum(x)
+        intervals = {}
+        sumy = 0
+        for i in range(len(y)):
+            next_sumy = sumy + y[i]
+            intervals.update({i: (sumy, next_sumy)})
+            sumy = next_sumy
+        return intervals
 
-def write_data_to_file(population, file, gen):
-    file.write(str(gen)                                  + "\t" +
-               str(population.stats["mean_fitness"])     + "\t" +
-               str(population.stats["mean_mut_rate"])    + "\t" +
-               str(population.stats["mean_deleterious"]) + "\t" +
-               str(population.stats["mean_beneficial"])  + "\t" +
-               str(population.stats["mean_mutator"])     + "\t" +
-               str(population.stats["mean_antimutator"]) + "\t" +
-               str(population.stats["var_fitness"])      + "\t" +
-               str(population.stats["var_mut_rate"])     + "\t" +
-               str(population.stats["var_deleterious"])  + "\t" +
-               str(population.stats["var_beneficial"])   + "\t" +
-               str(population.stats["var_mutator"])      + "\t" +
-               str(population.stats["var_antimutator"])  + "\t" +
-               str(population.stats["pop_size"])         + "\n")
+    @staticmethod
+    def write_data_to_file(population, file, gen):
+        file.write(str(gen)                                  + "\t" +
+                   str(population.stats["mean_fitness"])     + "\t" +
+                   str(population.stats["mean_mut_rate"])    + "\t" +
+                   str(population.stats["mean_deleterious"]) + "\t" +
+                   str(population.stats["mean_beneficial"])  + "\t" +
+                   str(population.stats["mean_mutator"])     + "\t" +
+                   str(population.stats["mean_antimutator"]) + "\t" +
+                   str(population.stats["var_fitness"])      + "\t" +
+                   str(population.stats["var_mut_rate"])     + "\t" +
+                   str(population.stats["var_deleterious"])  + "\t" +
+                   str(population.stats["var_beneficial"])   + "\t" +
+                   str(population.stats["var_mutator"])      + "\t" +
+                   str(population.stats["var_antimutator"])  + "\t" +
+                   str(population.stats["pop_size"])         + "\n")
 
-def write_title_to_file(file):
-    file.write("generation"       + "\t" +
-               "mean_fitness"     + "\t" +
-               "mean_mut_rate"    + "\t" +
-               "mean_deleterious" + "\t" +
-               "mean_beneficial"  + "\t" +
-               "mean_mutator"     + "\t" +
-               "mean_antimutator" + "\t" +
-               "var_fitness"      + "\t" +
-               "var_mut_rate"     + "\t" +
-               "var_deleterious"  + "\t" +
-               "var_beneficial"   + "\t" +
-               "var_mutator"      + "\t" +
-               "var_antimutator"  + "\t" +
-               "pop_size"         + "\n")
+    @staticmethod
+    def write_title_to_file(file):
+        file.write("generation"       + "\t" +
+                   "mean_fitness"     + "\t" +
+                   "mean_mut_rate"    + "\t" +
+                   "mean_deleterious" + "\t" +
+                   "mean_beneficial"  + "\t" +
+                   "mean_mutator"     + "\t" +
+                   "mean_antimutator" + "\t" +
+                   "var_fitness"      + "\t" +
+                   "var_mut_rate"     + "\t" +
+                   "var_deleterious"  + "\t" +
+                   "var_beneficial"   + "\t" +
+                   "var_mutator"      + "\t" +
+                   "var_antimutator"  + "\t" +
+                   "pop_size"         + "\n")
 
 
 class Evolution(object):
@@ -230,15 +232,15 @@ class Evolution(object):
         population.get_stats()
         self.curr_population = population
         file = open('/project/worm/MutatorModel/' + str(iteration) + "_" + name + ".txt", "w")
-        write_title_to_file(file)
-        write_data_to_file(population, file, gen)
+        Population.write_title_to_file(file)
+        Population.write_data_to_file(population, file, gen)
         for i in range(n_generations):
             next_generation = self.curr_population.get_next_generation(nudging_factor, init_pop_size)
             self.curr_population = next_generation
             gen += 1
             if gen % period == 0:
                 next_generation.get_stats()
-                write_data_to_file(next_generation, file, gen)
+                Population.write_data_to_file(next_generation, file, gen)
                 if verbose:
                     print "Current generation: ", gen
         file.close()
