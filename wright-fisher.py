@@ -1,7 +1,7 @@
 # Modified by Bingjun Zhang, version 2.0
 # What's new:
 # 1. Write results to text file
-# 2. Pass arguments from command line to specify certain parameters (type "python gerrish_v2.py -h" for usage)
+# 2. Pass arguments from command line to specify certain parameters (type "python wright-fisher.py -h" for usage)
 
 
 import numpy as np
@@ -10,27 +10,28 @@ import argparse
 
 class Individual(object):
     """
-    Define an Individual object, characterized by numbers of beneficial, deleterious, mutator and antimutator mutations, fitness and mutation rate.  Follows the model described in Gerrish et al. (2007) Complete genetic linkage can subvert natural selection. PNAS 104: 6266-71.
+    Define an Individual object, characterized by numbers of beneficial, deleterious, mutator and antimutator mutations, fitness and mutation rate.
+    Follows the model described in Gerrish et al. (2007) Complete genetic linkage can subvert natural selection. PNAS 104: 6266-71.
 
     Attributes:
 
         base_mut_rate -- base genomic mutation rate
         f_deleterious -- fraction of deleterious mutations
-        f_beneficial -- fraction of beneficial mutations
-        f_mutator -- fraction of mutator mutations
+        f_beneficial  -- fraction of beneficial mutations
+        f_mutator     -- fraction of mutator mutations
         f_antimutator -- fraction of antimutator mutations
-        f_lethal -- fraction of lethal mutations out of the deleterious mutations
+        f_lethal      -- fraction of lethal mutations out of the deleterious mutations
         M_deleterious -- average fitness effect of a deleterious mutation
-        M_beneficial -- average fitness effect of a beneficial mutation
-        M_mutator -- average fitness effect of a mutator mutation
+        M_beneficial  -- average fitness effect of a beneficial mutation
+        M_mutator     -- average fitness effect of a mutator mutation
         M_antimutator -- average fitness effect of a antimutator mutation
         n_deleterious -- number of deleterious mutations
-        n_beneficial -- number of beneficial mutations
-        n_mutator -- number of mutator mutations
+        n_beneficial  -- number of beneficial mutations
+        n_mutator     -- number of mutator mutations
         n_antimutator -- number of antimutator mutations
-        n_lethal -- number of lethal mutations
-        fitness -- fitness
-        mut_rate -- relative genomic mutation rate
+        n_lethal      -- number of lethal mutations
+        fitness       -- fitness
+        mut_rate      -- relative genomic mutation rate
     """
 
     def __init__(self, base_mut_rate, f_deleterious, f_beneficial, f_mutator, f_antimutator, f_lethal, M_deleterious, M_beneficial, M_mutator, M_antimutator):
@@ -41,13 +42,13 @@ class Individual(object):
 
             base_mut_rate -- base genomic mutation rate
             f_deleterious -- fraction of deleterious mutations
-            f_beneficial -- fraction of beneficial mutations
-            f_mutator -- fraction of mutator mutations
+            f_beneficial  -- fraction of beneficial mutations
+            f_mutator     -- fraction of mutator mutations
             f_antimutator -- fraction of antimutator mutations
-            f_lethal -- fraction of lethal mutations out of the deleterious mutations
+            f_lethal      -- fraction of lethal mutations out of the deleterious mutations
             M_deleterious -- average fitness effect of a deleterious mutation
-            M_beneficial -- average fitness effect of a beneficial mutation
-            M_mutator -- average fitness effect of a mutator mutation
+            M_beneficial  -- average fitness effect of a beneficial mutation
+            M_mutator     -- average fitness effect of a mutator mutation
             M_antimutator -- average fitness effect of a antimutator mutation
         """
         assert 0 < base_mut_rate <= 1
@@ -324,7 +325,7 @@ class Evolution(object):
 
         curr_population -- Population in the current generation
     """
-    def __init__(self, population, n_generations, iteration, period = 1, verbose = False, name = "simulation"):
+    def __init__(self, population, n_generations, replicate, period = 1, verbose = False, name = "simulation"):
         """
         Generate Evolution simulation from a Population.
 
@@ -332,7 +333,7 @@ class Evolution(object):
 
             population -- Population object
             n_generations -- number of generations to run simulation
-            iteration -- ???
+            replicate -- replicate number for current simulation, part of the output file name to differentiate from other replicates
             period -- number of generations between output of summary stats (default = 1)
             verbose -- bool specifying whether to print generation number to the console (default = False)
             name -- file name for output (default = "simulation")
@@ -340,7 +341,7 @@ class Evolution(object):
         gen = 0
         population.get_stats()
         self.curr_population = population
-        file = open(str(iteration) + "_" + name + ".txt", "w")
+        file = open(str(replicate) + "_" + name + ".txt", "w")
         Population.write_title_to_file(file)
         Population.write_data_to_file(population, file, gen)
         for i in range(n_generations):
@@ -358,7 +359,7 @@ if __name__ == "__main__":
 
     # Usage:
     # Add command line arguments
-    # Type "python wright-fisher.sh -h" under command line for usage
+    # Type "python wright-fisher.py -h" under command line for usage
 
     parser = argparse.ArgumentParser(description="Wright-Fisher model for evolution of mutation rates in asexual populations")
     parser.add_argument("--pop_size", dest="pop_size", help="population size, default = 1000", type=int, default="1000")
@@ -376,7 +377,7 @@ if __name__ == "__main__":
     parser.add_argument("--rep", dest="replicate", help="replicate number, default = 1", type=int, default="1")
     parser.add_argument("--period", dest="period", help="period to measure, default = 1", type=int, default="1")
     parser.add_argument("--verbose", dest="verbose", help="print out current generation if present", action="store_true")
-    parser.add_argument("--name", dest="name", help="name of the running job, will be part of the output file name, default = sims", type=str, default="sims")
+    parser.add_argument("--name", dest="name", help="name of the running job, will be part of the output file name, default = simulation", type=str, default="simulation")
     args = parser.parse_args()
 
     Evolution(Population(args.pop_size, args.mu, args.fd, args.fb, args.fm, args.fa, args.fl, args.md, args.mb, args.mm, args.ma),

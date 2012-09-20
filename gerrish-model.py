@@ -4,7 +4,7 @@
 # --------------------------------
 # version 2.0
 # 1. Write results to text file
-# 2. Pass arguments from command line to specify certain parameters (type "python gerrish_v2.py -h" for usage)
+# 2. Pass arguments from command line to specify certain parameters (type "python gerrish-model.py -h" for usage)
 
 
 import numpy as np
@@ -227,11 +227,11 @@ class Evolution(object):
     """
     This object manipulates the object population to simulate over generations.
     """
-    def __init__(self, nudging_factor, init_pop_size, population, n_generations, iteration, period = 1, verbose = False, name = "simulation"):
+    def __init__(self, nudging_factor, init_pop_size, population, n_generations, replicate, period = 1, verbose = False, name = "simulation"):
         gen = 0
         population.get_stats()
         self.curr_population = population
-        file = open('/project/worm/MutatorModel/' + str(iteration) + "_" + name + ".txt", "w")
+        file = open('/project/worm/MutatorModel/' + str(replicate) + "_" + name + ".txt", "w")
         Population.write_title_to_file(file)
         Population.write_data_to_file(population, file, gen)
         for i in range(n_generations):
