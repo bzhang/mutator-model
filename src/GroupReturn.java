@@ -8,11 +8,12 @@ public class GroupReturn {
     private int nBeneficialMutations;
     private int[] nDeleMutArray;
     private int[] nBeneMutArray;
-    private double[] deleFitnessEffectArray;
-    private double[] beneFitnessEffectArray;
     private double fitness;
     private double meanDeleFitnessEffect;
     private double meanBeneFitnessEffect;
+    private double[] fitnessArray;
+    private double[] meanDeleFitnessEffectArray;
+    private double[] meanBeneFitnessEffectArray;
 
 
     public GroupReturn(FitnessLocus fitnessLocus, int position) {
@@ -31,8 +32,6 @@ public class GroupReturn {
     }
 
     public GroupReturn(double[] deleFitnessEffectArray, double[] beneFitnessEffectArray) {
-        this.deleFitnessEffectArray = deleFitnessEffectArray;
-        this.beneFitnessEffectArray = beneFitnessEffectArray;
     }
 
     public GroupReturn(double fitness, double meanDeleFitnessEffect, double meanBeneFitnessEffect, int nDeleteriousMutations, int nBeneficialMutations) {
@@ -41,6 +40,14 @@ public class GroupReturn {
         this.meanBeneFitnessEffect = meanBeneFitnessEffect;
         this.nDeleteriousMutations = nDeleteriousMutations;
         this.nBeneficialMutations = nBeneficialMutations;
+    }
+
+    public GroupReturn(double[] fitnessArray, double[] meanDeleFitnessEffectArray, double[] meanBeneFitnessEffectArray, int[] nDeleMutArray, int[] nBeneMutArray) {
+        this.fitnessArray = fitnessArray;
+        this.meanDeleFitnessEffectArray = meanDeleFitnessEffectArray;
+        this.meanBeneFitnessEffectArray = meanBeneFitnessEffectArray;
+        this.nDeleMutArray = nDeleMutArray;
+        this.nBeneMutArray = nBeneMutArray;
     }
 
     public Locus getFitnessLocus() {
@@ -67,14 +74,6 @@ public class GroupReturn {
         return nBeneMutArray;
     }
 
-    public double[] getBeneFitnessEffectArray() {
-        return beneFitnessEffectArray;
-    }
-
-    public double[] getDeleFitnessEffectArray() {
-        return deleFitnessEffectArray;
-    }
-
     public double getMeanBeneFitnessEffect() {
         return meanBeneFitnessEffect;
     }
@@ -85,5 +84,17 @@ public class GroupReturn {
 
     public double getFitness() {
         return fitness;
+    }
+
+    public double[] getFitnessArray() {
+        return fitnessArray;
+    }
+
+    public double[] getMeanDeleFitnessEffectArray() {
+        return meanDeleFitnessEffectArray;
+    }
+
+    public double[] getMeanBeneFitnessEffectArray() {
+        return meanBeneFitnessEffectArray;
     }
 }
