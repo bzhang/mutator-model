@@ -88,17 +88,6 @@ public class Population {
         return new GroupReturn(fitnessArray, meanDeleFitnessEffectArray, meanBeneFitnessEffectArray, nDeleMutArray, nBeneMutArray);
     }
 
-    public GroupReturn getFitnessEffectArrayPair() {
-        double[] deleFitnessEffectArray = new double[getSize()];
-        double[] beneFitnessEffectArray = new double[getSize()];
-        for (int i = 0; i < getSize(); i++) {
-            Individual current_individual = getIndividual(i);
-            deleFitnessEffectArray[i] = current_individual.getDeleFitnessEffect();
-            beneFitnessEffectArray[i] = current_individual.getBeneFitnessEffect();
-        }
-        return new GroupReturn(deleFitnessEffectArray, beneFitnessEffectArray);
-    }
-
     public double[] getMutatorStrengthArray() {
         double[] mutatorStrengthArray = new double[getSize()];
         int i = 0;
@@ -108,18 +97,6 @@ public class Population {
         }
         return mutatorStrengthArray;
     }
-
-    public GroupReturn getNMutationsArray() {
-        int[] nDeleMutArray = new int[getSize()];
-        int[] nBeneMutArray = new int[getSize()];
-        for (int i = 0; i < getSize(); i++) {
-            nDeleMutArray[i] = getIndividual(i).getNMutations().getNDeleteriousMutations();
-            nBeneMutArray[i] = getIndividual(i).getNMutations().getNBeneficialMutations();
-        }
-        return new GroupReturn(nDeleMutArray, nBeneMutArray);
-    }
-
-//    }
 
     private void addIndividualPair(IndividualPair offspringPair, int parentSize) {
         addIndividual(offspringPair.getIndividualA(), parentSize);
