@@ -102,18 +102,11 @@ public class Individual implements Cloneable{
         mutationProperties.add(locusPosition.getPosition());
     }
 
-//    private void mutatorMutate(int currentGeneration) {
-
     private void mutatorMutate(int currentGeneration) {
-        int startingEvolvingGeneration = ModelParameters.getInt("START_EVOLVING_GENERATION");
         double mutationRate = ModelParameters.getDouble("INITIAL_MUTATOR_MUTATION_RATE");
-
-        if (currentGeneration >= startingEvolvingGeneration) {
+        if (currentGeneration >= ModelParameters.getInt("START_EVOLVING_GENERATION")) {
             mutationRate = ModelParameters.getDouble("EVOLVING_MUTATOR_MUTATION_RATE") * getMutatorStrength();
-//        Poisson poisson = new Poisson(mutationRate, Rand.getEngine());
-//        int poissonObs = poisson.nextInt();
             int poissonObs = Util.getPoisson(mutationRate);
-//        System.out.println(poissonObs);
             for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
                 MutatorLocus locus = getRandomMutatorLocus();
                 locus.increaseStrength();
@@ -251,20 +244,6 @@ public class Individual implements Cloneable{
         int recombinationLocusPosition = lociPattern.getRecombinationLociPositions()[0];
         return ((RecombinationLocus) getLocus(recombinationLocusPosition)).getStrength(); // refactor
     }
-
-//    public GroupReturn getNMutations() {
-//        int nDeleteriousMutations = 0;
-//        int nBeneficialMutations = 0;
-//
-//        for (int i = 0; i < getGenomeSize(); i++) {
-//            if (lociPattern.getLocusType(i) == LociPattern.LocusType.Fitness) {
-//                FitnessLocus locus = (FitnessLocus) getLocus(i);
-//                nDeleteriousMutations += locus.getNDeleteriousMutations();
-//                nBeneficialMutations += locus.getNBeneficialMutations();
-//            }
-//        }
-//        return new GroupReturn(nDeleteriousMutations, nBeneficialMutations);
-//    }
 
     public double mutate(int nDeleMutation, int nBeneMutation) {
         double fitnessEffect = 1;
