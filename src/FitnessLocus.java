@@ -7,25 +7,29 @@ public class FitnessLocus extends Locus {
     public static final int FITNESS_EFFECTS_INITIAL_SIZE = ModelParameters.getInt("FITNESS_EFFECTS_INITIAL_SIZE");
 
 //    private float[] fitnessEffects = new float[FITNESS_EFFECTS_INITIAL_SIZE];
-    private long[]   mutationIDs = new long[FITNESS_EFFECTS_INITIAL_SIZE];
+    private long[] mutationIDs = new long[FITNESS_EFFECTS_INITIAL_SIZE];
     private float currentFitness = 1f;
     private int   nMutations     = 0;
     private int   nDeleteriousMutations = 0;
     private int   nBeneficialMutations  = 0;
+    private double deleFitnessEffectSum = 0d;
+    private double beneFitnessEffectSum = 0d;
 
     public FitnessLocus() {}
 
     public void updateFitnessEffect(double fitnessEffect) {
         currentFitness *= fitnessEffect;
-        updateNMutations(fitnessEffect);
+        updateMutInformation(fitnessEffect);
 
     }
 
-    private void updateNMutations(double fitnessEffect) {
+    private void updateMutInformation(double fitnessEffect) {
         if (fitnessEffect > 1) {
             nBeneficialMutations++;
+            beneFitnessEffectSum += fitnessEffect;
         } else if (fitnessEffect < 1) {
             nDeleteriousMutations++;
+            deleFitnessEffectSum += fitnessEffect;
         }
     }
 
@@ -33,7 +37,7 @@ public class FitnessLocus extends Locus {
 //    public void addFitnessEffect(float fitnessEffect) {
 //        fitnessEffects[nMutations] = fitnessEffect;
 //        currentFitness *= fitnessEffect;
-//        updateNMutations(fitnessEffect);
+//        updateMutInformation(fitnessEffect);
 //        if (nMutations == fitnessEffects.length) {
 //            resizeArray(fitnessEffects);
 //        }
@@ -47,13 +51,6 @@ public class FitnessLocus extends Locus {
             System.out.println("mutationIDs: " + mutationIDs.length);
         }
     }
-
-//    private void resizeArray(float[] floatArray) {
-//            System.out.println("FitnessLocus: resizing mutations array");
-//            float[] newFloatArray = new float[floatArray.length + FITNESS_EFFECTS_INITIAL_SIZE];
-//            System.arraycopy(floatArray, 0, newFloatArray, 0, floatArray.length);
-//            floatArray = newFloatArray;
-//    }
 
     private long[] resizeArray(long[] longArray) {
         System.out.println("FitnessLocus: resizing mutations array");
@@ -119,5 +116,13 @@ public class FitnessLocus extends Locus {
 
     public long[] getMutationIDsArray() {
         return mutationIDs;
+    }
+
+    public double getDeleFitnessEffectSum() {
+        return deleFitnessEffectSum;
+    }
+
+    public double getBeneFitnessEffectSum() {
+        return beneFitnessEffectSum;
     }
 }
