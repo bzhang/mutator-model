@@ -10,6 +10,10 @@ public class GroupReturn {
     private int[] nBeneMutArray;
     private double[] deleFitnessEffectArray;
     private double[] beneFitnessEffectArray;
+    private double fitness;
+    private double meanDeleFitnessEffect;
+    private double meanBeneFitnessEffect;
+
 
     public GroupReturn(FitnessLocus fitnessLocus, int position) {
         this.fitnessLocus = fitnessLocus;
@@ -29,6 +33,14 @@ public class GroupReturn {
     public GroupReturn(double[] deleFitnessEffectArray, double[] beneFitnessEffectArray) {
         this.deleFitnessEffectArray = deleFitnessEffectArray;
         this.beneFitnessEffectArray = beneFitnessEffectArray;
+    }
+
+    public GroupReturn(double fitness, double meanDeleFitnessEffect, double meanBeneFitnessEffect, int nDeleteriousMutations, int nBeneficialMutations) {
+        this.fitness = fitness;
+        this.meanDeleFitnessEffect = meanDeleFitnessEffect;
+        this.meanBeneFitnessEffect = meanBeneFitnessEffect;
+        this.nDeleteriousMutations = nDeleteriousMutations;
+        this.nBeneficialMutations = nBeneficialMutations;
     }
 
     public Locus getFitnessLocus() {
@@ -61,5 +73,17 @@ public class GroupReturn {
 
     public double[] getDeleFitnessEffectArray() {
         return deleFitnessEffectArray;
+    }
+
+    public double getMeanBeneFitnessEffect() {
+        return meanBeneFitnessEffect;
+    }
+
+    public double getMeanDeleFitnessEffect() {
+        return meanDeleFitnessEffect;
+    }
+
+    public double getFitness() {
+        return fitness;
     }
 }
