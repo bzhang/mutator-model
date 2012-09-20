@@ -2,7 +2,6 @@
  * @author Bingjun Zhang
  */
 
-import cern.jet.random.Poisson;
 import java.util.ArrayList;
 
 public class Individual implements Cloneable{
@@ -44,9 +43,21 @@ public class Individual implements Cloneable{
             mutatorMutate(currentGeneration);
             antimutatorMutate(currentGeneration);
         }
+
         if (getFitness() <= 0) {
             die();
         }
+    }
+
+    public double getFitness() {
+        double fitness = 1;
+        for (int i = 0; i < getGenomeSize(); i++) {
+            if (lociPattern.getLocusType(i) == LociPattern.LocusType.Fitness) {
+                FitnessLocus locus = (FitnessLocus)getLocus(i);
+                fitness *= locus.getFitnessEffect();
+            }
+        }
+        return fitness;
     }
 
     private void lethalMutate() {
@@ -91,7 +102,7 @@ public class Individual implements Cloneable{
 
     private void updateMutationInformation(int currentGeneration, ArrayList mutationProperties, double fitnessEffect) {
         long mutationID = ModelParameters.getMutationID();
-        OnePair locusPosition = getRandomFitnessLocus();
+        GroupReturn locusPosition = getRandomFitnessLocus();
         FitnessLocus fitnessLocus = (FitnessLocus) locusPosition.getFitnessLocus();
         fitnessLocus.addMutationID(mutationID);
         fitnessLocus.updateFitnessEffect(fitnessEffect);
@@ -166,9 +177,9 @@ public class Individual implements Cloneable{
         return (MutatorLocus) getLocus(position);
     }
 
-    private OnePair getRandomFitnessLocus() {
+    private GroupReturn getRandomFitnessLocus() {
         int position = lociPattern.getRandomFitnessPosition();
-        return new OnePair((FitnessLocus) getLocus(position), position);
+        return new GroupReturn((FitnessLocus) getLocus(position), position);
     }
 
     public void setFitnessLocus(int position) {
@@ -206,15 +217,26 @@ public class Individual implements Cloneable{
         return loci.length;
     }
 
-    public float getFitness() {
+    public float getFitnessProperties() {
         float fitness = 1;
+        float meanDeleFitnessEffect = 0;
+        float meanBeneFitnessEffect = 0;
+        int nDeleteriousMutations = 0;
+        int nBeneficialMutations = 0;
         for (int i = 0; i < getGenomeSize(); i++) {
             if (lociPattern.getLocusType(i) == LociPattern.LocusType.Fitness) {
                 FitnessLocus locus = (FitnessLocus)getLocus(i);
                 fitness *= locus.getFitnessEffect();
+                meanDeleFitnessEffect += locus.getDeleFitnessEffectSum();
+                meanBeneFitnessEffect += locus.getBeneFitnessEffectSum();
+                nDeleteriousMutations += locus.getNDeleteriousMutations();
+                nBeneficialMutations += locus.getNBeneficialMutations();
             }
         }
-        return fitness;
+        meanDeleFitnessEffect /= nDeleteriousMutations;
+        meanBeneFitnessEffect /= nBeneficialMutations;
+
+        return new GroupReturn(fitness, meanDeleFitnessEffect, meanBeneFitnessEffect, nDeleteriousMutations, nBeneficialMutations);
     }
 
     public double getMutatorStrength() {
@@ -229,19 +251,19 @@ public class Individual implements Cloneable{
         return ((RecombinationLocus) getLocus(recombinationLocusPosition)).getStrength(); // refactor
     }
 
-    public OnePair getNMutations() {
-        int nDeleteriousMutations = 0;
-        int nBeneficialMutations = 0;
-
-        for (int i = 0; i < getGenomeSize(); i++) {
-            if (lociPattern.getLocusType(i) == LociPattern.LocusType.Fitness) {
-                FitnessLocus locus = (FitnessLocus) getLocus(i);
-                nDeleteriousMutations += locus.getNDeleteriousMutations();
-                nBeneficialMutations += locus.getNBeneficialMutations();
-            }
-        }
-        return new OnePair(nDeleteriousMutations, nBeneficialMutations);
-    }
+//    public GroupReturn getNMutations() {
+//        int nDeleteriousMutations = 0;
+//        int nBeneficialMutations = 0;
+//
+//        for (int i = 0; i < getGenomeSize(); i++) {
+//            if (lociPattern.getLocusType(i) == LociPattern.LocusType.Fitness) {
+//                FitnessLocus locus = (FitnessLocus) getLocus(i);
+//                nDeleteriousMutations += locus.getNDeleteriousMutations();
+//                nBeneficialMutations += locus.getNBeneficialMutations();
+//            }
+//        }
+//        return new GroupReturn(nDeleteriousMutations, nBeneficialMutations);
+//    }
 
     public double mutate(int nDeleMutation, int nBeneMutation) {
         double fitnessEffect = 1;
@@ -268,4 +290,11 @@ public class Individual implements Cloneable{
         }
     }
 
+    public double getDeleFitnessEffect() {
+        return deleFitnessEffect;
+    }
+
+    public double getBeneFitnessEffect() {
+        return beneFitnessEffect;
+    }
 }
