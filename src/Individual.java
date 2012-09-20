@@ -49,17 +49,6 @@ public class Individual implements Cloneable{
         }
     }
 
-    public double getFitness() {
-        double fitness = 1;
-        for (int i = 0; i < getGenomeSize(); i++) {
-            if (lociPattern.getLocusType(i) == LociPattern.LocusType.Fitness) {
-                FitnessLocus locus = (FitnessLocus)getLocus(i);
-                fitness *= locus.getFitnessEffect();
-            }
-        }
-        return fitness;
-    }
-
     private void lethalMutate() {
         double mutationRate = ModelParameters.getDouble("BASE_LETHAL_MUTATION_RATE") * getMutatorStrength();
         if (Rand.getDouble() < mutationRate) {
@@ -87,7 +76,6 @@ public class Individual implements Cloneable{
         }
     }
 
-
     private void beneficialMutate(int currentGeneration, ArrayList mutationProperties) {
         double mutationRate = ModelParameters.getDouble("BASE_BENEFICIAL_MUTATION_RATE") * getMutatorStrength();
 //        Poisson poisson = new Poisson(mutationRate, Rand.getEngine());
@@ -99,6 +87,7 @@ public class Individual implements Cloneable{
             updateMutationInformation(currentGeneration, mutationProperties, fitnessEffect);
         }
     }
+
 
     private void updateMutationInformation(int currentGeneration, ArrayList mutationProperties, double fitnessEffect) {
         long mutationID = ModelParameters.getMutationID();
@@ -114,28 +103,6 @@ public class Individual implements Cloneable{
     }
 
 //    private void mutatorMutate(int currentGeneration) {
-//        int startingEvolvingGeneration = ModelParameters.getInt("START_EVOLVING_GENERATION");
-//        double mutationRate = ModelParameters.getDouble("INITIAL_MUTATOR_MUTATION_RATE");
-//
-////      startingEvolvingGeneration ranges [1,21];
-////      1 means evolving mutators from beginning; 21 means fixed mu all the time.
-//        if (currentGeneration >= startingEvolvingGeneration) {
-//            mutationRate = ModelParameters.getDouble("EVOLVING_MUTATOR_MUTATION_RATE") * getMutatorStrength();
-//        }
-//
-//        Poisson poisson = new Poisson(mutationRate, Rand.getEngine());
-//        int poissonObs = poisson.nextInt();
-//        for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
-//            MutatorLocus locus = getRandomMutatorLocus();
-//            if (Rand.getDouble() < ModelParameters.getDouble("PROBABILITY_TO_MUTATOR")) {
-//                locus.increaseStrength();
-////            } else if (locus.getStrength() > ModelParameters.MUTATOR_MUTATION_EFFECT) {
-//                    // to ensure the strength is positive
-//            } else {
-//                locus.decreaseStrength();
-//            }
-//        }
-//    }
 
     private void mutatorMutate(int currentGeneration) {
         int startingEvolvingGeneration = ModelParameters.getInt("START_EVOLVING_GENERATION");
@@ -170,12 +137,12 @@ public class Individual implements Cloneable{
         }
     }
 
-
     // TODO: modify getRandomXXLocus to remove redundant codes; extract new methods
     private MutatorLocus getRandomMutatorLocus() {
         int position = lociPattern.getRandomMutatorPosition();
         return (MutatorLocus) getLocus(position);
     }
+
 
     private GroupReturn getRandomFitnessLocus() {
         int position = lociPattern.getRandomFitnessPosition();
@@ -188,8 +155,6 @@ public class Individual implements Cloneable{
     }
 
 //    public void setFitnessLocus(int position) {
-//        setFitnessLocus(position, ModelParameters.getFloat("BASE_FITNESS_EFFECT"));
-//    }
 
     public void setMutatorLocus(int position, double strength) {
         MutatorLocus mutatorLocus = new MutatorLocus(strength);
@@ -217,8 +182,44 @@ public class Individual implements Cloneable{
         return loci.length;
     }
 
-    public float getFitnessProperties() {
-        float fitness = 1;
+    //    }
+//        setFitnessLocus(position, ModelParameters.getFloat("BASE_FITNESS_EFFECT"));
+//    }
+//        }
+//            }
+//                locus.decreaseStrength();
+//            } else {
+//                    // to ensure the strength is positive
+////            } else if (locus.getStrength() > ModelParameters.MUTATOR_MUTATION_EFFECT) {
+//                locus.increaseStrength();
+//            if (Rand.getDouble() < ModelParameters.getDouble("PROBABILITY_TO_MUTATOR")) {
+//            MutatorLocus locus = getRandomMutatorLocus();
+//        for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
+//        int poissonObs = poisson.nextInt();
+//        Poisson poisson = new Poisson(mutationRate, Rand.getEngine());
+//
+//        }
+//            mutationRate = ModelParameters.getDouble("EVOLVING_MUTATOR_MUTATION_RATE") * getMutatorStrength();
+//        if (currentGeneration >= startingEvolvingGeneration) {
+////      1 means evolving mutators from beginning; 21 means fixed mu all the time.
+////      startingEvolvingGeneration ranges [1,21];
+//
+//        double mutationRate = ModelParameters.getDouble("INITIAL_MUTATOR_MUTATION_RATE");
+//        int startingEvolvingGeneration = ModelParameters.getInt("START_EVOLVING_GENERATION");
+
+    public double getFitness() {
+        double fitness = 1;
+        for (int i = 0; i < getGenomeSize(); i++) {
+            if (lociPattern.getLocusType(i) == LociPattern.LocusType.Fitness) {
+                FitnessLocus locus = (FitnessLocus)getLocus(i);
+                fitness *= locus.getFitnessEffect();
+            }
+        }
+        return fitness;
+    }
+
+    public GroupReturn getFitnessProperties() {
+        double fitness = 1;
         double meanDeleFitnessEffect = 0;
         double meanBeneFitnessEffect = 0;
         int nDeleteriousMutations = 0;
