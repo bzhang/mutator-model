@@ -2,9 +2,6 @@
  * @author Bingjun Zhang
  */
 
-import org.apache.commons.io.FileUtils;
-import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -105,21 +102,35 @@ public class MutatorModel {
     }
 
     private static String outputPopulationStat(int i, Population population) {
-        double [] fitnessArray = population.getFitnessArray();
+        GroupReturn fitnessPropertiesArray = population.getFitnessPropertiesArray();
+        double[] fitnessArray = fitnessPropertiesArray.getFitnessArray();
+        int[] nDeleMutArray = fitnessPropertiesArray.getNDeleMutArray();
+        int[] nBeneMutArray = fitnessPropertiesArray.getnBeneMutArray();
+        double[] deleFitnessEffectArray = fitnessPropertiesArray.getDeleFitnessEffectArray();
+        double[] beneFitnessEffectArray = fitnessPropertiesArray.getBeneFitnessEffectArray();
+
+//        double[] fitnessArray = population.getFitnessArray();
         double[] mutatorStrengthArray = population.getMutatorStrengthArray();
-        int[] nDeleMutArray = population.getNMutationsArray().getNDeleMutArray();
-        int[] nBeneMutArray = population.getNMutationsArray().getnBeneMutArray();
+//        int[] nDeleMutArray = population.getNMutationsArray().getNDeleMutArray();
+//        int[] nBeneMutArray = population.getNMutationsArray().getnBeneMutArray();
+//        GroupReturn fitnessEffectArrayPair = population.getFitnessEffectArrayPair();
+//        double[] deleFitnessEffectArray = fitnessEffectArrayPair.getDeleFitnessEffectArray();
+//        double[] beneFitnessEffectArray = fitnessEffectArrayPair.getBeneFitnessEffectArray();
 
 
         return i + "\t" + Util.mean(fitnessArray)
-                 + "\t" + Util.mean(mutatorStrengthArray)
-                 + "\t" + Util.mean(nDeleMutArray)
-                 + "\t" + Util.mean(nBeneMutArray)
-                 + "\t" + Util.standardDeviation(fitnessArray)
-                 + "\t" + Util.standardDeviation(mutatorStrengthArray)
-                 + "\t" + Util.standardDeviation(nDeleMutArray)
-                 + "\t" + Util.standardDeviation(nBeneMutArray)
-                 + "\n";
+                + "\t" + Util.mean(mutatorStrengthArray)
+                + "\t" + Util.mean(nDeleMutArray)
+                + "\t" + Util.mean(nBeneMutArray)
+                + "\t" + Util.mean(deleFitnessEffectArray)
+                + "\t" + Util.mean(beneFitnessEffectArray)
+                + "\t" + Util.standardDeviation(fitnessArray)
+                + "\t" + Util.standardDeviation(mutatorStrengthArray)
+                + "\t" + Util.standardDeviation(nDeleMutArray)
+                + "\t" + Util.standardDeviation(nBeneMutArray)
+                + "\t" + Util.standardDeviation(deleFitnessEffectArray)
+                + "\t" + Util.standardDeviation(beneFitnessEffectArray)
+                + "\n";
     }
 
 
