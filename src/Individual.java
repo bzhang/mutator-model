@@ -219,8 +219,8 @@ public class Individual implements Cloneable{
 
     public float getFitnessProperties() {
         float fitness = 1;
-        float meanDeleFitnessEffect = 0;
-        float meanBeneFitnessEffect = 0;
+        double meanDeleFitnessEffect = 0;
+        double meanBeneFitnessEffect = 0;
         int nDeleteriousMutations = 0;
         int nBeneficialMutations = 0;
         for (int i = 0; i < getGenomeSize(); i++) {
