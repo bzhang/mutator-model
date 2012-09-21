@@ -67,17 +67,19 @@ class Individual(object):
             M_mutator     -- average fitness effect of a mutator mutation
             M_antimutator -- average fitness effect of a antimutator mutation
         """
-        assert 0 < base_mut_rate <= 1
+        # constrain parameters to fall within certain ranges
+        assert 0 <  base_mut_rate <= 1
         assert 0 <= f_deleterious <= 1
-        assert 0 <= f_beneficial <= 1
-        assert 0 <= f_mutator <= 1
+        assert 0 <= f_beneficial  <= 1
+        assert 0 <= f_mutator     <= 1
         assert 0 <= f_antimutator <= 1
-        assert 0 <= f_lethal <= 1
-        assert 0 <= f_antimutator + f_mutator + f_beneficial + f_deleterious + f_beneficial + f_mutator + f_antimutator <= 1
+        assert 0 <= f_lethal      <= 1
+        assert 0 <= f_antimutator + f_mutator + f_beneficial + f_deleterious <= 1
         assert 0 <= M_deleterious < 1
-        assert M_beneficial >= 0
-        assert M_mutator >= 0
-        assert M_antimutator >= 0
+        assert      M_beneficial >= 0
+        assert      M_mutator >= 0
+        assert      M_antimutator >= 0
+        # define Individual attributes
         self.base_mut_rate  = base_mut_rate
         self.f_deleterious  = f_deleterious
         self.f_beneficial   = f_beneficial 
@@ -87,7 +89,8 @@ class Individual(object):
         self.M_deleterious  = M_deleterious
         self.M_beneficial   = M_beneficial 
         self.M_mutator      = M_mutator    
-        self.M_antimutator  = M_antimutator        
+        self.M_antimutator  = M_antimutator
+        # initialize Individual without any mutations
         self.n_deleterious  = 0
         self.n_beneficial   = 0
         self.n_mutator      = 0
