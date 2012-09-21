@@ -1,17 +1,32 @@
-# Modified by Bingjun Zhang, version 2.0
-# What's new:
-# 1. Write results to text file
-# 2. Pass arguments from command line to specify certain parameters (type "python wright-fisher.py -h" for usage)
+"""
+wright-fisher.py: Wright-Fisher implementation of mutator evolution model described in Gerrish et al. (2007) Complete genetic linkage can subvert natural selection. PNAS 104: 6266-71.
+
+Contains the Individual, Population, and Evolution classes.
+
+Usage:
+
+    For details on the parameters (including their default values) run the command:
+
+    >>> python wright-fisher.py -h
+
+    For example, to run a simulation with population size of 100 for 200 generations and other parameters set to their default values run the command:
+
+    >>> python wright-fisher.py --pop_size 100 --gen 200
+"""
 
 
 import numpy as np
 import copy
 import argparse
 
+
+__author__  = 'Ricardo Azevedo, Bingjun Zhang, Ata Kalirad'
+__version__ = "0.1.2"
+
+
 class Individual(object):
     """
     Define an Individual object, characterized by numbers of beneficial, deleterious, mutator and antimutator mutations, fitness and mutation rate.
-    Follows the model described in Gerrish et al. (2007) Complete genetic linkage can subvert natural selection. PNAS 104: 6266-71.
 
     Attributes:
 
@@ -356,12 +371,11 @@ class Evolution(object):
                     print gen
         file.close()
 
-if __name__ == "__main__":
 
-    # Usage:
-    # Add command line arguments
-    # Type "python wright-fisher.py -h" under command line for usage
-
+def main():
+    """
+    Parse parameters entered at command line and run evolutionary simulation.
+    """
     parser = argparse.ArgumentParser(description="Wright-Fisher model for evolution of mutation rates in asexual populations")
     parser.add_argument("--pop_size", dest="pop_size", help="population size, default = 1000", type=int, default="1000")
     parser.add_argument("--mu", dest="mu", help="base mutation rate, default = 0.1", type=float, default="0.1")
@@ -385,3 +399,5 @@ if __name__ == "__main__":
               args.n_gen, args.replicate, args.period, args.verbose, args.name)
 
 
+if __name__ == "__main__":
+    main()
