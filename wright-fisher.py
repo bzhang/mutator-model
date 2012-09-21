@@ -106,10 +106,10 @@ class Individual(object):
         self.n_deleterious += n_mutations
         for i in range(n_mutations):
             s = np.random.gamma(1, self.M_deleterious)
-            if s > self.fitness: # to prevent fitness from going negative
-                self.fitness = 0
-            else:
-                self.fitness *= 1 - s
+            # prevent 1 - s from going negative
+            if s > 1:
+                s = 1
+            self.fitness *= 1 - s
 
     def add_beneficial(self, n_mutations):
         """
