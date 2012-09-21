@@ -27,7 +27,7 @@ __version__ = "0.1.2"
 
 class Individual(object):
     """
-    Define an Individual object, characterized by numbers of beneficial, deleterious, mutator and antimutator mutations, fitness and mutation rate.
+    Define an Individual object, characterized by numbers of beneficial, deleterious, mutator and antimutator mutations, fitness and mutation rate.  Genomic mutation rate is given by base_mut_rate * rel_mut_rate.
 
     Attributes:
 
@@ -47,7 +47,7 @@ class Individual(object):
         n_antimutator -- number of antimutator mutations
         n_lethal      -- number of lethal mutations
         fitness       -- fitness
-        mut_rate      -- relative genomic mutation rate
+        rel_mut_rate  -- relative genomic mutation rate
     """
 
     def __init__(self, base_mut_rate, f_deleterious, f_beneficial, f_mutator, f_antimutator, f_lethal, M_deleterious, M_beneficial, M_mutator, M_antimutator):
@@ -97,7 +97,7 @@ class Individual(object):
         self.n_antimutator  = 0
         self.n_lethal       = 0
         self.fitness        = 1
-        self.mut_rate       = 1
+        self.rel_mut_rate       = 1
 
     def add_deleterious(self, n_mutations):
         """
@@ -149,7 +149,7 @@ class Individual(object):
         self.n_mutator += n_mutations
         for i in range(n_mutations):
             s = np.power(rnd.random(), - self.M_mutator)
-            self.mut_rate *= s
+            self.rel_mut_rate *= s
 
     def add_antimutator(self, n_mutations):
         """
@@ -162,21 +162,21 @@ class Individual(object):
         self.n_antimutator += n_mutations
         for i in range(n_mutations):
             s = np.power(rnd.random(), self.M_antimutator)
-            self.mut_rate *= s
+            self.rel_mut_rate *= s
 
     def generate_offspring(self):
         """
         Generate an offspring of an Individual object allowing mutations to occur.
         """
         offspring = copy.deepcopy(self)
-        offspring.add_lethal(rnd.poisson(self.base_mut_rate * self.mut_rate * self.f_deleterious * self.f_lethal))
+        offspring.add_lethal(rnd.poisson(self.base_mut_rate * self.rel_mut_rate * self.f_deleterious * self.f_lethal))
         if self.n_lethal > 0:
             offspring.fitness = 0
             return offspring
-        offspring.add_deleterious(rnd.poisson(self.base_mut_rate * self.mut_rate * self.f_deleterious))
-        offspring.add_beneficial(rnd.poisson(self.base_mut_rate * self.mut_rate * self.f_beneficial))
-        offspring.add_mutator(rnd.poisson(self.base_mut_rate * self.mut_rate * self.f_mutator))
-        offspring.add_antimutator(rnd.poisson(self.base_mut_rate * self.mut_rate * self.f_antimutator))
+        offspring.add_deleterious(rnd.poisson(self.base_mut_rate * self.rel_mut_rate * self.f_deleterious))
+        offspring.add_beneficial(rnd.poisson(self.base_mut_rate * self.rel_mut_rate * self.f_beneficial))
+        offspring.add_mutator(rnd.poisson(self.base_mut_rate * self.rel_mut_rate * self.f_mutator))
+        offspring.add_antimutator(rnd.poisson(self.base_mut_rate * self.rel_mut_rate * self.f_antimutator))
         return offspring
 
 
@@ -230,7 +230,7 @@ class Population(object):
         """
         self.mu = np.zeros(self.pop_size)
         for i in range(self.pop_size):
-            self.mu[i] = self.population[i].mut_rate
+            self.mu[i] = self.population[i].rel_mut_rate
 
     def get_deleterious(self):
         """
