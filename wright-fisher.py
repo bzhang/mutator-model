@@ -97,7 +97,7 @@ class Individual(object):
         self.n_antimutator  = 0
         self.n_lethal       = 0
         self.fitness        = 1
-        self.rel_mut_rate       = 1
+        self.rel_mut_rate   = 1
 
     def add_deleterious(self, n_mutations):
         """
@@ -148,7 +148,7 @@ class Individual(object):
         """
         self.n_mutator += n_mutations
         for i in range(n_mutations):
-            s = np.power(rnd.random(), - self.M_mutator)
+            s = np.power(rnd.random(), -self.M_mutator)
             self.rel_mut_rate *= s
 
     def add_antimutator(self, n_mutations):
@@ -270,8 +270,7 @@ class Population(object):
 
     def get_next_generation(self):
         """
-        Generate the following generation by sampling Individuals with replacement in proportion to their fitness and
-        generating individual offspring from each until a certain size is reached.
+        Generate the following generation by sampling Individuals with replacement in proportion to their fitness and generating individual offspring from each until a certain size is reached.
         """
         next_generation = copy.deepcopy(self)
         next_generation.population = []
@@ -295,12 +294,18 @@ class Population(object):
         self.get_beneficial()
         self.get_mutator()
         self.get_antimutator()
-        self.stats = {"mean_fitness": self.w.mean(), "var_fitness": self.w.var(), 
-                      "mean_mut_rate": self.mu.mean(), "var_mut_rate": self.mu.var(), 
-                      "mean_deleterious": self.n_deleterious.mean(), "var_deleterious": self.n_deleterious.var(), 
-                      "mean_beneficial" : self.n_beneficial.mean(), "var_beneficial" : self.n_beneficial.var(), 
-                      "mean_mutator"    : self.n_mutator.mean(), "var_mutator"    : self.n_mutator.var(), 
-                      "mean_antimutator": self.n_antimutator.mean(), "var_antimutator": self.n_antimutator.var()}
+        self.stats = {"mean_fitness"    : self.w.mean(),
+                      "var_fitness"     : self.w.var(),
+                      "mean_mut_rate"   : self.mu.mean(),
+                      "var_mut_rate"    : self.mu.var(),
+                      "mean_deleterious": self.n_deleterious.mean(),
+                      "var_deleterious" : self.n_deleterious.var(),
+                      "mean_beneficial" : self.n_beneficial.mean(),
+                      "var_beneficial"  : self.n_beneficial.var(),
+                      "mean_mutator"    : self.n_mutator.mean(),
+                      "var_mutator"     : self.n_mutator.var(),
+                      "mean_antimutator": self.n_antimutator.mean(),
+                      "var_antimutator" : self.n_antimutator.var()}
 
     @staticmethod
     def write_data_to_file(population, file, gen):
@@ -321,7 +326,7 @@ class Population(object):
 
     @staticmethod
     def write_title_to_file(file):
-        """Output title row to file"""
+        """Output title row to file."""
         file.write("generation"       + "\t" +
                    "mean_fitness"     + "\t" +
                    "mean_mut_rate"    + "\t" +
