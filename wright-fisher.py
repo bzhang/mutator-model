@@ -1,17 +1,33 @@
-# Modified by Bingjun Zhang, version 2.0
-# What's new:
-# 1. Write results to text file
-# 2. Pass arguments from command line to specify certain parameters (type "python wright-fisher.py -h" for usage)
+"""
+wright-fisher.py: Wright-Fisher implementation of mutator evolution model described in Gerrish et al. (2007) Complete genetic linkage can subvert natural selection. PNAS 104: 6266-71.
+
+Contains the Individual, Population, and Evolution classes.
+
+Usage:
+
+    For details on the parameters (including their default values) run the command:
+
+    >>> python wright-fisher.py -h
+
+    For example, to run a simulation with population size of 100 for 200 generations and other parameters set to their default values run the command:
+
+    >>> python wright-fisher.py --pop_size 100 --gen 200
+"""
 
 
 import numpy as np
+import numpy.random as rnd
 import copy
 import argparse
 
+
+__author__  = 'Ricardo Azevedo, Bingjun Zhang, Ata Kalirad'
+__version__ = "0.1.2"
+
+
 class Individual(object):
     """
-    Define an Individual object, characterized by numbers of beneficial, deleterious, mutator and antimutator mutations, fitness and mutation rate.
-    Follows the model described in Gerrish et al. (2007) Complete genetic linkage can subvert natural selection. PNAS 104: 6266-71.
+    Define an Individual object, characterized by numbers of beneficial, deleterious, mutator and antimutator mutations, fitness and mutation rate.  Genomic mutation rate is given by base_mut_rate * rel_mut_rate.
 
     Attributes:
 
@@ -31,7 +47,7 @@ class Individual(object):
         n_antimutator -- number of antimutator mutations
         n_lethal      -- number of lethal mutations
         fitness       -- fitness
-        mut_rate      -- relative genomic mutation rate
+        rel_mut_rate  -- relative genomic mutation rate
     """
 
     def __init__(self, base_mut_rate, f_deleterious, f_beneficial, f_mutator, f_antimutator, f_lethal, M_deleterious, M_beneficial, M_mutator, M_antimutator):
@@ -51,17 +67,19 @@ class Individual(object):
             M_mutator     -- average fitness effect of a mutator mutation
             M_antimutator -- average fitness effect of a antimutator mutation
         """
-        assert 0 < base_mut_rate <= 1
+        # constrain parameters to fall within certain ranges
+        assert 0 <  base_mut_rate <= 1
         assert 0 <= f_deleterious <= 1
-        assert 0 <= f_beneficial <= 1
-        assert 0 <= f_mutator <= 1
+        assert 0 <= f_beneficial  <= 1
+        assert 0 <= f_mutator     <= 1
         assert 0 <= f_antimutator <= 1
-        assert 0 <= f_lethal <= 1
-        assert 0 <= f_antimutator + f_mutator + f_beneficial + f_deleterious + f_beneficial + f_mutator + f_antimutator <= 1
+        assert 0 <= f_lethal      <= 1
+        assert 0 <= f_antimutator + f_mutator + f_beneficial + f_deleterious <= 1
         assert 0 <= M_deleterious < 1
-        assert M_beneficial >= 0
-        assert M_mutator >= 0
-        assert M_antimutator >= 0
+        assert      M_beneficial >= 0
+        assert      M_mutator >= 0
+        assert      M_antimutator >= 0
+        # define Individual attributes
         self.base_mut_rate  = base_mut_rate
         self.f_deleterious  = f_deleterious
         self.f_beneficial   = f_beneficial 
@@ -71,14 +89,15 @@ class Individual(object):
         self.M_deleterious  = M_deleterious
         self.M_beneficial   = M_beneficial 
         self.M_mutator      = M_mutator    
-        self.M_antimutator  = M_antimutator        
+        self.M_antimutator  = M_antimutator
+        # initialize Individual without any mutations
         self.n_deleterious  = 0
         self.n_beneficial   = 0
         self.n_mutator      = 0
         self.n_antimutator  = 0
         self.n_lethal       = 0
         self.fitness        = 1
-        self.mut_rate       = 1
+        self.rel_mut_rate   = 1
 
     def add_deleterious(self, n_mutations):
         """
@@ -90,11 +109,11 @@ class Individual(object):
         """
         self.n_deleterious += n_mutations
         for i in range(n_mutations):
-            s = np.random.gamma(1, self.M_deleterious)
-            if s > self.fitness: # to prevent fitness from going negative
-                self.fitness = 0
-            else:
-                self.fitness *= 1 - s
+            s = rnd.exponential(self.M_deleterious)
+            # prevent 1 - s from going negative
+            if s > 1:
+                s = 1
+            self.fitness *= 1 - s
 
     def add_beneficial(self, n_mutations):
         """
@@ -106,7 +125,7 @@ class Individual(object):
         """
         self.n_beneficial += n_mutations
         for i in range(n_mutations):
-            s = np.random.gamma(1, self.M_deleterious)
+            s = rnd.exponential(self.M_deleterious)
             self.fitness *= 1 + s
 
     def add_lethal(self, n_mutations):
@@ -129,8 +148,8 @@ class Individual(object):
         """
         self.n_mutator += n_mutations
         for i in range(n_mutations):
-            s = np.power(np.random.random(), - self.M_mutator)
-            self.mut_rate *= s
+            s = np.power(rnd.random(), -self.M_mutator)
+            self.rel_mut_rate *= s
 
     def add_antimutator(self, n_mutations):
         """
@@ -142,22 +161,22 @@ class Individual(object):
         """
         self.n_antimutator += n_mutations
         for i in range(n_mutations):
-            s = np.power(np.random.random(), self.M_antimutator)
-            self.mut_rate *= s
+            s = np.power(rnd.random(), self.M_antimutator)
+            self.rel_mut_rate *= s
 
     def generate_offspring(self):
         """
         Generate an offspring of an Individual object allowing mutations to occur.
         """
         offspring = copy.deepcopy(self)
-        offspring.add_lethal(np.random.poisson(self.base_mut_rate * self.mut_rate * self.f_deleterious * self.f_lethal))
+        offspring.add_lethal(rnd.poisson(self.base_mut_rate * self.rel_mut_rate * self.f_deleterious * self.f_lethal))
         if self.n_lethal > 0:
             offspring.fitness = 0
             return offspring
-        offspring.add_deleterious(np.random.poisson(self.base_mut_rate * self.mut_rate * self.f_deleterious))
-        offspring.add_beneficial(np.random.poisson(self.base_mut_rate * self.mut_rate * self.f_beneficial))
-        offspring.add_mutator(np.random.poisson(self.base_mut_rate * self.mut_rate * self.f_mutator))
-        offspring.add_antimutator(np.random.poisson(self.base_mut_rate * self.mut_rate * self.f_antimutator))
+        offspring.add_deleterious(rnd.poisson(self.base_mut_rate * self.rel_mut_rate * self.f_deleterious))
+        offspring.add_beneficial(rnd.poisson(self.base_mut_rate * self.rel_mut_rate * self.f_beneficial))
+        offspring.add_mutator(rnd.poisson(self.base_mut_rate * self.rel_mut_rate * self.f_mutator))
+        offspring.add_antimutator(rnd.poisson(self.base_mut_rate * self.rel_mut_rate * self.f_antimutator))
         return offspring
 
 
@@ -211,7 +230,7 @@ class Population(object):
         """
         self.mu = np.zeros(self.pop_size)
         for i in range(self.pop_size):
-            self.mu[i] = self.population[i].mut_rate
+            self.mu[i] = self.population[i].rel_mut_rate
 
     def get_deleterious(self):
         """
@@ -251,14 +270,13 @@ class Population(object):
 
     def get_next_generation(self):
         """
-        Generate the following generation by sampling Individuals with replacement in proportion to their fitness and
-        generating individual offspring from each until a certain size is reached.
+        Generate the following generation by sampling Individuals with replacement in proportion to their fitness and generating individual offspring from each until a certain size is reached.
         """
         next_generation = copy.deepcopy(self)
         next_generation.population = []
         self.get_pop_fitness()
         cum_fitness = np.cumsum(self.w)
-        rand_array = np.random.random_sample(self.pop_size)
+        rand_array = rnd.random_sample(self.pop_size)
         mult_rand_array = np.multiply(rand_array, cum_fitness[self.pop_size - 1])
         indices = np.searchsorted(cum_fitness, mult_rand_array)
         for i in range(self.pop_size):
@@ -276,12 +294,18 @@ class Population(object):
         self.get_beneficial()
         self.get_mutator()
         self.get_antimutator()
-        self.stats = {"mean_fitness": self.w.mean(), "var_fitness": self.w.var(), 
-                      "mean_mut_rate": self.mu.mean(), "var_mut_rate": self.mu.var(), 
-                      "mean_deleterious": self.n_deleterious.mean(), "var_deleterious": self.n_deleterious.var(), 
-                      "mean_beneficial" : self.n_beneficial.mean(), "var_beneficial" : self.n_beneficial.var(), 
-                      "mean_mutator"    : self.n_mutator.mean(), "var_mutator"    : self.n_mutator.var(), 
-                      "mean_antimutator": self.n_antimutator.mean(), "var_antimutator": self.n_antimutator.var()}
+        self.stats = {"mean_fitness"    : self.w.mean(),
+                      "var_fitness"     : self.w.var(),
+                      "mean_mut_rate"   : self.mu.mean(),
+                      "var_mut_rate"    : self.mu.var(),
+                      "mean_deleterious": self.n_deleterious.mean(),
+                      "var_deleterious" : self.n_deleterious.var(),
+                      "mean_beneficial" : self.n_beneficial.mean(),
+                      "var_beneficial"  : self.n_beneficial.var(),
+                      "mean_mutator"    : self.n_mutator.mean(),
+                      "var_mutator"     : self.n_mutator.var(),
+                      "mean_antimutator": self.n_antimutator.mean(),
+                      "var_antimutator" : self.n_antimutator.var()}
 
     @staticmethod
     def write_data_to_file(population, file, gen):
@@ -302,7 +326,7 @@ class Population(object):
 
     @staticmethod
     def write_title_to_file(file):
-        """Output title row to file"""
+        """Output title row to file."""
         file.write("generation"       + "\t" +
                    "mean_fitness"     + "\t" +
                    "mean_mut_rate"    + "\t" +
@@ -356,12 +380,11 @@ class Evolution(object):
                     print gen
         file.close()
 
-if __name__ == "__main__":
 
-    # Usage:
-    # Add command line arguments
-    # Type "python wright-fisher.py -h" under command line for usage
-
+def main():
+    """
+    Parse parameters entered at command line and run evolutionary simulation.
+    """
     parser = argparse.ArgumentParser(description="Wright-Fisher model for evolution of mutation rates in asexual populations")
     parser.add_argument("--pop_size", dest="pop_size", help="population size, default = 1000", type=int, default="1000")
     parser.add_argument("--mu", dest="mu", help="base mutation rate, default = 0.1", type=float, default="0.1")
@@ -385,3 +408,5 @@ if __name__ == "__main__":
               args.n_gen, args.replicate, args.period, args.verbose, args.name)
 
 
+if __name__ == "__main__":
+    main()
