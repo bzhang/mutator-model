@@ -269,12 +269,4 @@ public class Individual implements Cloneable{
             locus.decreaseStrength();
         }
     }
-
-    public double getDeleFitnessEffect() {
-        return deleFitnessEffect;
-    }
-
-    public double getBeneFitnessEffect() {
-        return beneFitnessEffect;
-    }
 }
