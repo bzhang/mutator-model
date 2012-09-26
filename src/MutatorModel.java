@@ -19,7 +19,9 @@ public class MutatorModel {
             String mutMapFilename = resultFileNamePrefix + "_MutMap.txt";
             String mutStructureFilename = resultFileNamePrefix + "_MutStructure.txt";
             String popFileOutput = "Generation\tFitnessMean\tMutatorStrengthMean\tnDeleMutMean\tnBeneMutMean\t" +
-                                   "FitnessSD\tMutatorStrengthSD\tnDeleMutSD\tnBeneMutSD\n";
+                                   "MeanDeleFitnessEffect\tMeanBeneFitnessEffect\t" +
+                                   "FitnessSD\tMutatorStrengthSD\tnDeleMutSD\tnBeneMutSD\t" +
+                                   "deleFitnessEffectSD\tbeneFitnessEffectSD\n";
             String mutMapFileOutput = "MutationID\tFitnessEffect\tMutatorStrength\tGeneration\tLocus\n";
             String mutStructureFileOutput = "Generation\tMutationID\tNIndividual\n";
 
@@ -46,7 +48,7 @@ public class MutatorModel {
                 population = new Population(population, i, mutMapFilename);
                 popFileOutput = outputPopulationStat(i, population);
                 Util.writeFile(popFilename, popFileOutput);
-                if (i % ModelParameters.getInt("MUT_OUTPUT_PERIOD") == 0) {
+                if (i % ModelParameters.getInt("MUT_STRUCTURE_OUTPUT_PERIOD") == 0) {
                     mutStructureFileOutput = outputMutStructure(i, population);
                     Util.writeFile(mutStructureFilename, mutStructureFileOutput);
                 }
