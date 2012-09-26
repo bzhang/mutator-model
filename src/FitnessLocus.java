@@ -12,8 +12,8 @@ public class FitnessLocus extends Locus {
     private int   nMutations     = 0;
     private int   nDeleteriousMutations = 0;
     private int   nBeneficialMutations  = 0;
-    private double deleFitnessEffectSum = 0d;
-    private double beneFitnessEffectSum = 0d;
+    private double deleFitnessEffectSum = 0;
+    private double beneFitnessEffectSum = 0;
 
     public FitnessLocus() {}
 
