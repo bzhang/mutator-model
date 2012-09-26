@@ -9,22 +9,31 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 
+import static java.lang.Double.*;
+
 /**
  * @author Bingjun Zhang
  */
 
 public class Util {
-
     public static double sum(double[] array) {
         double sum = 0;
         for (double element : array) {
-            sum += element;
+                sum += element;
         }
         return sum;
     }
 
     public static double mean(double[] array) {
-        return sum(array) / array.length;
+        double sum = 0;
+        int arraySize = 0;
+        for (double element : array) {
+            if (!isNaN(element)) {
+                sum += element;
+                arraySize += 1;
+            }
+        }
+        return sum / arraySize;
     }
 
     public static double mean(int[] array) {
@@ -49,12 +58,22 @@ public class Util {
     }
 
     public static double variance(double[] array) {
-        double mean = mean(array);
+        double sum = 0;
+        int arraySize = 0;
+        for (double element : array) {
+            if (!isNaN(element)) {
+                sum += element;
+                arraySize += 1;
+            }
+        }
+        double mean = sum / arraySize;
         float sumOfDiff = 0;
         for (double element : array) {
-            sumOfDiff += Math.pow(element - mean, 2);
+            if (!isNaN(element)) {
+                sumOfDiff += Math.pow(element - mean, 2);
+            }
         }
-        return sumOfDiff / array.length;
+        return sumOfDiff / arraySize;
     }
 
     public static void writeFile(String outputFileName, String output) {
