@@ -46,7 +46,12 @@ public class Population {
             int previousSize = getSize();
             IndividualPair parentPair = parent.getRandomIndividualPair(totals);
             IndividualPair offspringPair = parentPair.reproduce();
-            offspringPair.mutate(currentGeneration, mutationProperties);
+            if ("true".equals(ModelParameters.getProperty("MUT_MAP_OUTPUT"))) {
+                offspringPair.mutate(currentGeneration, mutationProperties);
+            } else {
+                offspringPair.mutate(currentGeneration);
+            }
+
             addIndividualPair(offspringPair, parent.getSize());
             if (getSize() - previousSize == 0) {
                 counter++;
@@ -58,8 +63,10 @@ public class Population {
             }
         }
 
-        mutMapFileOutput = Util.outputMutMap(mutationProperties);
-        Util.writeFile(mutMapFilename, mutMapFileOutput);
+        if ("true".equals(ModelParameters.getProperty("MUT_MAP_OUTPUT"))) {
+            mutMapFileOutput = Util.outputMutMap(mutationProperties);
+            Util.writeFile(mutMapFilename, mutMapFileOutput);
+        }
     }
 
     public double[] getFitnessArray() {
