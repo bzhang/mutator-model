@@ -26,6 +26,11 @@ public class IndividualPair {
         getIndividualB().mutate(currentGeneration, mutationProperties);
     }
 
+    public void mutate(int currentGeneration) {
+        getIndividualA().mutate(currentGeneration);
+        getIndividualB().mutate(currentGeneration);
+    }
+
     public IndividualPair reproduce() {
 
         Individual offspringA = new Individual(getIndividualA());
@@ -54,5 +59,4 @@ public class IndividualPair {
             getIndividualB().setLocus(i, locusA);
         }
     }
-
 }
