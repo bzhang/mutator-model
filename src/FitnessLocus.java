@@ -6,7 +6,6 @@ public class FitnessLocus extends Locus {
 
     public static final int FITNESS_EFFECTS_INITIAL_SIZE = ModelParameters.getInt("FITNESS_EFFECTS_INITIAL_SIZE");
 
-//    private float[] fitnessEffects = new float[FITNESS_EFFECTS_INITIAL_SIZE];
     private long[] mutationIDs = new long[FITNESS_EFFECTS_INITIAL_SIZE];
     private float currentFitness = 1f;
     private int   nMutations     = 0;
@@ -64,8 +63,6 @@ public class FitnessLocus extends Locus {
         FitnessLocus cloned = null;
         try {
             cloned = (FitnessLocus) super.clone();
-//            cloned.initFitnessEffects();
-//            cloned.fitnessEffects = this.fitnessEffects.clone();
             cloned.initMutationIDs();
             cloned.mutationIDs = this.mutationIDs.clone();
             cloned.nDeleteriousMutations = this.nDeleteriousMutations;
