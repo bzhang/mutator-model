@@ -35,7 +35,7 @@ public class ModelParameters {
         return initialized;
     }
 
-    private static String getProperty(String propertyName) throws RuntimeException {
+    public static String getProperty(String propertyName) throws RuntimeException {
         if (initialized) {
             return properties.getProperty(propertyName);
         }
@@ -53,6 +53,10 @@ public class ModelParameters {
 
     public static double getDouble(String propertyName) {
         return Double.parseDouble(getProperty(propertyName));
+    }
+
+    public static boolean getBoolean(String propertyName ) {
+        return Boolean.parseBoolean(propertyName);
     }
 
     public static int getGenomeSize() {
@@ -79,9 +83,8 @@ public class ModelParameters {
                 + "_EvlFrom" + getInt("START_EVOLVING_GENERATION");
     }
 
+
     public static long getMutationID() {
         return ++mutationID;
     }
-
-
 }
