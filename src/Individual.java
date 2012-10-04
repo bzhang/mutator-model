@@ -127,6 +127,7 @@ public class Individual implements Cloneable{
         fitnessLocus.updateFitnessEffect(fitnessEffect);
         mutationProperties.add(mutationID);
         mutationProperties.add(fitnessEffect);
+        mutationProperties.add(getFitness());
         mutationProperties.add(getMutatorStrength());
         mutationProperties.add(currentGeneration);
         mutationProperties.add(locusPosition.getPosition());
