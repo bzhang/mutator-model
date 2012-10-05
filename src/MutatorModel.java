@@ -23,7 +23,7 @@ public class MutatorModel {
                                    "MeanDeleFitnessEffect\tMeanBeneFitnessEffect\t" +
                                    "FitnessSD\tMutatorStrengthSD\tnDeleMutSD\tnBeneMutSD\t" +
                                    "deleFitnessEffectSD\tbeneFitnessEffectSD\n";
-            String mutMapFileOutput = "MutationID\tFitnessEffect\tMutatorStrength\tGeneration\tLocus\n";
+            String mutMapFileOutput = "MutationID\tFitnessEffect\tIndividualFitness\tMutatorStrength\tGeneration\tLocus\n";
             String mutStructureFileOutput = "Generation\tMutationID\tNIndividual\n";
 
             // Write file headers for mutMapFile
