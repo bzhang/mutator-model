@@ -91,16 +91,16 @@ public class Util {
         Iterator iterator = mutationProperties.iterator();
         String output = "";
 
-        if (mutationProperties.size() % 5 == 0) {
-            for (int i = 0; i < mutationProperties.size(); i += 5) {
-                for (int j = 0; j < 4; j++) {
+        if (mutationProperties.size() % 6 == 0) {
+            for (int i = 0; i < mutationProperties.size(); i += 6) {
+                for (int j = 0; j < 5; j++) {
                     output += iterator.next() + "\t";
                 }
                 output += iterator.next() + "\n";
             }
         } else {
             System.err.println("The number of elements in mutationProperties" +
-                                " can not be completely divided by 5!");
+                                " can not be completely divided by 6!");
         }
         return output;
     }
