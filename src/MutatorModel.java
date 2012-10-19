@@ -36,7 +36,7 @@ public class MutatorModel {
             Util.writeFile(popFilename, popFileOutput);
             Util.writeFile(mutStructureFilename, mutStructureFileOutput);
 
-//            System.out.println("Founder population created.");
+            System.out.println("Founder population created.");
 //
 //            int reminderFounder = (int) ((System.currentTimeMillis() - start) % (24L * 3600 * 1000));
 //            Float secondsElapsedFounder = (float) reminderFounder / 1000;
@@ -53,7 +53,7 @@ public class MutatorModel {
                     mutStructureFileOutput = outputMutStructure(i, population);
                     Util.writeFile(mutStructureFilename, mutStructureFileOutput);
                 }
-//                System.out.println("Generation " + i);
+                System.out.println("Generation " + i);
 
 //                int reminderGen = (int) ((System.currentTimeMillis() - genStart) % (24L * 3600 * 1000));
 //                Float secondsElapsedGen = (float) reminderGen / 1000;
