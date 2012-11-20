@@ -2,9 +2,7 @@
  * @author Bingjun Zhang
  */
 
-import org.apache.commons.io.FileUtils;
-import java.io.File;
-import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,13 +15,15 @@ public class MutatorModel {
         ModelParameters.setPropertiesFileName(propertiesFileName);
 
         for (int nExperiment = 0; nExperiment < ModelParameters.getInt("N_EXPERIMENT"); nExperiment++) {
-            String resultFileNamePrefix = prepareOutputDirectory();
+            String resultFileNamePrefix = Util.prepareOutputDirectory();
             String popFilename = resultFileNamePrefix + "_Pop.txt";
             String mutMapFilename = resultFileNamePrefix + "_MutMap.txt";
             String mutStructureFilename = resultFileNamePrefix + "_MutStructure.txt";
-            String popFileOutput = "Generation\tFitnessMean\tFitnessSD\tMutatorStrengthMean\tMutatorStrengthSD" +
-                                   "\tnDeleMutMean\tnDeleMutSD\tnBeneMutMean\tnBeneMutSD\n";
-            String mutMapFileOutput = "MutationID\tFitnessEffect\tMutatorStrength\tGeneration\tLocus\n";
+            String popFileOutput = "Generation\tFitnessMean\tMutatorStrengthMean\tnDeleMutMean\tnBeneMutMean\t" +
+                                   "MeanDeleFitnessEffect\tMeanBeneFitnessEffect\t" +
+                                   "FitnessSD\tMutatorStrengthSD\tnDeleMutSD\tnBeneMutSD\t" +
+                                   "deleFitnessEffectSD\tbeneFitnessEffectSD\n";
+            String mutMapFileOutput = "MutationID\tFitnessEffect\tIndividualFitness\tMutatorStrength\tGeneration\tLocus\n";
             String mutStructureFileOutput = "Generation\tMutationID\tNIndividual\n";
 
             // Write file headers for mutMapFile
@@ -37,25 +37,27 @@ public class MutatorModel {
             Util.writeFile(mutStructureFilename, mutStructureFileOutput);
 
             System.out.println("Founder population created.");
-
-            int reminderFounder = (int) ((System.currentTimeMillis() - start) % (24L * 3600 * 1000));
-            Float secondsElapsedFounder = (float) reminderFounder / 1000;
-            System.out.println("Seconds elapsed for founder pop = " + secondsElapsedFounder);
+//
+//            int reminderFounder = (int) ((System.currentTimeMillis() - start) % (24L * 3600 * 1000));
+//            Float secondsElapsedFounder = (float) reminderFounder / 1000;
+//            System.out.println("Seconds elapsed for founder pop = " + secondsElapsedFounder);
 
 
             for (int i = 2; i <= ModelParameters.getInt("N_GENERATIONS"); i++) {
                 // Create the next generation
-                Long genStart = System.currentTimeMillis();
+//                Long genStart = System.currentTimeMillis();
                 population = new Population(population, i, mutMapFilename);
                 popFileOutput = outputPopulationStat(i, population);
                 Util.writeFile(popFilename, popFileOutput);
-                mutStructureFileOutput = outputMutStructure(i, population);
-                Util.writeFile(mutStructureFilename, mutStructureFileOutput);
+                if (i % ModelParameters.getInt("MUT_STRUCTURE_OUTPUT_PERIOD") == 0) {
+                    mutStructureFileOutput = outputMutStructure(i, population);
+                    Util.writeFile(mutStructureFilename, mutStructureFileOutput);
+                }
                 System.out.println("Generation " + i);
 
-                int reminderGen = (int) ((System.currentTimeMillis() - genStart) % (24L * 3600 * 1000));
-                Float secondsElapsedGen = (float) reminderGen / 1000;
-                System.out.println("Seconds elapsed = " + secondsElapsedGen);
+//                int reminderGen = (int) ((System.currentTimeMillis() - genStart) % (24L * 3600 * 1000));
+//                Float secondsElapsedGen = (float) reminderGen / 1000;
+//                System.out.println("Seconds elapsed = " + secondsElapsedGen);
 
             }
         }
@@ -67,7 +69,7 @@ public class MutatorModel {
     }
 
     private static String outputMutStructure(int i, Population population) {
-        String output = "";
+        String output = i + "\t";
         Individual individual;
         long[] mutationIDsArray;
         Map<Long, Integer> counterMap = new HashMap<Long, Integer>();
@@ -80,6 +82,9 @@ public class MutatorModel {
                     FitnessLocus locus = (FitnessLocus) individual.getLocus(k);
                     mutationIDsArray = locus.getMutationIDsArray();
                     for (long mutationID : mutationIDsArray) {
+                        if (mutationID == 0) {
+                            continue;
+                        }
                         if (counterMap.containsKey(mutationID)) {
                             counterMap.put(mutationID, counterMap.get(mutationID) + 1);
                         } else {
@@ -93,49 +98,37 @@ public class MutatorModel {
         }
 
         for (Map.Entry<Long, Integer> longIntegerEntry : counterMap.entrySet()) {
-            output += i + "\t" + longIntegerEntry.getKey() + "\t" + longIntegerEntry.getValue() +"\n";
+            output += longIntegerEntry.getKey() + "\t" + longIntegerEntry.getValue() +"\t";
         }
-
+        output += "\n";
         return output;
     }
 
     private static String outputPopulationStat(int i, Population population) {
-        float[] fitnessArray = population.getFitnessArray();
-        int[] mutatorStrengthArray = population.getMutatorStrengthArray();
-        int[] nDeleMutArray = population.getNMutationsArray().getNDeleMutArray();
-        int[] nBeneMutArray = population.getNMutationsArray().getnBeneMutArray();
+        GroupReturn fitnessPropertiesArray = population.getFitnessPropertiesArray();
+        double[] fitnessArray = fitnessPropertiesArray.getFitnessArray();
+        int[] nDeleMutArray = fitnessPropertiesArray.getNDeleMutArray();
+        int[] nBeneMutArray = fitnessPropertiesArray.getnBeneMutArray();
+        double[] meanDeleFitnessEffectArray = fitnessPropertiesArray.getMeanDeleFitnessEffectArray();
+        double[] meanBeneFitnessEffectArray = fitnessPropertiesArray.getMeanBeneFitnessEffectArray();
+        double[] mutatorStrengthArray = population.getMutatorStrengthArray();
 
 
         return i + "\t" + Util.mean(fitnessArray)
-                 + "\t" + Util.standardDeviation(fitnessArray)
-                 + "\t" + Util.mean(mutatorStrengthArray)
-                 + "\t" + Util.standardDeviation(mutatorStrengthArray)
-                 + "\t" + Util.mean(nDeleMutArray)
-                 + "\t" + Util.standardDeviation(nDeleMutArray)
-                 + "\t" + Util.mean(nBeneMutArray)
-                 + "\t" + Util.standardDeviation(nBeneMutArray)
-                 + "\n";
+                + "\t" + Util.mean(mutatorStrengthArray)
+                + "\t" + Util.mean(nDeleMutArray)
+                + "\t" + Util.mean(nBeneMutArray)
+                + "\t" + Util.mean(meanDeleFitnessEffectArray)
+                + "\t" + Util.mean(meanBeneFitnessEffectArray)
+                + "\t" + Util.standardDeviation(fitnessArray)
+                + "\t" + Util.standardDeviation(mutatorStrengthArray)
+                + "\t" + Util.standardDeviation(nDeleMutArray)
+                + "\t" + Util.standardDeviation(nBeneMutArray)
+                + "\t" + Util.standardDeviation(meanDeleFitnessEffectArray)
+                + "\t" + Util.standardDeviation(meanBeneFitnessEffectArray)
+                + "\n";
     }
 
 
-    private static String prepareOutputDirectory() {
-        String directoryName = ModelParameters.getDirectoryName();
-        File outputDir = new File(directoryName);
-        if (!outputDir.exists() && outputDir.mkdir()) {
-            System.out.println("Directory: " + directoryName + " created.");
-        }
-
-        File propertiesFile  = new File(ModelParameters.getPropertiesFilename());
-        File destinationFile = new File(directoryName + "/" + ModelParameters.getPropertiesFilename());
-        if (!destinationFile.exists()) {
-            try {
-                FileUtils.copyFileToDirectory(propertiesFile, outputDir, false);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return directoryName + "/" + System.nanoTime();
-    }
 
 }

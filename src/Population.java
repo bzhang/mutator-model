@@ -3,13 +3,11 @@
  */
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public class Population {
 
     private ArrayList<Individual> individuals;
     private LociPattern lociPattern;
-    private Random random = new Random(System.nanoTime());
 
     public Population(int nIndividuals) {
         // Create the founder population
@@ -42,15 +40,22 @@ public class Population {
         int counter = 0;
         ArrayList<Object> mutationProperties = new ArrayList<Object>();
         String mutMapFileOutput;
+        double[] totals = initTotals(parent.getFitnessArray());
 
         while (getSize() < parent.getSize()) {
             int previousSize = getSize();
-            IndividualPair parentPair = parent.getRandomIndividualPair();
+            IndividualPair parentPair = parent.getRandomIndividualPair(totals);
             IndividualPair offspringPair = parentPair.reproduce();
-            offspringPair.mutate(currentGeneration, mutationProperties);
+            if ("true".equals(ModelParameters.getProperty("MUT_MAP_OUTPUT"))) {
+                offspringPair.mutate(currentGeneration, mutationProperties);
+            } else {
+                offspringPair.mutate(currentGeneration);
+            }
+
             addIndividualPair(offspringPair, parent.getSize());
             if (getSize() - previousSize == 0) {
                 counter++;
+                System.err.println("Parent -> offspring loop no." + counter);
                 if (counter == ModelParameters.getInt("LOOP_LIMIT")) {
                     System.err.println("Parent -> offspring loop reach the limit!");
                     System.exit(0);
@@ -58,49 +63,47 @@ public class Population {
             }
         }
 
-        mutMapFileOutput = Util.outputMutMap(mutationProperties);
-        Util.writeFile(mutMapFilename, mutMapFileOutput);
+        if ("true".equals(ModelParameters.getProperty("MUT_MAP_OUTPUT"))) {
+            mutMapFileOutput = Util.outputMutMap(mutationProperties);
+            Util.writeFile(mutMapFilename, mutMapFileOutput);
+        }
     }
 
-    public float[] getFitnessArray() {
-        float[] fitnessArray = new float[getSize()];
-
-//        Long timeB4IteratingAllIndividuals = System.currentTimeMillis();
+    public double[] getFitnessArray() {
+        double[] fitnessArray = new double[getSize()];
         for (int i = 0; i < getSize(); i++) {
             fitnessArray[i] = getIndividual(i).getFitness();
         }
-//        int reminderIteraringAllIndividuals = (int) ((System.currentTimeMillis() - timeB4IteratingAllIndividuals) % (24L * 3600 * 1000));
-//        Float secondsElapsedIteratingAllIndividuals = (float) reminderIteraringAllIndividuals / 1000;
-//        System.out.println("Seconds elapsed for getting fitness of all individuals = " + secondsElapsedIteratingAllIndividuals);
-
         return fitnessArray;
     }
 
-    public int[] getMutatorStrengthArray() {
-        int[] mutatorStrengthArray = new int[getSize()];
-        for (int i = 0; i < getSize(); i++) {
+    public GroupReturn getFitnessPropertiesArray() {
+        int popSize = getSize();
+        double[] fitnessArray = new double[popSize];
+        double[] meanDeleFitnessEffectArray = new double[popSize];
+        double[] meanBeneFitnessEffectArray = new double[popSize];
+        int[] nDeleMutArray = new int[popSize];
+        int[] nBeneMutArray = new int[popSize];
+        for (int i = 0; i < popSize; i++) {
+            GroupReturn fitnessProperties = getIndividual(i).getFitnessProperties();
+            fitnessArray[i] = fitnessProperties.getFitness();
+            meanDeleFitnessEffectArray[i] = fitnessProperties.getMeanDeleFitnessEffect();
+            meanBeneFitnessEffectArray[i] = fitnessProperties.getMeanBeneFitnessEffect();
+            nDeleMutArray[i] = fitnessProperties.getNDeleteriousMutations();
+            nBeneMutArray[i] = fitnessProperties.getNBeneficialMutations();
+        }
+        return new GroupReturn(fitnessArray, meanDeleFitnessEffectArray, meanBeneFitnessEffectArray, nDeleMutArray, nBeneMutArray);
+    }
+
+    public double[] getMutatorStrengthArray() {
+        double[] mutatorStrengthArray = new double[getSize()];
+        int i = 0;
+        while (i < getSize()) {
             mutatorStrengthArray[i] = getIndividual(i).getMutatorStrength();
+            i++;
         }
         return mutatorStrengthArray;
     }
-
-    public OnePair getNMutationsArray() {
-        int[] nDeleMutArray = new int[getSize()];
-        int[] nBeneMutArray = new int[getSize()];
-        for (int i = 0; i < getSize(); i++) {
-            nDeleMutArray[i] = getIndividual(i).getNMutations().getNDeleteriousMutations();
-            nBeneMutArray[i] = getIndividual(i).getNMutations().getNBeneficialMutations();
-        }
-        return new OnePair(nDeleMutArray, nBeneMutArray);
-    }
-
-//    public int[] getNBeneMutArray() {
-//        int[] nBeneMutArray = new int[getSize()];
-//        for (int i = 0; i < getSize(); i++) {
-//            nBeneMutArray[i] = getIndividual(i).getNBeneMut();
-//        }
-//        return nBeneMutArray;
-//    }
 
     private void addIndividualPair(IndividualPair offspringPair, int parentSize) {
         addIndividual(offspringPair.getIndividualA(), parentSize);
@@ -113,13 +116,13 @@ public class Population {
         }
     }
 
-    private IndividualPair getRandomIndividualPair() {
-        float[] randomWeights = getFitnessArray();
-        WeightedRandomGenerator wrg = new WeightedRandomGenerator(randomWeights);
-        int indexA = wrg.nextInt();
-        int indexB = wrg.nextInt();
-        while (indexA == indexB) {
-            indexB = wrg.nextInt();
+    private IndividualPair getRandomIndividualPair(double[] totals) {
+        WeightedRandomGenerator wrg = new WeightedRandomGenerator();
+        int indexA = 0;
+        int indexB = 0;
+        while (indexA == indexB || indexA == totals.length || indexB == totals.length) {
+            indexA = wrg.nextInt(totals);
+            indexB = wrg.nextInt(totals);
         }
         Individual individualA = getIndividual(indexA);
         Individual individualB = getIndividual(indexB);
@@ -127,11 +130,22 @@ public class Population {
         return new IndividualPair(individualA, individualB);
     }
 
-    private int getRandomMutatorStrength() {
-        int strength = 1;
-        // Generate mutator locus, strength ranging from [2, MUTATOR_STRENGTH_MAX]
-        if (random.nextFloat() < ModelParameters.getFloat("MUTATOR_RATIO")) {
-            strength = random.nextInt(ModelParameters.getInt("MUTATOR_STRENGTH_MAX") - 1) + 2;
+    private double[] initTotals(double[] weights) {
+        double[] totals = new double[weights.length];
+        float runningTotal = 0;
+        int i = 0;
+        for (double weight : weights) {
+            runningTotal += weight;
+            totals[i++] = runningTotal;
+        }
+        return totals;
+    }
+
+    private double getRandomMutatorStrength() {
+        double strength = 1;
+        // Generate mutator locus, strength ranging from [2, FOUNDER_MUTATOR_STRENGTH_MAX]
+        if (Rand.getFloat() < ModelParameters.getFloat("MUTATOR_RATIO")) {
+            strength = Rand.getInt(ModelParameters.getInt("FOUNDER_MUTATOR_STRENGTH_MAX") - 1) + 2;
         }
         return strength;
     }
@@ -139,8 +153,8 @@ public class Population {
     private float getRandomRecombinationStrength() {
         float strength = 0;
         // Generate recombination locus (sexual), strength ranging from (0.0, 1.0]
-        if (random.nextFloat() < ModelParameters.getFloat("RECOMBINATION_RATIO")) {
-            strength = random.nextFloat();
+        if (Rand.getFloat() < ModelParameters.getFloat("RECOMBINATION_RATIO")) {
+            strength = Rand.getFloat();
         }
         return strength;
     }

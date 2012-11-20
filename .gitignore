@@ -1,4 +1,10 @@
+.idea/*.xml
+.idea/*
+src/*.orig
+.Rhistory
 .DS_Store
 out/
-MutatorModel.iml
-.idea/*
+Mutator-model.iml
+*.R
+*.txt
+*.pdf

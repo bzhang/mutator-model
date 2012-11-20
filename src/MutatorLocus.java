@@ -4,22 +4,27 @@
 
 public class MutatorLocus extends Locus {
 
-    private int strength;
+    private double strength;
 
-    public MutatorLocus(int strength) {
+    public MutatorLocus(double strength) {
         this.strength = strength;
     }
 
-    public int getStrength() {
+    public double getStrength() {
         return strength;
     }
 
+//    public double getMutatorEffect() {
+////        return ((-ModelParameters.getFloat("MUTATOR_MUTATION_EFFECT")) * Math.log(1 - Rand.getFloat()));
+//        return ((-ModelParameters.getFloat("MUTATOR_MUTATION_EFFECT")) * Rand.getFloat());
+//    }
+
     public void increaseStrength() {
-        this.strength *= ModelParameters.getFloat("MUTATOR_MUTATION_EFFECT");
+        this.strength *= Math.pow(Rand.getDouble(), -ModelParameters.getFloat("MUTATOR_MUTATION_EFFECT"));
     }
 
     public void decreaseStrength() {
-        this.strength /= ModelParameters.getFloat("MUTATOR_MUTATION_EFFECT");
+        this.strength *= Math.pow(Rand.getDouble(), ModelParameters.getFloat("ANTIMUTATOR_MUTATION_EFFECT"));
     }
 }
 

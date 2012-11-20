@@ -2,7 +2,6 @@
  * @author Bingjun Zhang
  */
 
-import cern.jet.random.Poisson;
 import java.util.ArrayList;
 
 public class Individual implements Cloneable{
@@ -42,7 +41,23 @@ public class Individual implements Cloneable{
             deleteriousMutate(currentGeneration, mutationProperties);
             beneficialMutate(currentGeneration, mutationProperties);
             mutatorMutate(currentGeneration);
+            antimutatorMutate(currentGeneration);
         }
+
+        if (getFitness() <= 0) {
+            die();
+        }
+    }
+
+    public void mutate(int currentGeneration) {
+        lethalMutate();
+        if (isAlive()) {
+            deleteriousMutate(currentGeneration);
+            beneficialMutate(currentGeneration);
+            mutatorMutate(currentGeneration);
+            antimutatorMutate(currentGeneration);
+        }
+
         if (getFitness() <= 0) {
             die();
         }
@@ -65,64 +80,95 @@ public class Individual implements Cloneable{
 
     private void deleteriousMutate(int currentGeneration, ArrayList mutationProperties) {
         double mutationRate = ModelParameters.getDouble("BASE_DELETERIOUS_MUTATION_RATE") * getMutatorStrength();
-        Poisson poisson = new Poisson(mutationRate, Rand.getEngine());
-        int poissonObs = poisson.nextInt();
-        float fitnessEffect = ModelParameters.getFloat("DEFAULT_DELETERIOUS_EFFECT");
-
+        int poissonObs = Util.getPoisson(mutationRate);
         for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
+            double u = Rand.getFloat();
+            double fitnessEffect = 1 - ((-ModelParameters.getFloat("DEFAULT_DELETERIOUS_EFFECT")) * Math.log(1 - u));
             updateMutationInformation(currentGeneration, mutationProperties, fitnessEffect);
+        }
+    }
+
+    private void deleteriousMutate(int currentGeneration) {
+        double mutationRate = ModelParameters.getDouble("BASE_DELETERIOUS_MUTATION_RATE") * getMutatorStrength();
+        int poissonObs = Util.getPoisson(mutationRate);
+        for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
+            double u = Rand.getFloat();
+            double fitnessEffect = 1 - ((-ModelParameters.getFloat("DEFAULT_DELETERIOUS_EFFECT")) * Math.log(1 - u));
+            System.out.println(fitnessEffect);
+            updateMutationInformation(currentGeneration, fitnessEffect);
         }
     }
 
     private void beneficialMutate(int currentGeneration, ArrayList mutationProperties) {
         double mutationRate = ModelParameters.getDouble("BASE_BENEFICIAL_MUTATION_RATE") * getMutatorStrength();
-        Poisson poisson = new Poisson(mutationRate, Rand.getEngine());
-        int poissonObs = poisson.nextInt();
-        float fitnessEffect = ModelParameters.getFloat("DEFAULT_BENEFICIAL_EFFECT");
-
+        int poissonObs = Util.getPoisson(mutationRate);
         for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
+            double u = Rand.getFloat();
+            double fitnessEffect = 1 + ((-ModelParameters.getFloat("DEFAULT_BENEFICIAL_EFFECT")) * Math.log(1 - u));
             updateMutationInformation(currentGeneration, mutationProperties, fitnessEffect);
         }
     }
 
-    private void updateMutationInformation(int currentGeneration, ArrayList mutationProperties, float fitnessEffect) {
+    private void beneficialMutate(int currentGeneration) {
+        double mutationRate = ModelParameters.getDouble("BASE_BENEFICIAL_MUTATION_RATE") * getMutatorStrength();
+        int poissonObs = Util.getPoisson(mutationRate);
+        for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
+            double u = Rand.getFloat();
+            double fitnessEffect = 1 + ((-ModelParameters.getFloat("DEFAULT_BENEFICIAL_EFFECT")) * Math.log(1 - u));
+            updateMutationInformation(currentGeneration, fitnessEffect);
+        }
+    }
+
+    private void updateMutationInformation(int currentGeneration, ArrayList mutationProperties, double fitnessEffect) {
         long mutationID = ModelParameters.getMutationID();
-        OnePair locusPosition = getRandomFitnessLocus();
+        GroupReturn locusPosition = getRandomFitnessLocus();
         FitnessLocus fitnessLocus = (FitnessLocus) locusPosition.getFitnessLocus();
         fitnessLocus.addMutationID(mutationID);
         fitnessLocus.updateFitnessEffect(fitnessEffect);
         mutationProperties.add(mutationID);
         mutationProperties.add(fitnessEffect);
+        mutationProperties.add(getFitness());
         mutationProperties.add(getMutatorStrength());
         mutationProperties.add(currentGeneration);
         mutationProperties.add(locusPosition.getPosition());
     }
 
+    private void updateMutationInformation(int currentGeneration, double fitnessEffect) {
+        long mutationID = ModelParameters.getMutationID();
+        GroupReturn locusPosition = getRandomFitnessLocus();
+        FitnessLocus fitnessLocus = (FitnessLocus) locusPosition.getFitnessLocus();
+        fitnessLocus.addMutationID(mutationID);
+        fitnessLocus.updateFitnessEffect(fitnessEffect);
+    }
+
     private void mutatorMutate(int currentGeneration) {
-        int startingEvolvingGeneration = ModelParameters.getInt("START_EVOLVING_GENERATION");
         double mutationRate = ModelParameters.getDouble("INITIAL_MUTATOR_MUTATION_RATE");
-
-//      startingEvolvingGeneration ranges [1,21];
-//      1 means evolving mutators from beginning; 21 means fixed mu all the time.
-        if (currentGeneration >= startingEvolvingGeneration) {
+        if (currentGeneration >= ModelParameters.getInt("START_EVOLVING_GENERATION")) {
             mutationRate = ModelParameters.getDouble("EVOLVING_MUTATOR_MUTATION_RATE") * getMutatorStrength();
-        }
-
-        Poisson poisson = new Poisson(mutationRate, Rand.getEngine());
-        int poissonObs = poisson.nextInt();
-        for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
-            MutatorLocus locus = getRandomMutatorLocus();
-            if (Rand.getDouble() < ModelParameters.getDouble("PROBABILITY_TO_MUTATOR")) {
+            int poissonObs = Util.getPoisson(mutationRate);
+            for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
+                MutatorLocus locus = getRandomMutatorLocus();
                 locus.increaseStrength();
-//            } else if (locus.getStrength() > ModelParameters.MUTATOR_MUTATION_EFFECT) {
-                    // to ensure the strength is positive
-            } else {
+            }
+        }
+    }
+
+    private void antimutatorMutate(int currentGeneration) {
+        int startingEvolvingGeneration = ModelParameters.getInt("START_EVOLVING_GENERATION");
+        double mutationRate = ModelParameters.getDouble("INITIAL_ANTIMUTATOR_MUTATION_RATE");
+
+        if (currentGeneration >= startingEvolvingGeneration) {
+            mutationRate = ModelParameters.getDouble("EVOLVING_ANTIMUTATOR_MUTATION_RATE") * getMutatorStrength();
+//        Poisson poisson = new Poisson(mutationRate, Rand.getEngine());
+//        int poissonObs = poisson.nextInt();
+            int poissonObs = Util.getPoisson(mutationRate);
+            for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
+                MutatorLocus locus = getRandomMutatorLocus();
                 locus.decreaseStrength();
             }
         }
-
-
     }
+
 
     // TODO: modify getRandomXXLocus to remove redundant codes; extract new methods
     private MutatorLocus getRandomMutatorLocus() {
@@ -130,9 +176,9 @@ public class Individual implements Cloneable{
         return (MutatorLocus) getLocus(position);
     }
 
-    private OnePair getRandomFitnessLocus() {
+    private GroupReturn getRandomFitnessLocus() {
         int position = lociPattern.getRandomFitnessPosition();
-        return new OnePair((FitnessLocus) getLocus(position), position);
+        return new GroupReturn((FitnessLocus) getLocus(position), position);
     }
 
     public void setFitnessLocus(int position) {
@@ -141,10 +187,8 @@ public class Individual implements Cloneable{
     }
 
 //    public void setFitnessLocus(int position) {
-//        setFitnessLocus(position, ModelParameters.getFloat("BASE_FITNESS_EFFECT"));
-//    }
 
-    public void setMutatorLocus(int position, int strength) {
+    public void setMutatorLocus(int position, double strength) {
         MutatorLocus mutatorLocus = new MutatorLocus(strength);
         setLocus(position, mutatorLocus);
     }
@@ -170,8 +214,10 @@ public class Individual implements Cloneable{
         return loci.length;
     }
 
-    public float getFitness() {
-        float fitness = 1;
+//        int startingEvolvingGeneration = ModelParameters.getInt("START_EVOLVING_GENERATION");
+
+    public double getFitness() {
+        double fitness = 1;
         for (int i = 0; i < getGenomeSize(); i++) {
             if (lociPattern.getLocusType(i) == LociPattern.LocusType.Fitness) {
                 FitnessLocus locus = (FitnessLocus)getLocus(i);
@@ -181,7 +227,29 @@ public class Individual implements Cloneable{
         return fitness;
     }
 
-    public int getMutatorStrength() {
+    public GroupReturn getFitnessProperties() {
+        double fitness = 1;
+        double meanDeleFitnessEffect = 0;
+        double meanBeneFitnessEffect = 0;
+        int nDeleteriousMutations = 0;
+        int nBeneficialMutations = 0;
+        for (int i = 0; i < getGenomeSize(); i++) {
+            if (lociPattern.getLocusType(i) == LociPattern.LocusType.Fitness) {
+                FitnessLocus locus = (FitnessLocus)getLocus(i);
+                fitness *= locus.getFitnessEffect();
+                meanDeleFitnessEffect += locus.getDeleFitnessEffectSum();
+                meanBeneFitnessEffect += locus.getBeneFitnessEffectSum();
+                nDeleteriousMutations += locus.getNDeleteriousMutations();
+                nBeneficialMutations += locus.getNBeneficialMutations();
+            }
+        }
+        meanDeleFitnessEffect /= nDeleteriousMutations;
+        meanBeneFitnessEffect /= nBeneficialMutations;
+
+        return new GroupReturn(fitness, meanDeleFitnessEffect, meanBeneFitnessEffect, nDeleteriousMutations, nBeneficialMutations);
+    }
+
+    public double getMutatorStrength() {
         // TODO: multiple all mutator strength values
         int mutatorLocusPosition = lociPattern.getMutatorLociPositions()[0];
         return ((MutatorLocus) getLocus(mutatorLocusPosition)).getStrength(); // refactor
@@ -193,18 +261,28 @@ public class Individual implements Cloneable{
         return ((RecombinationLocus) getLocus(recombinationLocusPosition)).getStrength(); // refactor
     }
 
-    public OnePair getNMutations() {
-        int nDeleteriousMutations = 0;
-        int nBeneficialMutations = 0;
-
-        for (int i = 0; i < getGenomeSize(); i++) {
-            if (lociPattern.getLocusType(i) == LociPattern.LocusType.Fitness) {
-                FitnessLocus locus = (FitnessLocus) getLocus(i);
-                nDeleteriousMutations += locus.getNDeleteriousMutations();
-                nBeneficialMutations += locus.getNBeneficialMutations();
-            }
+    public double mutate(int nDeleMutation, int nBeneMutation) {
+        double fitnessEffect = 1;
+        for (int i = 0; i < nDeleMutation; i++) {
+            double u = Rand.getFloat();
+            fitnessEffect *= 1 - ((-ModelParameters.getFloat("DEFAULT_DELETERIOUS_EFFECT")) * Math.log(1 - u));
         }
-        return new OnePair(nDeleteriousMutations, nBeneficialMutations);
+        for (int j = 0; j < nBeneMutation; j++) {
+            double u = Rand.getFloat();
+            fitnessEffect *= 1 + ((-ModelParameters.getFloat("DEFAULT_BENEFICIAL_EFFECT")) * Math.log(1 - u));
+        }
+        return (fitnessEffect);
     }
 
+    public void mutateMutationRate(int nMutatorMutation, int nAntiMutMutation) {
+//        MutatorLocus locus = getRandomMutatorLocus();
+        int position = lociPattern.getRandomMutatorPosition();
+        MutatorLocus locus = (MutatorLocus) loci[position];
+        for (int i = 0; i < nMutatorMutation; i++) {
+            locus.increaseStrength();
+        }
+        for (int j = 0; j < nAntiMutMutation; j++) {
+            locus.decreaseStrength();
+        }
+    }
 }

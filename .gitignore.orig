@@ -1,0 +1,15 @@
+<<<<<<< HEAD
+.DS_Store
+out/
+MutatorModel.iml
+=======
+.idea/*.xml
+>>>>>>> 319d15382b56fe0fdf168882c8cfd8a9d4b91b06
+.idea/*
+src/*.orig
+.Rhistory
+out/
+Mutator-model.iml
+*.R
+*.txt
+*.pdf

@@ -1,6 +1,5 @@
 import cern.jet.random.engine.DRand;
 import cern.jet.random.engine.RandomEngine;
-
 import java.util.Random;
 
 /**
@@ -9,8 +8,8 @@ import java.util.Random;
 
 public class Rand {
 
-    private static Random random = new Random(System.nanoTime());
-    private static RandomEngine engine = new DRand();
+    private static Random random = new Random();
+//    private static RandomEngine engine = new DRand();
 
     public static int getInt(int i) {
         return random.nextInt(i);
@@ -24,7 +23,7 @@ public class Rand {
         return random.nextDouble();
     }
 
-    public static RandomEngine getEngine() {
-        return engine;
-    }
+//    public static RandomEngine getEngine() {
+//        return engine;
+//    }
 }

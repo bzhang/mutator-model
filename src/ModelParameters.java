@@ -35,7 +35,7 @@ public class ModelParameters {
         return initialized;
     }
 
-    private static String getProperty(String propertyName) throws RuntimeException {
+    public static String getProperty(String propertyName) throws RuntimeException {
         if (initialized) {
             return properties.getProperty(propertyName);
         }
@@ -55,30 +55,36 @@ public class ModelParameters {
         return Double.parseDouble(getProperty(propertyName));
     }
 
+    public static boolean getBoolean(String propertyName ) {
+        return Boolean.parseBoolean(propertyName);
+    }
+
     public static int getGenomeSize() {
         return getInt("N_FITNESS_LOCI") + getInt("N_MUTATOR_LOCI") + getInt("N_RECOMBINATION_LOCI");
     }
 
     public static String getDirectoryName() {
-        return "out/MutMap"
-                + "_M" + getFloat("MUTATOR_RATIO")
+        String path = getProperty("OUTPUT_PATH");
+//        return "/project/worm/MutatorModel/Expo"
+        return path + "/"
+                + "M" + getFloat("MUTATOR_RATIO")
                 + "_R" + getFloat("RECOMBINATION_RATIO")
                 + "_G" + getInt("N_GENERATIONS")
                 + "_N" + getInt("POPULATION_SIZE")
                 + "_BeneMR" + getDouble("BASE_BENEFICIAL_MUTATION_RATE")
                 + "_DeleMR" + getDouble("BASE_DELETERIOUS_MUTATION_RATE")
-                + "_BeneE"  + getFloat("DEFAULT_BENEFICIAL_EFFECT")
-                + "_DeleE"  + getFloat("DEFAULT_DELETERIOUS_EFFECT")
-                + "_MutStr" + getInt("MUTATOR_STRENGTH_MAX")
-                + "_InitMutaMR" + getDouble("INITIAL_MUTATOR_MUTATION_RATE")
-                + "_EvolMutaMR" + getDouble("EVOLVING_MUTATOR_MUTATION_RATE")
-                + "_StartEvol"  + getInt("START_EVOLVING_GENERATION")
-                + "_Prob2M" + getDouble("PROBABILITY_TO_MUTATOR")
-                + "_MutaE"  + getFloat("MUTATOR_MUTATION_EFFECT");
+                + "_BeneE" + getFloat("DEFAULT_BENEFICIAL_EFFECT")
+                + "_DeleE" + getFloat("DEFAULT_DELETERIOUS_EFFECT")
+                + "_MutStr" + getInt("FOUNDER_MUTATOR_STRENGTH_MAX")
+                + "_MutMR" + getDouble("EVOLVING_MUTATOR_MUTATION_RATE")
+                + "_AntiMutMR" + getDouble("EVOLVING_ANTIMUTATOR_MUTATION_RATE")
+                + "_MutaE" + getFloat("MUTATOR_MUTATION_EFFECT")
+                + "_AntiMutE" + getFloat("ANTIMUTATOR_MUTATION_EFFECT")
+                + "_EvlFrom" + getInt("START_EVOLVING_GENERATION");
     }
 
+
     public static long getMutationID() {
-        mutationID++;
-        return mutationID;
+        return ++mutationID;
     }
 }
