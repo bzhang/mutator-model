@@ -53,7 +53,7 @@ public class Population {
             IndividualPair parentPair = parent.getRandomIndividualPair(totals);
             IndividualPair offspringPair = parentPair.reproduce();
             if ("true".equals(ModelParameters.getProperty("MUT_MAP_OUTPUT"))) {
-                offspringPair.mutate(currentGeneration, mutationProperties, parentFitnessMean, parentFitnessSD);
+                offspringPair.mutate(currentGeneration, mutationProperties, parentFitnessMean, parentFitnessSD, corFitnessMutatorStrength);
             } else {
                 offspringPair.mutate(currentGeneration);
             }
