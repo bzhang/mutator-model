@@ -35,11 +35,12 @@ public class Individual implements Cloneable{
         }
     }
 
-    public void mutate(int currentGeneration, ArrayList mutationProperties) {
+    public void mutate(int currentGeneration, ArrayList mutationProperties, double parentFitnessMean, double parentFitnessSD) {
         lethalMutate();
         if (isAlive()) {
-            deleteriousMutate(currentGeneration, mutationProperties);
-            beneficialMutate(currentGeneration, mutationProperties);
+            double parentFitnessZScore = (getFitness() - parentFitnessMean) / parentFitnessSD;
+            deleteriousMutate(currentGeneration, mutationProperties, parentFitnessZScore);
+            beneficialMutate(currentGeneration, mutationProperties, parentFitnessZScore);
             mutatorMutate(currentGeneration);
             antimutatorMutate(currentGeneration);
         }
@@ -78,13 +79,14 @@ public class Individual implements Cloneable{
         return alive;
     }
 
-    private void deleteriousMutate(int currentGeneration, ArrayList mutationProperties) {
+    private void deleteriousMutate(int currentGeneration, ArrayList mutationProperties, double parentFitnessZScore) {
         double mutationRate = ModelParameters.getDouble("BASE_DELETERIOUS_MUTATION_RATE") * getMutatorStrength();
         int poissonObs = Util.getPoisson(mutationRate);
         for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
             double u = Rand.getFloat();
             double fitnessEffect = 1 - ((-ModelParameters.getFloat("DEFAULT_DELETERIOUS_EFFECT")) * Math.log(1 - u));
-            updateMutationInformation(currentGeneration, mutationProperties, fitnessEffect);
+            double fitnessBeforeMutate = getFitness();
+            updateMutationInformation(currentGeneration, mutationProperties, fitnessEffect, parentFitnessZScore);
         }
     }
 
@@ -94,18 +96,18 @@ public class Individual implements Cloneable{
         for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
             double u = Rand.getFloat();
             double fitnessEffect = 1 - ((-ModelParameters.getFloat("DEFAULT_DELETERIOUS_EFFECT")) * Math.log(1 - u));
-            System.out.println(fitnessEffect);
             updateMutationInformation(currentGeneration, fitnessEffect);
         }
     }
 
-    private void beneficialMutate(int currentGeneration, ArrayList mutationProperties) {
+    private void beneficialMutate(int currentGeneration, ArrayList mutationProperties, double parentFitnessZScore) {
         double mutationRate = ModelParameters.getDouble("BASE_BENEFICIAL_MUTATION_RATE") * getMutatorStrength();
         int poissonObs = Util.getPoisson(mutationRate);
         for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
             double u = Rand.getFloat();
             double fitnessEffect = 1 + ((-ModelParameters.getFloat("DEFAULT_BENEFICIAL_EFFECT")) * Math.log(1 - u));
-            updateMutationInformation(currentGeneration, mutationProperties, fitnessEffect);
+            double fitnessBeforeMutate = getFitness();
+            updateMutationInformation(currentGeneration, mutationProperties, fitnessEffect, parentFitnessZScore);
         }
     }
 
@@ -119,7 +121,7 @@ public class Individual implements Cloneable{
         }
     }
 
-    private void updateMutationInformation(int currentGeneration, ArrayList mutationProperties, double fitnessEffect) {
+    private void updateMutationInformation(int currentGeneration, ArrayList mutationProperties, double fitnessEffect, double parentFitnessZScore) {
         long mutationID = ModelParameters.getMutationID();
         GroupReturn locusPosition = getRandomFitnessLocus();
         FitnessLocus fitnessLocus = (FitnessLocus) locusPosition.getFitnessLocus();
@@ -127,7 +129,7 @@ public class Individual implements Cloneable{
         fitnessLocus.updateFitnessEffect(fitnessEffect);
         mutationProperties.add(mutationID);
         mutationProperties.add(fitnessEffect);
-        mutationProperties.add(getFitness());
+        mutationProperties.add(parentFitnessZScore);
         mutationProperties.add(getMutatorStrength());
         mutationProperties.add(currentGeneration);
         mutationProperties.add(locusPosition.getPosition());
