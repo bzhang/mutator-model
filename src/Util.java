@@ -1,4 +1,5 @@
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.math.stat.correlation.PearsonsCorrelation;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -142,4 +143,7 @@ public class Util {
         return k - 1;
     }
 
+    public static double pearsonCorrelation(double[] data1, double[] data2) {
+        return new PearsonsCorrelation().correlation(data1, data2);
+    }
 }
