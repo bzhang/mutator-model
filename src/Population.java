@@ -40,14 +40,17 @@ public class Population {
         int counter = 0;
         ArrayList<Object> mutationProperties = new ArrayList<Object>();
         String mutMapFileOutput;
-        double[] totals = initTotals(parent.getFitnessArray());
+        double[] parentFitnessArray = parent.getFitnessArray();
+        double[] totals = initTotals(parentFitnessArray);
 
         while (getSize() < parent.getSize()) {
             int previousSize = getSize();
             IndividualPair parentPair = parent.getRandomIndividualPair(totals);
+            double parentFitnessMean = Util.mean(parentFitnessArray);
+            double parentFitnessSD = Util.standardDeviation(parentFitnessArray);
             IndividualPair offspringPair = parentPair.reproduce();
             if ("true".equals(ModelParameters.getProperty("MUT_MAP_OUTPUT"))) {
-                offspringPair.mutate(currentGeneration, mutationProperties);
+                offspringPair.mutate(currentGeneration, mutationProperties, parentFitnessMean, parentFitnessSD);
             } else {
                 offspringPair.mutate(currentGeneration);
             }
