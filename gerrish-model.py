@@ -30,14 +30,14 @@ class Individual(object):
         assert M_antimutator >= 0
         self.base_mut_rate  = base_mut_rate
         self.f_deleterious  = f_deleterious
-        self.f_beneficial   = f_beneficial 
-        self.f_mutator      = f_mutator    
+        self.f_beneficial   = f_beneficial
+        self.f_mutator      = f_mutator
         self.f_antimutator  = f_antimutator
-        self.f_lethal       = f_lethal     
+        self.f_lethal       = f_lethal
         self.M_deleterious  = M_deleterious
-        self.M_beneficial   = M_beneficial 
-        self.M_mutator      = M_mutator    
-        self.M_antimutator  = M_antimutator        
+        self.M_beneficial   = M_beneficial
+        self.M_mutator      = M_mutator
+        self.M_antimutator  = M_antimutator
         self.n_deleterious  = 0
         self.n_beneficial   = 0
         self.n_mutator      = 0
@@ -51,7 +51,7 @@ class Individual(object):
         self.n_deleterious += n_mutations
         for i in range(n_mutations):
             s = np.random.gamma(1, self.M_deleterious)
-            if s > self.fitness: # to prevent fitness from going negative
+            if s > self.fitness:  # to prevent fitness from going negative
                 self.fitness = 0
             else:
                 self.fitness *= 1 - s
@@ -249,7 +249,7 @@ class Evolution(object):
 # Add command line arguments
 # Type "python gerrish.sh -h" under command line for usage
 
-parser = argparse.ArgumentParser(description="Wright-Fisher model for evolution of mutation rates in asexual populations")
+parser = argparse.ArgumentParser(description="Gerrish model for evolution of mutation rates in asexual populations")
 parser.add_argument("--init_pop_size", dest="init_pop_size", help="population size, default = 1000", type=int, default="1000")
 parser.add_argument("--nudging", dest="nudging", help="nudging factor to keep population size approximately constant, default = 0.3", type=float, default="0.3")
 parser.add_argument("--mu", dest="mu", help="base mutation rate, default = 0.1", type=float, default="0.1")
@@ -271,5 +271,3 @@ args = parser.parse_args()
 
 Evolution(args.nudging, args.init_pop_size, Population(args.init_pop_size, args.mu, args.fd, args.fb, args.fm, args.fa, args.fl, args.md, args.mb, args.mm, args.ma),
           args.n_gen, args.replicate, args.period, args.verbose, args.name)
-
-
