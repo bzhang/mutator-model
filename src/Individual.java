@@ -35,12 +35,12 @@ public class Individual implements Cloneable{
         }
     }
 
-    public void mutate(int currentGeneration, ArrayList mutationProperties, double parentFitnessMean, double parentFitnessSD) {
+    public void mutate(int currentGeneration, ArrayList mutationProperties, double parentFitnessMean, double parentFitnessSD, double corFitnessMutatorStrength) {
         lethalMutate();
         if (isAlive()) {
             double parentFitnessZScore = (getFitness() - parentFitnessMean) / parentFitnessSD;
-            deleteriousMutate(currentGeneration, mutationProperties, parentFitnessZScore);
-            beneficialMutate(currentGeneration, mutationProperties, parentFitnessZScore);
+            deleteriousMutate(currentGeneration, mutationProperties, parentFitnessZScore, corFitnessMutatorStrength);
+            beneficialMutate(currentGeneration, mutationProperties, parentFitnessZScore, corFitnessMutatorStrength);
             mutatorMutate(currentGeneration);
             antimutatorMutate(currentGeneration);
         }
@@ -79,14 +79,13 @@ public class Individual implements Cloneable{
         return alive;
     }
 
-    private void deleteriousMutate(int currentGeneration, ArrayList mutationProperties, double parentFitnessZScore) {
+    private void deleteriousMutate(int currentGeneration, ArrayList mutationProperties, double parentFitnessZScore, double corFitnessMutatorStrength) {
         double mutationRate = ModelParameters.getDouble("BASE_DELETERIOUS_MUTATION_RATE") * getMutatorStrength();
         int poissonObs = Util.getPoisson(mutationRate);
         for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
             double u = Rand.getFloat();
             double fitnessEffect = 1 - ((-ModelParameters.getFloat("DEFAULT_DELETERIOUS_EFFECT")) * Math.log(1 - u));
-            double fitnessBeforeMutate = getFitness();
-            updateMutationInformation(currentGeneration, mutationProperties, fitnessEffect, parentFitnessZScore);
+            updateMutationInformation(currentGeneration, mutationProperties, fitnessEffect, parentFitnessZScore, corFitnessMutatorStrength);
         }
     }
 
@@ -100,14 +99,13 @@ public class Individual implements Cloneable{
         }
     }
 
-    private void beneficialMutate(int currentGeneration, ArrayList mutationProperties, double parentFitnessZScore) {
+    private void beneficialMutate(int currentGeneration, ArrayList mutationProperties, double parentFitnessZScore, double corFitnessMutatorStrength) {
         double mutationRate = ModelParameters.getDouble("BASE_BENEFICIAL_MUTATION_RATE") * getMutatorStrength();
         int poissonObs = Util.getPoisson(mutationRate);
         for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
             double u = Rand.getFloat();
             double fitnessEffect = 1 + ((-ModelParameters.getFloat("DEFAULT_BENEFICIAL_EFFECT")) * Math.log(1 - u));
-            double fitnessBeforeMutate = getFitness();
-            updateMutationInformation(currentGeneration, mutationProperties, fitnessEffect, parentFitnessZScore);
+            updateMutationInformation(currentGeneration, mutationProperties, fitnessEffect, parentFitnessZScore, corFitnessMutatorStrength);
         }
     }
 
@@ -121,7 +119,7 @@ public class Individual implements Cloneable{
         }
     }
 
-    private void updateMutationInformation(int currentGeneration, ArrayList mutationProperties, double fitnessEffect, double parentFitnessZScore) {
+    private void updateMutationInformation(int currentGeneration, ArrayList mutationProperties, double fitnessEffect, double parentFitnessZScore, double corFitnessMutatorStrength) {
         long mutationID = ModelParameters.getMutationID();
         GroupReturn locusPosition = getRandomFitnessLocus();
         FitnessLocus fitnessLocus = (FitnessLocus) locusPosition.getFitnessLocus();
@@ -129,10 +127,11 @@ public class Individual implements Cloneable{
         fitnessLocus.updateFitnessEffect(fitnessEffect);
         mutationProperties.add(mutationID);
         mutationProperties.add(fitnessEffect);
-        mutationProperties.add(parentFitnessZScore);
         mutationProperties.add(getMutatorStrength());
         mutationProperties.add(currentGeneration);
         mutationProperties.add(locusPosition.getPosition());
+        mutationProperties.add(parentFitnessZScore);
+        mutationProperties.add(corFitnessMutatorStrength);
     }
 
     private void updateMutationInformation(int currentGeneration, double fitnessEffect) {
