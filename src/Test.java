@@ -1,4 +1,5 @@
 import java.lang.reflect.Array;
+import java.util.Arrays;
 
 /**
  * @author Bingjun Zhang
@@ -41,6 +42,18 @@ public class Test {
 //            Util.writeFile("mutationRate.txt", mutationRate + "\n");
 
 //        }
+        double[] data1 = new double[10];
+        double[] data2 = new double[10];
+        for (int i = 0; i < 10; i++) {
+            data1[i] = i;
+            data2[i] = 10 - i;
+        }
+        System.out.println(Arrays.toString(data1));
+        System.out.println(Arrays.toString(data2));
+        double cor = Util.pearsonCorrelation(data1, data2);
+        System.out.println(cor);
+
+
 
     }
 }
