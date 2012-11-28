@@ -3,6 +3,7 @@
  */
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Population {
 
@@ -46,7 +47,6 @@ public class Population {
         double parentFitnessSD = Util.standardDeviation(parentFitnessArray);
         double[] parentMutatorStrengthArray = parent.getMutatorStrengthArray();
         double corFitnessMutatorStrength = Util.pearsonCorrelation(parentFitnessArray, parentMutatorStrengthArray);
-
 
         while (getSize() < parent.getSize()) {
             int previousSize = getSize();

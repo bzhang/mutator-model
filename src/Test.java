@@ -42,14 +42,12 @@ public class Test {
 //            Util.writeFile("mutationRate.txt", mutationRate + "\n");
 
 //        }
-        double[] data1 = new double[10];
-        double[] data2 = new double[10];
-        for (int i = 0; i < 10; i++) {
-            data1[i] = i;
-            data2[i] = 10 - i;
-        }
+        double[] data1 = {0.9696176324044004, 0.9922179334446213, 0.9922179334446213, 0.9922179334446213, 1.0};
+        double[] data2 = {1.0, 1.0, 1.0, 1.0, 1.0};
         System.out.println(Arrays.toString(data1));
+
         System.out.println(Arrays.toString(data2));
+        System.out.println(data1.length + " " + data2.length);
         double cor = Util.pearsonCorrelation(data1, data2);
         System.out.println(cor);
 
