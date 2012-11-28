@@ -91,10 +91,10 @@ public class Util {
     public static String outputMutMap(ArrayList mutationProperties) {
         Iterator iterator = mutationProperties.iterator();
         String output = "";
-
-        if (mutationProperties.size() % 6 == 0) {
-            for (int i = 0; i < mutationProperties.size(); i += 6) {
-                for (int j = 0; j < 5; j++) {
+        int mutationPropertiesSize = 7;
+        if (mutationProperties.size() % mutationPropertiesSize == 0) {
+            for (int i = 0; i < mutationProperties.size(); i += mutationPropertiesSize) {
+                for (int j = 0; j < mutationPropertiesSize - 1; j++) {
                     output += iterator.next() + "\t";
                 }
                 output += iterator.next() + "\n";
