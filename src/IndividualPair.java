@@ -21,9 +21,9 @@ public class IndividualPair {
         return individualB;
     }
 
-    public void mutate(int currentGeneration, ArrayList mutationProperties, double parentFitnessMean, double parentFitnessSD) {
-        getIndividualA().mutate(currentGeneration, mutationProperties, parentFitnessMean, parentFitnessSD);
-        getIndividualB().mutate(currentGeneration, mutationProperties, parentFitnessMean, parentFitnessSD);
+    public void mutate(int currentGeneration, ArrayList mutationProperties, double parentFitnessMean, double parentFitnessSD, double corFitnessMutatorStrength) {
+        getIndividualA().mutate(currentGeneration, mutationProperties, parentFitnessMean, parentFitnessSD, corFitnessMutatorStrength);
+        getIndividualB().mutate(currentGeneration, mutationProperties, parentFitnessMean, parentFitnessSD, corFitnessMutatorStrength);
     }
 
     public void mutate(int currentGeneration) {
