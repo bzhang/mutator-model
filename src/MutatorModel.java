@@ -46,8 +46,10 @@ public class MutatorModel {
                 // Create the next generation
 //                Long genStart = System.currentTimeMillis();
                 population = new Population(population, i, mutMapFilename);
-                popFileOutput = outputPopulationStat(i, population);
-                Util.writeFile(popFilename, popFileOutput);
+                if (i % ModelParameters.getInt("POP_OUTPUT_PERIOD") == 0) {
+                    popFileOutput = outputPopulationStat(i, population);
+                    Util.writeFile(popFilename, popFileOutput);
+                }
                 if (i % ModelParameters.getInt("MUT_STRUCTURE_OUTPUT_PERIOD") == 0) {
                     mutStructureFileOutput = outputMutStructure(i, population);
                     Util.writeFile(mutStructureFilename, mutStructureFileOutput);
