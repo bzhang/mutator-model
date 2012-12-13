@@ -80,7 +80,8 @@ public class ModelParameters {
                 + "_AntiMutMR" + getDouble("EVOLVING_ANTIMUTATOR_MUTATION_RATE")
                 + "_MutaE" + getFloat("MUTATOR_MUTATION_EFFECT")
                 + "_AntiMutE" + getFloat("ANTIMUTATOR_MUTATION_EFFECT")
-                + "_EvlFrom" + getInt("START_EVOLVING_GENERATION");
+                + "_EvlFrom" + getInt("START_EVOLVING_GENERATION")
+                + "_Period" + getInt("POP_OUTPUT_PERIOD");
     }
 
 
