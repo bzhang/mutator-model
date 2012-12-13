@@ -48,6 +48,11 @@ public class Population {
         double[] parentMutatorStrengthArray = parent.getMutatorStrengthArray();
         double corFitnessMutatorStrength = Util.pearsonCorrelation(parentFitnessArray, parentMutatorStrengthArray);
 
+        if (totals[totals.length - 1] < 1e-10) {
+            System.out.println("Population is extinct at generation " + currentGeneration);
+            System.exit(0);
+        }
+
         while (getSize() < parent.getSize()) {
             int previousSize = getSize();
             IndividualPair parentPair = parent.getRandomIndividualPair(totals);
