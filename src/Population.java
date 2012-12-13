@@ -49,7 +49,7 @@ public class Population {
         double corFitnessMutatorStrength = Util.pearsonCorrelation(parentFitnessArray, parentMutatorStrengthArray);
 
         if (totals[totals.length - 1] < 1e-10) {
-            System.out.println("Population is extinct at generation " + currentGeneration);
+            System.out.println("Population is extinct at generation " + currentGeneration + "!");
             System.exit(0);
         }
 
