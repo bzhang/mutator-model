@@ -23,6 +23,9 @@ public class Rand {
         return random.nextDouble();
     }
 
+    public static double getGaussian() {
+        return random.nextGaussian();
+    }
 //    public static RandomEngine getEngine() {
 //        return engine;
 //    }
