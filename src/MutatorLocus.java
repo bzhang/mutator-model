@@ -5,6 +5,7 @@
 public class MutatorLocus extends Locus {
 
     private double strength;
+    private double mutatorEffect;
 
     public MutatorLocus(double strength) {
         this.strength = strength;
@@ -20,7 +21,15 @@ public class MutatorLocus extends Locus {
 //    }
 
     public void increaseStrength() {
-        this.strength *= Math.pow(Rand.getDouble(), -ModelParameters.getFloat("MUTATOR_MUTATION_EFFECT"));
+        double u = Rand.getFloat();
+        if (u <= ModelParameters.getFloat("PROBABILITY_TO_MUTCLASS_1")) {
+            mutatorEffect = ModelParameters.getFloat("MUTATOR_MUTATION_EFFECT_1");
+            this.strength *= Math.pow(Rand.getDouble(), -mutatorEffect);
+        } else {
+            mutatorEffect = ModelParameters.getFloat("MUTATOR_MUTATION_EFFECT_2");
+            this.strength *= Rand.getGaussian() + mutatorEffect;
+        }
+
     }
 
     public void decreaseStrength() {
