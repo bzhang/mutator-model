@@ -1,3 +1,4 @@
+import info.monitorenter.gui.chart.Chart2D;
 import java.util.Arrays;
 
 /**
@@ -5,8 +6,10 @@ import java.util.Arrays;
  */
 public class UnitTest {
     public static void main(String[] args) {
-//        String propertiesFileName = args.length > 0 ? args[0] : "MutatorModel.properties";
-//        ModelParameters.setPropertiesFileName(propertiesFileName);
+        int replicates = 10000;
+        double[] strengthArray = new double[replicates];
+        String propertiesFileName = args.length > 0 ? args[0] : "MutatorModel.properties";
+        ModelParameters.setPropertiesFileName(propertiesFileName);
 
 //        float u = Rand.getFloat();
 //        double u2 = Rand.getDouble();
@@ -16,9 +19,34 @@ public class UnitTest {
 //        testPoisson();
 //        testMutatorEffect();
 //        testFitnessEffect();
-        testMersenneTwister();
+//        testMersenneTwister();
+        strengthArray = generateMutatorEffects(replicates);
+        Util.writeFile("muteffect_test.txt", Arrays.toString(strengthArray));
+//        plot2D();
+
+    }
+
+    private static void plot2D() {
+        Chart2D chart = new Chart2D();
 
 
+
+    }
+
+    private static double[] generateMutatorEffects(int replicates) {
+        double [] strengthArray = new double[replicates];
+        for (int i = 0; i < replicates; i++) {
+            double u = Rand.getDouble();
+            double mutatorEffect;
+            if (u <= ModelParameters.getDouble("PROBABILITY_TO_MUTCLASS_1")) {
+                mutatorEffect = ModelParameters.getDouble("MUTATOR_MUTATION_EFFECT_1");
+                strengthArray[i] = Math.pow(Rand.getDouble(), -mutatorEffect);
+            } else {
+                mutatorEffect = ModelParameters.getDouble("MUTATOR_MUTATION_EFFECT_2");
+                strengthArray[i] = Rand.getGaussian() + mutatorEffect;
+            }
+        }
+        return strengthArray;
     }
 
     private static void testMersenneTwister() {
