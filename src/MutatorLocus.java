@@ -21,12 +21,12 @@ public class MutatorLocus extends Locus {
 //    }
 
     public void increaseStrength() {
-        double u = Rand.getFloat();
-        if (u <= ModelParameters.getFloat("PROBABILITY_TO_MUTCLASS_1")) {
-            mutatorEffect = ModelParameters.getFloat("MUTATOR_MUTATION_EFFECT_1");
+        double u = Rand.getDouble();
+        if (u <= ModelParameters.getDouble("PROBABILITY_TO_MUTCLASS_1")) {
+            mutatorEffect = ModelParameters.getDouble("MUTATOR_MUTATION_EFFECT_1");
             this.strength *= Math.pow(Rand.getDouble(), -mutatorEffect);
         } else {
-            mutatorEffect = ModelParameters.getFloat("MUTATOR_MUTATION_EFFECT_2");
+            mutatorEffect = ModelParameters.getDouble("MUTATOR_MUTATION_EFFECT_2");
             this.strength *= Rand.getGaussian() + mutatorEffect;
         }
 
