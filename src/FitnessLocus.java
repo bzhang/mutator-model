@@ -53,7 +53,7 @@ public class FitnessLocus extends Locus {
 
     private long[] resizeArray(long[] longArray) {
         System.out.println("FitnessLocus: resizing mutations array");
-        long[] newLongArray = new long[longArray.length + 5];
+        long[] newLongArray = new long[longArray.length + ModelParameters.getInt("FITNESS_EFFECTS_ARRAY_INCREMENT")];
         System.arraycopy(longArray, 0, newLongArray, 0, longArray.length);
         longArray = newLongArray;
         return longArray;
