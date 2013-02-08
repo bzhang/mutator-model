@@ -6,7 +6,7 @@ import java.util.Arrays;
  */
 public class UnitTest {
     public static void main(String[] args) {
-        int replicates = 10000;
+        int replicates = 100000;
         double[] strengthArray = new double[replicates];
         String propertiesFileName = args.length > 0 ? args[0] : "MutatorModel.properties";
         ModelParameters.setPropertiesFileName(propertiesFileName);
@@ -43,7 +43,11 @@ public class UnitTest {
                 strengthArray[i] = Math.pow(Rand.getDouble(), -mutatorEffect);
             } else {
                 mutatorEffect = ModelParameters.getDouble("MUTATOR_MUTATION_EFFECT_2");
-                strengthArray[i] = Rand.getGaussian() + mutatorEffect;
+                double randEffect = Rand.getGaussian() * ModelParameters.getDouble("MUTATOR_MUTATION_EFFECT_2_SD") + mutatorEffect;
+                if (randEffect < 0) {
+                    randEffect = 0;
+                }
+                strengthArray[i] = 1 + randEffect;
             }
         }
         return strengthArray;
