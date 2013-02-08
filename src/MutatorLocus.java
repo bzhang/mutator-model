@@ -27,7 +27,11 @@ public class MutatorLocus extends Locus {
             this.strength *= Math.pow(Rand.getDouble(), -mutatorEffect);
         } else {
             mutatorEffect = ModelParameters.getDouble("MUTATOR_MUTATION_EFFECT_2");
-            this.strength *= Rand.getGaussian() + mutatorEffect;
+            double randEffect = Rand.getGaussian() * ModelParameters.getDouble("MUTATOR_MUTATION_EFFECT_2_SD") + mutatorEffect;
+            if (randEffect < 0) {
+                randEffect = 0;
+            }
+            this.strength *= 1 + randEffect;
         }
 
     }
