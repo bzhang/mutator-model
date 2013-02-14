@@ -36,7 +36,10 @@ public class Individual implements Cloneable{
     }
 
     public void mutate(int currentGeneration, ArrayList mutationProperties, double parentFitnessMean, double parentFitnessSD, double corFitnessMutatorStrength) {
-        lethalMutate();
+        if (ModelParameters.getDouble("BASE_LETHAL_MUTATION_RATE") != 0) {
+            lethalMutate();
+        }
+
         if (isAlive()) {
             double parentFitnessZScore = (getFitness() - parentFitnessMean) / parentFitnessSD;
             deleteriousMutate(currentGeneration, mutationProperties, parentFitnessZScore, corFitnessMutatorStrength);
