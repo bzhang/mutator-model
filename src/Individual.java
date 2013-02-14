@@ -36,7 +36,7 @@ public class Individual implements Cloneable{
     }
 
     public void mutate(int currentGeneration, ArrayList mutationProperties, double parentFitnessMean, double parentFitnessSD, double corFitnessMutatorStrength) {
-        if (ModelParameters.getDouble("BASE_LETHAL_MUTATION_RATE") != 0) {
+        if (ModelParameters.getDouble("BASE_LETHAL_MUTATION_RATE") != 0d) {
             lethalMutate();
         }
 
@@ -54,7 +54,10 @@ public class Individual implements Cloneable{
     }
 
     public void mutate(int currentGeneration) {
-        lethalMutate();
+        if (ModelParameters.getDouble("BASE_LETHAL_MUTATION_RATE") != 0d) {
+            lethalMutate();
+        }
+
         if (isAlive()) {
             deleteriousMutate(currentGeneration);
             beneficialMutate(currentGeneration);
@@ -68,6 +71,7 @@ public class Individual implements Cloneable{
     }
 
     private void lethalMutate() {
+        System.out.println("lethal mutate");
         double mutationRate = ModelParameters.getDouble("BASE_LETHAL_MUTATION_RATE") * getMutatorStrength();
         if (Rand.getDouble() < mutationRate) {
             die();
