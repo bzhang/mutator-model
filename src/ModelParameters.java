@@ -11,6 +11,7 @@ public class ModelParameters {
     private static Properties properties = new Properties();
     private static boolean initialized = false;
     private static long mutationID = 0;
+    private static int nRecombination = 0;
 
     public static void setPropertiesFileName(String filename) {
         propertiesFilename = filename;
@@ -86,8 +87,15 @@ public class ModelParameters {
                 + "_Period" + getInt("POP_OUTPUT_PERIOD");
     }
 
-
     public static long getMutationID() {
         return ++mutationID;
+    }
+
+    public static int addNRecombination() {
+        return ++nRecombination;
+    }
+
+    public static int getNRecombination() {
+        return nRecombination;
     }
 }
