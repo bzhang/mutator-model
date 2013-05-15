@@ -61,6 +61,9 @@ public class MutatorModel {
 //                System.out.println("Seconds elapsed = " + secondsElapsedGen);
 
             }
+
+            System.out.println("# of Recombinations = " + ModelParameters.getNRecombination());
+
         }
 
         int reminder = (int) ((System.currentTimeMillis() - start) % (24L * 3600 * 1000));
