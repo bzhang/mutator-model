@@ -43,6 +43,7 @@ public class IndividualPair {
 
         if (Rand.getFloat() < recombinationProbability) {
             offspringPair.recombine();
+            ModelParameters.addNRecombination();
         }
 
         return offspringPair;
