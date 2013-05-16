@@ -163,9 +163,16 @@ public class Population {
 
     private float getRandomRecombinationStrength() {
         float strength = 0;
-        // Generate recombination locus (sexual), strength ranging from (0.0, 1.0]
-        if (Rand.getFloat() < ModelParameters.getFloat("RECOMBINATION_RATIO")) {
-            strength = Rand.getFloat();
+        // Generate recombination locus (sexual)
+        // Sexual to asexual ratio in founder population = RECOMBINATION_RATIO
+        // Initial Recombination strength = RECOMBINATION_RATE
+        if (ModelParameters.getFloat("RECOMBINATION_RATIO") == 0) {
+            return strength;
+        } else if (ModelParameters.getFloat("RECOMBINATION_RATIO") == 1) {
+            strength = ModelParameters.getFloat("RECOMBINATION_RATE");
+        } else if (Rand.getFloat() < ModelParameters.getFloat("RECOMBINATION_RATIO")) {
+//            strength = Rand.getFloat();
+            strength = ModelParameters.getFloat("RECOMBINATION_RATE");
         }
         return strength;
     }
