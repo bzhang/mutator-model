@@ -93,6 +93,7 @@ public class Individual implements Cloneable{
             double u = Rand.getFloat();
             double fitnessEffect = 1 - ((-ModelParameters.getFloat("DEFAULT_DELETERIOUS_EFFECT")) * Math.log(1 - u));
             while (fitnessEffect < 0) {
+                System.out.println("Deleterious fitnessEffect re-sampled.");
                 u = Rand.getFloat();
                 fitnessEffect = 1 - ((-ModelParameters.getFloat("DEFAULT_DELETERIOUS_EFFECT")) * Math.log(1 - u));
             }
@@ -107,6 +108,7 @@ public class Individual implements Cloneable{
             double u = Rand.getFloat();
             double fitnessEffect = 1 - ((-ModelParameters.getFloat("DEFAULT_DELETERIOUS_EFFECT")) * Math.log(1 - u));
             while (fitnessEffect < 0) {
+                System.out.println("Deleterious fitnessEffect re-sampled.");
                 u = Rand.getFloat();
                 fitnessEffect = 1 - ((-ModelParameters.getFloat("DEFAULT_DELETERIOUS_EFFECT")) * Math.log(1 - u));
             }
@@ -120,6 +122,11 @@ public class Individual implements Cloneable{
         for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
             double u = Rand.getFloat();
             double fitnessEffect = 1 + ((-ModelParameters.getFloat("DEFAULT_BENEFICIAL_EFFECT")) * Math.log(1 - u));
+            while (fitnessEffect > 2) {
+                System.out.println("Beneficial fitnessEffect re-sampled.");
+                u = Rand.getFloat();
+                fitnessEffect = 1 + ((-ModelParameters.getFloat("DEFAULT_BENEFICIAL_EFFECT")) * Math.log(1 - u));
+            }
             updateMutationInformation(currentGeneration, mutationProperties, fitnessEffect, parentFitnessZScore, corFitnessMutatorStrength);
         }
     }
@@ -130,6 +137,11 @@ public class Individual implements Cloneable{
         for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
             double u = Rand.getFloat();
             double fitnessEffect = 1 + ((-ModelParameters.getFloat("DEFAULT_BENEFICIAL_EFFECT")) * Math.log(1 - u));
+            while (fitnessEffect > 2) {
+                System.out.println("Beneficial fitnessEffect re-sampled.");
+                u = Rand.getFloat();
+                fitnessEffect = 1 + ((-ModelParameters.getFloat("DEFAULT_BENEFICIAL_EFFECT")) * Math.log(1 - u));
+            }
             updateMutationInformation(currentGeneration, fitnessEffect);
         }
     }
