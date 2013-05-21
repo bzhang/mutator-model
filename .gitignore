@@ -1,4 +1,5 @@
 .idea/*.xml
+.idea/ant.xml
 .idea/*
 src/*.orig
 .Rhistory
