@@ -69,7 +69,7 @@ public class ModelParameters {
 //        return "/project/worm/MutatorModel/Expo"
         return path + "/"
                 + "M" + getFloat("MUTATOR_RATIO")
-                + "_R" + getFloat("RECOMBINATION_RATIO")
+                + "_R" + getFloat("RECOMBINATION_RATIO") + "_" + getFloat("RECOMBINATION_RATE")
                 + "_G" + getInt("N_GENERATIONS")
                 + "_N" + getInt("POPULATION_SIZE")
                 + "_BeneMR" + getDouble("BASE_BENEFICIAL_MUTATION_RATE")
