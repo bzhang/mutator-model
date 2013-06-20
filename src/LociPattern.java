@@ -15,7 +15,7 @@ public class LociPattern {
 
     private LocusType[] pattern;
     private int[] mutatorLociPositions, recombinationLociPositions;
-    private Random random = new Random(System.nanoTime());
+//    private Random random = new Random(System.nanoTime());
 
     public LociPattern(int nFitness, int nMutator, int nRecombination) {
 
@@ -80,7 +80,7 @@ public class LociPattern {
     }
 
     private int getRandomLocation() {
-        return random.nextInt(genomeSize);
+        return Rand.getInt(genomeSize);
     }
 
 }
