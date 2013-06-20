@@ -9,6 +9,7 @@ public class Individual implements Cloneable{
     private Locus[] loci;
     private LociPattern lociPattern;
     private boolean alive;
+    private double mutatorStrength = 1.0d;
 
     public Individual(LociPattern pattern) {
         lociPattern = pattern;
@@ -72,7 +73,7 @@ public class Individual implements Cloneable{
 
     private void lethalMutate() {
         System.out.println("lethal mutate");
-        double mutationRate = ModelParameters.getDouble("BASE_LETHAL_MUTATION_RATE") * getMutatorStrength();
+        double mutationRate = ModelParameters.getDouble("BASE_LETHAL_MUTATION_RATE") * mutatorStrength;
         if (Rand.getDouble() < mutationRate) {
             die();
         }
@@ -87,7 +88,7 @@ public class Individual implements Cloneable{
     }
 
     private void deleteriousMutate(int currentGeneration, ArrayList mutationProperties, double parentFitnessZScore, double corFitnessMutatorStrength) {
-        double mutationRate = ModelParameters.getDouble("BASE_DELETERIOUS_MUTATION_RATE") * getMutatorStrength();
+        double mutationRate = ModelParameters.getDouble("BASE_DELETERIOUS_MUTATION_RATE") * mutatorStrength;
         int poissonObs = Util.getPoisson(mutationRate);
         for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
             double u = Rand.getFloat();
@@ -102,7 +103,7 @@ public class Individual implements Cloneable{
     }
 
     private void deleteriousMutate(int currentGeneration) {
-        double mutationRate = ModelParameters.getDouble("BASE_DELETERIOUS_MUTATION_RATE") * getMutatorStrength();
+        double mutationRate = ModelParameters.getDouble("BASE_DELETERIOUS_MUTATION_RATE") * mutatorStrength;
         int poissonObs = Util.getPoisson(mutationRate);
         for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
             double u = Rand.getFloat();
@@ -117,7 +118,7 @@ public class Individual implements Cloneable{
     }
 
     private void beneficialMutate(int currentGeneration, ArrayList mutationProperties, double parentFitnessZScore, double corFitnessMutatorStrength) {
-        double mutationRate = ModelParameters.getDouble("BASE_BENEFICIAL_MUTATION_RATE") * getMutatorStrength();
+        double mutationRate = ModelParameters.getDouble("BASE_BENEFICIAL_MUTATION_RATE") * mutatorStrength;
         int poissonObs = Util.getPoisson(mutationRate);
         for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
             double u = Rand.getFloat();
@@ -132,7 +133,7 @@ public class Individual implements Cloneable{
     }
 
     private void beneficialMutate(int currentGeneration) {
-        double mutationRate = ModelParameters.getDouble("BASE_BENEFICIAL_MUTATION_RATE") * getMutatorStrength();
+        double mutationRate = ModelParameters.getDouble("BASE_BENEFICIAL_MUTATION_RATE") * mutatorStrength;
         int poissonObs = Util.getPoisson(mutationRate);
         for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
             double u = Rand.getFloat();
@@ -154,7 +155,7 @@ public class Individual implements Cloneable{
         fitnessLocus.updateFitnessEffect(fitnessEffect);
         mutationProperties.add(mutationID);
         mutationProperties.add(fitnessEffect);
-        mutationProperties.add(getMutatorStrength());
+        mutationProperties.add(mutatorStrength);
         mutationProperties.add(currentGeneration);
         mutationProperties.add(locusPosition.getPosition());
         mutationProperties.add(parentFitnessZScore);
@@ -172,7 +173,7 @@ public class Individual implements Cloneable{
     private void mutatorMutate(int currentGeneration) {
         double mutationRate = ModelParameters.getDouble("INITIAL_MUTATOR_MUTATION_RATE");
         if (currentGeneration >= ModelParameters.getInt("START_EVOLVING_GENERATION")) {
-            mutationRate = ModelParameters.getDouble("EVOLVING_MUTATOR_MUTATION_RATE") * getMutatorStrength();
+            mutationRate = ModelParameters.getDouble("EVOLVING_MUTATOR_MUTATION_RATE") * mutatorStrength;
             int poissonObs = Util.getPoisson(mutationRate);
             for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
                 MutatorLocus locus = getRandomMutatorLocus();
@@ -186,7 +187,7 @@ public class Individual implements Cloneable{
         double mutationRate = ModelParameters.getDouble("INITIAL_ANTIMUTATOR_MUTATION_RATE");
 
         if (currentGeneration >= startingEvolvingGeneration) {
-            mutationRate = ModelParameters.getDouble("EVOLVING_ANTIMUTATOR_MUTATION_RATE") * getMutatorStrength();
+            mutationRate = ModelParameters.getDouble("EVOLVING_ANTIMUTATOR_MUTATION_RATE") * mutatorStrength;
 //        Poisson poisson = new Poisson(mutationRate, Rand.getEngine());
 //        int poissonObs = poisson.nextInt();
             int poissonObs = Util.getPoisson(mutationRate);
@@ -277,10 +278,16 @@ public class Individual implements Cloneable{
         return new GroupReturn(fitness, meanDeleFitnessEffect, meanBeneFitnessEffect, nDeleteriousMutations, nBeneficialMutations);
     }
 
-    public double getMutatorStrength() {
+    public void calculateMutatorStrength() {
         // TODO: multiple all mutator strength values
-        int mutatorLocusPosition = lociPattern.getMutatorLociPositions()[0];
-        return ((MutatorLocus) getLocus(mutatorLocusPosition)).getStrength(); // refactor
+        // mutatorStrength is the product of all current mutator strength on all mutator loci
+//        int mutatorLocusPosition = lociPattern.getMutatorLociPositions()[0];
+        for (int i : lociPattern.getMutatorLociPositions()) {
+//            System.out.println("each mutator strength " + i + " = " + ((MutatorLocus) getLocus(i)).getStrength());
+            mutatorStrength *= ((MutatorLocus) getLocus(i)).getStrength();
+        }
+//        System.out.println("product of mutator strength" + mutatorStrength);
+//        mutatorStrength = ((MutatorLocus) getLocus(mutatorLocusPosition)).getStrength(); // refactor
     }
 
     public float getRecombinationStrength() {
@@ -312,5 +319,9 @@ public class Individual implements Cloneable{
         for (int j = 0; j < nAntiMutMutation; j++) {
             locus.decreaseStrength();
         }
+    }
+
+    public double getMutatorStrength() {
+        return mutatorStrength;
     }
 }
