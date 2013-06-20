@@ -72,6 +72,7 @@ public class ModelParameters {
                 + "_R" + getFloat("RECOMBINATION_RATIO") + "_" + getFloat("RECOMBINATION_RATE")
                 + "_G" + getInt("N_GENERATIONS")
                 + "_N" + getInt("POPULATION_SIZE")
+                + "_NMutator" + getInt("N_MUTATOR_LOCI")
                 + "_BeneMR" + getDouble("BASE_BENEFICIAL_MUTATION_RATE")
                 + "_DeleMR" + getDouble("BASE_DELETERIOUS_MUTATION_RATE")
                 + "_BeneE" + getFloat("DEFAULT_BENEFICIAL_EFFECT")
