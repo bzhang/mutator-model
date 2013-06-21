@@ -7,10 +7,11 @@ public class MetaPopulation {
 //    private ArrayList<ArrayList<Individual>> individuals;
     private Individual[][] individuals;
     private LociPattern lociPattern;
+    private int popSize = ModelParameters.getInt("POPULATION_SIZE");
+    private int side = (int) Math.sqrt(popSize);
 
-    public MetaPopulation(int nIndividuals) {
+    public MetaPopulation() {
         // Create the founder population
-        int side = (int) Math.sqrt(nIndividuals);
         lociPattern = new LociPattern(ModelParameters.getInt("N_FITNESS_LOCI"),
                 ModelParameters.getInt("N_MUTATOR_LOCI"), ModelParameters.getInt("N_RECOMBINATION_LOCI"));
         individuals = new Individual[side][side];
@@ -30,8 +31,36 @@ public class MetaPopulation {
                 }
             }
         }
+    }
 
+    public MetaPopulation(MetaPopulation metaParent, int currentGeneration) {
+        lociPattern = metaParent.lociPattern;
+        individuals = new Individual[side][side];
+        double[][] parentFitnessMatrix = metaParent.getFitnessMatrix();
+        double[] totals = initTotals(parentFitnessMatrix);
+        if (totals[totals.length - 1] < 1e-10) {
+            System.out.println("Population is extinct at generation " + currentGeneration + "!");
+            System.exit(0);
+        }
 
+        //TODO: evolve until mutation-selection equilibrium, 500 generations
+        //TODO: create asexual individuals after that
+
+        while (getSize() < popSize) {
+            Individual parentIndividual = getRandomIndividual();
+            if (parentIndividual.getRecombinationStrength() > 0) {
+                Individual mateIndividual;
+                for (int neighborID = 0; neighborID < 4; neighborID++) {
+                    mateIndividual = getMateIndividual(neighborID);
+                    if (mateIndividual.getRecombinationStrength() > 0) {
+                        break;
+                    }
+                }
+                // sexually reproduce
+            } else {
+                // asexually reproduce
+            }
+        }
     }
 
     private double getRandomMutatorStrength() {
