@@ -31,7 +31,7 @@ public class MutatorModel {
             // Founder population
             System.out.println("Output file: " + popFilename + "\nFounder population creating...");
             Population population = new Population(ModelParameters.getInt("POPULATION_SIZE"));
-            popFileOutput += outputPopulationStat(1, population);
+            popFileOutput += Util.outputPopulationStat(1, population);
             Util.writeFile(popFilename, popFileOutput);
             Util.writeFile(mutStructureFilename, mutStructureFileOutput);
 
@@ -47,7 +47,7 @@ public class MutatorModel {
 //                Long genStart = System.currentTimeMillis();
                 population = new Population(population, i, mutMapFilename);
                 if (i % ModelParameters.getInt("POP_OUTPUT_PERIOD") == 0) {
-                    popFileOutput = outputPopulationStat(i, population);
+                    popFileOutput = Util.outputPopulationStat(i, population);
                     Util.writeFile(popFilename, popFileOutput);
                 }
                 if (i % ModelParameters.getInt("MUT_STRUCTURE_OUTPUT_PERIOD") == 0) {
@@ -108,32 +108,5 @@ public class MutatorModel {
         output += "\n";
         return output;
     }
-
-    private static String outputPopulationStat(int i, Population population) {
-        GroupReturn fitnessPropertiesArray = population.getFitnessPropertiesArray();
-        double[] fitnessArray = fitnessPropertiesArray.getFitnessArray();
-        int[] nDeleMutArray = fitnessPropertiesArray.getNDeleMutArray();
-        int[] nBeneMutArray = fitnessPropertiesArray.getnBeneMutArray();
-        double[] meanDeleFitnessEffectArray = fitnessPropertiesArray.getMeanDeleFitnessEffectArray();
-        double[] meanBeneFitnessEffectArray = fitnessPropertiesArray.getMeanBeneFitnessEffectArray();
-        double[] mutatorStrengthArray = population.getMutatorStrengthArray();
-
-
-        return i + "\t" + Util.mean(fitnessArray)
-                + "\t" + Util.mean(mutatorStrengthArray)
-                + "\t" + Util.mean(nDeleMutArray)
-                + "\t" + Util.mean(nBeneMutArray)
-                + "\t" + Util.mean(meanDeleFitnessEffectArray)
-                + "\t" + Util.mean(meanBeneFitnessEffectArray)
-                + "\t" + Util.standardDeviation(fitnessArray)
-                + "\t" + Util.standardDeviation(mutatorStrengthArray)
-                + "\t" + Util.standardDeviation(nDeleMutArray)
-                + "\t" + Util.standardDeviation(nBeneMutArray)
-                + "\t" + Util.standardDeviation(meanDeleFitnessEffectArray)
-                + "\t" + Util.standardDeviation(meanBeneFitnessEffectArray)
-                + "\n";
-    }
-
-
 
 }
