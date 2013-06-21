@@ -23,11 +23,9 @@ public class Population {
             for (int location = 0; location < ModelParameters.getGenomeSize(); location++) {
                 if (lociPattern.getLocusType(location) == LociPattern.LocusType.Fitness) {
                     individual.setFitnessLocus(location);
-                }
-                else if (lociPattern.getLocusType(location) == LociPattern.LocusType.Mutator) {
+                } else if (lociPattern.getLocusType(location) == LociPattern.LocusType.Mutator) {
                     individual.setMutatorLocus(location, getRandomMutatorStrength());
-                }
-                else {
+                } else {
                     individual.setRecombinationLocus(location, getRandomRecombinationStrength());
                 }
             }
