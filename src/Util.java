@@ -146,4 +146,29 @@ public class Util {
     public static double pearsonCorrelation(double[] data1, double[] data2) {
         return new PearsonsCorrelation().correlation(data1, data2);
     }
+
+    public static String outputPopulationStat(int i, Population population) {
+        GroupReturn fitnessPropertiesArray = population.getFitnessPropertiesArray();
+        double[] fitnessArray = fitnessPropertiesArray.getFitnessArray();
+        int[] nDeleMutArray = fitnessPropertiesArray.getNDeleMutArray();
+        int[] nBeneMutArray = fitnessPropertiesArray.getnBeneMutArray();
+        double[] meanDeleFitnessEffectArray = fitnessPropertiesArray.getMeanDeleFitnessEffectArray();
+        double[] meanBeneFitnessEffectArray = fitnessPropertiesArray.getMeanBeneFitnessEffectArray();
+        double[] mutatorStrengthArray = population.getMutatorStrengthArray();
+
+
+        return i + "\t" + Util.mean(fitnessArray)
+                + "\t" + Util.mean(mutatorStrengthArray)
+                + "\t" + Util.mean(nDeleMutArray)
+                + "\t" + Util.mean(nBeneMutArray)
+                + "\t" + Util.mean(meanDeleFitnessEffectArray)
+                + "\t" + Util.mean(meanBeneFitnessEffectArray)
+                + "\t" + Util.standardDeviation(fitnessArray)
+                + "\t" + Util.standardDeviation(mutatorStrengthArray)
+                + "\t" + Util.standardDeviation(nDeleMutArray)
+                + "\t" + Util.standardDeviation(nBeneMutArray)
+                + "\t" + Util.standardDeviation(meanDeleFitnessEffectArray)
+                + "\t" + Util.standardDeviation(meanBeneFitnessEffectArray)
+                + "\n";
+    }
 }
