@@ -50,18 +50,28 @@ public class MetaPopulation {
             Individual parentIndividual = getRandomIndividual();
             if (currentGeneration <= ModelParameters.getInt("START_CREATING_ASEXUALS")) {
                 // sexually reproduce
+                Individual mateIndividual = getMateIndividual(parentIndividual);
+                IndividualPair parentPair = new IndividualPair(parentIndividual, mateIndividual);
+                IndividualPair offspringPair = parentPair.reproduce();
+                disperse(offspringPair);
             } else {
                 if (parentIndividual.getRecombinationStrength() > 0) {
-                    Individual mateIndividual;
-                    for (int neighborID = 0; neighborID < 4; neighborID++) {
-                        mateIndividual = getMateIndividual(neighborID);
-                        if (mateIndividual.getRecombinationStrength() > 0) {
-                            break;
-                        }
-                    }
                     // sexually reproduce
+                    Individual mateIndividual = getMateIndividual(parentIndividual);
+                    IndividualPair parentPair = new IndividualPair(parentIndividual, mateIndividual);
+                    IndividualPair offspringPair = parentPair.reproduce();
+                    disperse(offspringPair);
+//                    for (int neighborID = 0; neighborID < 4; neighborID++) {
+//                        mateIndividual = getMateIndividual(neighborID);
+//                        if (mateIndividual.getRecombinationStrength() > 0) {
+//                            break;
+//                        }
+//                    }
                 } else {
                     // asexually reproduce
+                    FourIndividuals fourOffspring = parentIndividual.asexuallyReproduce(4);
+                    disperse(fourOffspring.getIndividualPairA());
+                    disperse(fourOffspring.getIndividualPairB());
                 }
             }
         }
