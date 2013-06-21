@@ -41,7 +41,6 @@ public class MutatorModel {
 //            Float secondsElapsedFounder = (float) reminderFounder / 1000;
 //            System.out.println("Seconds elapsed for founder pop = " + secondsElapsedFounder);
 
-
             for (int i = 2; i <= ModelParameters.getInt("N_GENERATIONS"); i++) {
                 // Create the next generation
 //                Long genStart = System.currentTimeMillis();
@@ -62,8 +61,6 @@ public class MutatorModel {
 
                 System.out.println("# of Recombinations = " + ModelParameters.getNRecombination());
             }
-
-
 
         }
 
