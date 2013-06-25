@@ -172,7 +172,7 @@ public class Util {
                 + "\n";
     }
 
-    public double[] initTotals(double[] weights) {
+    public static double[] initTotals(double[] weights) {
         double[] totals = new double[weights.length];
         float runningTotal = 0;
         int i = 0;
