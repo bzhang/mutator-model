@@ -34,6 +34,8 @@ public class MetaPopulation {
     }
 
     public MetaPopulation(MetaPopulation metaParent, int currentGeneration) {
+        double[] parentFitnessArray = metaParent.getFitnessArray();
+        private double[] totals = initTotals(parentFitnessArray);
         lociPattern = metaParent.lociPattern;
         individuals = new Individual[side][side];
         double[][] parentFitnessMatrix = metaParent.getFitnessMatrix();
@@ -56,17 +58,24 @@ public class MetaPopulation {
                 disperse(offspringPair);
             } else {
                 if (parentIndividual.getRecombinationStrength() > 0) {
-                    // sexually reproduce
-                    Individual mateIndividual = getMateIndividual(parentIndividual);
-                    IndividualPair parentPair = new IndividualPair(parentIndividual, mateIndividual);
-                    IndividualPair offspringPair = parentPair.reproduce();
-                    disperse(offspringPair);
+                    // convert to asexuals
+                    if (Rand.getFloat() < ModelParameters.getFloat("PROBABILITY_TO_ASEXUAL")) {
+                        parentIndividual.setRecombinationStrength(0);
+                        // asexually reproduction
+                        FourIndividuals fourOffspring = parentIndividual.asexuallyReproduce(4);
+                    } else {
+                        // sexually reproduce
+                        Individual mateIndividual = getMateIndividual(parentIndividual);
+                        IndividualPair parentPair = new IndividualPair(parentIndividual, mateIndividual);
+                        IndividualPair offspringPair = parentPair.reproduce();
+                        disperse(offspringPair);
 //                    for (int neighborID = 0; neighborID < 4; neighborID++) {
 //                        mateIndividual = getMateIndividual(neighborID);
 //                        if (mateIndividual.getRecombinationStrength() > 0) {
 //                            break;
 //                        }
 //                    }
+                    }
                 } else {
                     // asexually reproduce
                     FourIndividuals fourOffspring = parentIndividual.asexuallyReproduce(4);
@@ -74,7 +83,15 @@ public class MetaPopulation {
                     disperse(fourOffspring.getIndividualPairB());
                 }
             }
+            compete();
+
         }
+    }
+
+    private Individual getRandomIndividual(double[] totals) {
+
+
+        return null;
     }
 
     private double getRandomMutatorStrength() {
