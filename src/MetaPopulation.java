@@ -1,3 +1,5 @@
+import org.apache.commons.lang3.ArrayUtils;
+
 /**
  * @author Bingjun Zhang
  */
@@ -48,7 +50,7 @@ public class MetaPopulation {
         //TODO: evolve until mutation-selection equilibrium, 500 generations
         //TODO: create asexual individuals after that
 
-        while (getSize() < popSize) {
+        while (hasEmptyCells()) {
             Individual parentIndividual = getRandomIndividual();
             if (currentGeneration <= ModelParameters.getInt("START_CREATING_ASEXUALS")) {
                 // sexually reproduce
@@ -92,6 +94,17 @@ public class MetaPopulation {
             compete();
 
         }
+    }
+
+    private boolean hasEmptyCells() {
+        boolean empty = false;
+        for (Individual[] individual : individuals) {
+            if (ArrayUtils.isEmpty(individual)) {
+                empty = true;
+                break;
+            }
+        }
+        return empty;
     }
 
     private double[] getFitnessArray() {
