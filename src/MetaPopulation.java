@@ -83,9 +83,22 @@ public class MetaPopulation {
                     disperse(fourOffspring.getIndividualPairB());
                 }
             }
+            // individuals in the same cell will compete
             compete();
 
         }
+    }
+
+    private double[] getFitnessArray() {
+        double[] fitnessArray = new double[popSize];
+        int i = 0;
+        for (int row = 0; row < side; row++) {
+            for (int column = 0; column < side; column++) {
+                fitnessArray[i] = getIndividual(i).getFitness();
+                i++;
+            }
+        }
+        return fitnessArray;
     }
 
     private Individual getRandomIndividual(double[] totals) {
