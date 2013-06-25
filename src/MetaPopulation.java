@@ -35,11 +35,11 @@ public class MetaPopulation {
 
     public MetaPopulation(MetaPopulation metaParent, int currentGeneration) {
         double[] parentFitnessArray = metaParent.getFitnessArray();
-        private double[] totals = initTotals(parentFitnessArray);
+        double[] totals = initTotals(parentFitnessArray);
         lociPattern = metaParent.lociPattern;
         individuals = new Individual[side][side];
-        double[][] parentFitnessMatrix = metaParent.getFitnessMatrix();
-        double[] totals = initTotals(parentFitnessMatrix);
+//        double[][] parentFitnessMatrix = metaParent.getFitnessMatrix();
+//        double[] totals = initTotals(parentFitnessMatrix);
         if (totals[totals.length - 1] < 1e-10) {
             System.out.println("Population is extinct at generation " + currentGeneration + "!");
             System.exit(0);
@@ -62,7 +62,10 @@ public class MetaPopulation {
                     if (Rand.getFloat() < ModelParameters.getFloat("PROBABILITY_TO_ASEXUAL")) {
                         parentIndividual.setRecombinationStrength(0);
                         // asexually reproduction
-                        FourIndividuals fourOffspring = parentIndividual.asexuallyReproduce(4);
+                        for (int i = 0; i < 4; i++) {
+                            Individual offspring = new Individual(parentIndividual);
+                            disperse(offspring);
+                        }
                     } else {
                         // sexually reproduce
                         Individual mateIndividual = getMateIndividual(parentIndividual);
@@ -78,12 +81,14 @@ public class MetaPopulation {
                     }
                 } else {
                     // asexually reproduce
-                    FourIndividuals fourOffspring = parentIndividual.asexuallyReproduce(4);
-                    disperse(fourOffspring.getIndividualPairA());
-                    disperse(fourOffspring.getIndividualPairB());
+                    for (int i = 0; i < 4; i++) {
+                        Individual offspring = new Individual(parentIndividual);
+                        disperse(offspring);
+                    }
                 }
             }
             // individuals in the same cell will compete
+            // empty cells will be occupied by the parent
             compete();
 
         }
