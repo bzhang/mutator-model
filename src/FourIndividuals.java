@@ -10,6 +10,8 @@ public class FourIndividuals {
         this.individualB = individualB;
         this.individualC = individualC;
         this.individualD = individualD;
+        individualPairA = new IndividualPair(individualA, individualB);
+        individualPairB = new IndividualPair(individualC, individualD);
     }
 
     public Individual getIndividual(int i) {
@@ -29,5 +31,18 @@ public class FourIndividuals {
                 break;
         }
         return newIndividual;
+    }
+
+    public IndividualPair getIndividualPair(int i) {
+        IndividualPair individualPair = null;
+        switch (i) {
+            case 1:
+                individualPair = individualPairA;
+                break;
+            case 2:
+                individualPair = individualPairB;
+                break;
+        }
+        return individualPair;
     }
 }
