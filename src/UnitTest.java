@@ -6,10 +6,10 @@ import java.util.Arrays;
  */
 public class UnitTest {
     public static void main(String[] args) {
-        int replicates = 100000;
-        double[] strengthArray = new double[replicates];
-        String propertiesFileName = args.length > 0 ? args[0] : "MutatorModel.properties";
-        ModelParameters.setPropertiesFileName(propertiesFileName);
+//        int replicates = 100000;
+//        double[] strengthArray = new double[replicates];
+//        String propertiesFileName = args.length > 0 ? args[0] : "MutatorModel.properties";
+//        ModelParameters.setPropertiesFileName(propertiesFileName);
 
 //        float u = Rand.getFloat();
 //        double u2 = Rand.getDouble();
@@ -20,9 +20,15 @@ public class UnitTest {
 //        testMutatorEffect();
 //        testFitnessEffect();
 //        testMersenneTwister();
-        strengthArray = generateMutatorEffects(replicates);
-        Util.writeFile("muteffect_test.txt", Arrays.toString(strengthArray));
+//        strengthArray = generateMutatorEffects(replicates);
+//        Util.writeFile("muteffect_test.txt", Arrays.toString(strengthArray));
 //        plot2D();
+        FourIndividuals fourIndividuals = new FourIndividuals(new Individual(new LociPattern(10, 1, 1)), new Individual(new LociPattern(10, 1, 1)), new Individual(new LociPattern(10, 1, 1)), new Individual(new LociPattern(10, 1, 1)));
+        Individual individualA = fourIndividuals.getIndividual(1);
+        Individual individualB = fourIndividuals.getIndividual(2);
+        Individual individualC = fourIndividuals.getIndividual(3);
+        Individual individualD = fourIndividuals.getIndividual(4);
+
 
     }
 
