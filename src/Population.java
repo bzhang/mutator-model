@@ -40,7 +40,7 @@ public class Population {
         ArrayList<Object> mutationProperties = new ArrayList<Object>();
         String mutMapFileOutput;
         double[] parentFitnessArray = parent.getFitnessArray();
-        double[] totals = initTotals(parentFitnessArray);
+        double[] totals = Util.initTotals(parentFitnessArray);
         double parentFitnessMean = Util.mean(parentFitnessArray);
         double parentFitnessSD = Util.standardDeviation(parentFitnessArray);
         double[] parentMutatorStrengthArray = parent.getMutatorStrengthArray();
@@ -139,16 +139,6 @@ public class Population {
         return new IndividualPair(individualA, individualB);
     }
 
-    private double[] initTotals(double[] weights) {
-        double[] totals = new double[weights.length];
-        float runningTotal = 0;
-        int i = 0;
-        for (double weight : weights) {
-            runningTotal += weight;
-            totals[i++] = runningTotal;
-        }
-        return totals;
-    }
 
     private double getRandomMutatorStrength() {
         double strength = 1;
