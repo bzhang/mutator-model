@@ -94,11 +94,15 @@ public class MetaPopulation {
         int i = 0;
         for (int row = 0; row < side; row++) {
             for (int column = 0; column < side; column++) {
-                fitnessArray[i] = getIndividual(i).getFitness();
+                fitnessArray[i] = getIndividual(row, column).getFitness();
                 i++;
             }
         }
         return fitnessArray;
+    }
+
+    private Individual getIndividual(int row, int column) {
+        return individuals[row][column];
     }
 
     private Individual getRandomIndividual(double[] totals) {
