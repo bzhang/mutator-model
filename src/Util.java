@@ -171,4 +171,16 @@ public class Util {
                 + "\t" + Util.standardDeviation(meanBeneFitnessEffectArray)
                 + "\n";
     }
+
+    public double[] initTotals(double[] weights) {
+        double[] totals = new double[weights.length];
+        float runningTotal = 0;
+        int i = 0;
+        for (double weight : weights) {
+            runningTotal += weight;
+            totals[i++] = runningTotal;
+        }
+        return totals;
+    }
+
 }
