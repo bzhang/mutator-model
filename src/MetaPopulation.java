@@ -51,11 +51,11 @@ public class MetaPopulation {
         //TODO: create asexual individuals after that
 
         while (hasEmptyCells()) {
-            Individual parentIndividual = getRandomIndividual(totals);
+            GroupReturn parentIndividualAndIndex = getRandomIndividual(totals);
             if (currentGeneration <= ModelParameters.getInt("START_CREATING_ASEXUALS")) {
                 // sexually reproduce
-                Individual mateIndividual = getMateIndividual(parentIndividual);
-                IndividualPair parentPair = new IndividualPair(parentIndividual, mateIndividual);
+                Individual mateIndividual = getMateIndividual(parentIndividualAndIndex.getRow(), parentIndividualAndIndex.getColumn());
+                IndividualPair parentPair = new IndividualPair(parentIndividualAndIndex.getIndividual(), mateIndividual);
                 IndividualPair offspringPair = parentPair.reproduce();
                 disperse(offspringPair);
             } else {
@@ -123,14 +123,14 @@ public class MetaPopulation {
         return individuals[row][column];
     }
 
-    private Individual getRandomIndividual(double[] totals) {
+    private GroupReturn getRandomIndividual(double[] totals) {
         int index = 0;
         while (index == totals.length) {
             index = WeightedRandomGenerator.nextInt(totals);
         }
         int row = index / side - 1;
         int column = index % side - 1;
-        return getIndividual(row, column);
+        return new GroupReturn(getIndividual(row, column), row, column) ;
     }
 
     private double getRandomMutatorStrength() {
