@@ -96,6 +96,11 @@ public class MetaPopulation {
         }
     }
 
+    private Individual getMateIndividual(int row, int column) {
+
+        return ;
+    }
+
     private boolean hasEmptyCells() {
         boolean empty = false;
         for (Individual[] individual : individuals) {
@@ -128,8 +133,8 @@ public class MetaPopulation {
         while (index == totals.length) {
             index = WeightedRandomGenerator.nextInt(totals);
         }
-        int row = index / side - 1;
-        int column = index % side - 1;
+        int row = index / side;
+        int column = index % side;
         return new GroupReturn(getIndividual(row, column), row, column) ;
     }
 
