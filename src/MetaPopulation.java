@@ -37,7 +37,7 @@ public class MetaPopulation {
 
     public MetaPopulation(MetaPopulation metaParent, int currentGeneration) {
         double[] parentFitnessArray = metaParent.getFitnessArray();
-        double[] totals = initTotals(parentFitnessArray);
+        double[] totals = Util.initTotals(parentFitnessArray);
         lociPattern = metaParent.lociPattern;
         individuals = new Individual[side][side];
 //        double[][] parentFitnessMatrix = metaParent.getFitnessMatrix();
@@ -124,9 +124,13 @@ public class MetaPopulation {
     }
 
     private Individual getRandomIndividual(double[] totals) {
-
-
-        return null;
+        int index = 0;
+        while (index == totals.length) {
+            index = WeightedRandomGenerator.nextInt(totals);
+        }
+        int row = index / side - 1;
+        int column = index % side - 1;
+        return getIndividual(row, column);
     }
 
     private double getRandomMutatorStrength() {
