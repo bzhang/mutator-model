@@ -14,7 +14,15 @@ public class GroupReturn {
     private double[] fitnessArray;
     private double[] meanDeleFitnessEffectArray;
     private double[] meanBeneFitnessEffectArray;
+    private int row;
+    private int column;
+    private Individual individual;
 
+    public GroupReturn(Individual individual, int row, int column) {
+        this.individual = individual;
+        this.row = row;
+        this.column = column;
+    }
 
     public GroupReturn(FitnessLocus fitnessLocus, int position) {
         this.fitnessLocus = fitnessLocus;
@@ -96,5 +104,17 @@ public class GroupReturn {
 
     public double[] getMeanBeneFitnessEffectArray() {
         return meanBeneFitnessEffectArray;
+    }
+
+    public int getRow() {
+        return row;
+    }
+
+    public int getColumn() {
+        return column;
+    }
+
+    public Individual getIndividual() {
+        return individual;
     }
 }
