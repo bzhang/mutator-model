@@ -51,7 +51,7 @@ public class MetaPopulation {
         //TODO: create asexual individuals after that
 
         while (hasEmptyCells()) {
-            Individual parentIndividual = getRandomIndividual();
+            Individual parentIndividual = getRandomIndividual(totals);
             if (currentGeneration <= ModelParameters.getInt("START_CREATING_ASEXUALS")) {
                 // sexually reproduce
                 Individual mateIndividual = getMateIndividual(parentIndividual);
