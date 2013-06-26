@@ -126,12 +126,12 @@ public class Population {
     }
 
     private IndividualPair getRandomIndividualPair(double[] totals) {
-        WeightedRandomGenerator wrg = new WeightedRandomGenerator();
+//        WeightedRandomGenerator wrg = new WeightedRandomGenerator();
         int indexA = 0;
         int indexB = 0;
         while (indexA == indexB || indexA == totals.length || indexB == totals.length) {
-            indexA = wrg.nextInt(totals);
-            indexB = wrg.nextInt(totals);
+            indexA = WeightedRandomGenerator.nextInt(totals);
+            indexB = WeightedRandomGenerator.nextInt(totals);
         }
         Individual individualA = getIndividual(indexA);
         Individual individualB = getIndividual(indexB);
