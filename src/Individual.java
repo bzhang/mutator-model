@@ -324,4 +324,10 @@ public class Individual implements Cloneable{
     public double getMutatorStrength() {
         return mutatorStrength;
     }
+
+    public void setRecombinationStrength(float i) {
+        // TODO: multiple all recombination strength values
+        int recombinationLocusPosition = lociPattern.getRecombinationLociPositions()[0];
+        ((RecombinationLocus) getLocus(recombinationLocusPosition)).setStrength(i);
+    }
 }
