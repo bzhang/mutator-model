@@ -38,7 +38,15 @@ public class MetaPopulation {
     public MetaPopulation(MetaPopulation metaParent, int currentGeneration) {
         double[] parentFitnessArray = metaParent.getFitnessArray();
         double[] totals = Util.initTotals(parentFitnessArray);
-        int[][] directions = new int[][]{{-1, -1}, {-1, 0}, {-1, 1}, {0, 1}, {1, 1}, {1, 0}, {1, -1}, {0, -1}};
+        int matingDistance = ModelParameters.getInt("MATING_DISTANCE");
+        int[][] directions = new int[][]{{-1 * matingDistance, -1 * matingDistance},
+                                         {-1 * matingDistance, 0},
+                                         {-1 * matingDistance, matingDistance},
+                                         {0, matingDistance},
+                                         {matingDistance, matingDistance},
+                                         {matingDistance, 0},
+                                         {matingDistance, -1 * matingDistance},
+                                         {0, -1 * matingDistance}};
         lociPattern = metaParent.lociPattern;
         individuals = new Individual[side][side];
 //        double[][] parentFitnessMatrix = metaParent.getFitnessMatrix();
@@ -50,6 +58,7 @@ public class MetaPopulation {
 
         //TODO: evolve until mutation-selection equilibrium, 500 generations
         //TODO: create asexual individuals after that
+        //TODO: change individuals to hold multiple individual in one cell
 
         while (hasEmptyCells()) {
             GroupReturn parentIndividualAndIndex = getRandomIndividual(totals);
