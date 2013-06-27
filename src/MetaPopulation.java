@@ -109,7 +109,8 @@ public class MetaPopulation {
             }
             // individuals in the same cell will compete
             // empty cells will be occupied by the parent
-            compete();
+            // remove compete() for now
+//            compete();
 
         }
     }
