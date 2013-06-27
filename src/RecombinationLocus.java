@@ -14,4 +14,8 @@ public class RecombinationLocus extends Locus {
     public float getStrength() {
         return strength;
     }
+
+    public void setStrength(float strength) {
+        this.strength = strength;
+    }
 }
