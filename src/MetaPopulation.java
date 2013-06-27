@@ -38,6 +38,7 @@ public class MetaPopulation {
     public MetaPopulation(MetaPopulation metaParent, int currentGeneration) {
         double[] parentFitnessArray = metaParent.getFitnessArray();
         double[] totals = Util.initTotals(parentFitnessArray);
+        int[][] directions = new int[][]{{-1, -1}, {-1, 0}, {-1, 1}, {0, 1}, {1, 1}, {1, 0}, {1, -1}, {0, -1}};
         lociPattern = metaParent.lociPattern;
         individuals = new Individual[side][side];
 //        double[][] parentFitnessMatrix = metaParent.getFitnessMatrix();
@@ -52,10 +53,13 @@ public class MetaPopulation {
 
         while (hasEmptyCells()) {
             GroupReturn parentIndividualAndIndex = getRandomIndividual(totals);
+            Individual parentIndividual = parentIndividualAndIndex.getIndividual();
+            int parentRow = parentIndividualAndIndex.getRow();
+            int parentColumn = parentIndividualAndIndex.getColumn();
             if (currentGeneration <= ModelParameters.getInt("START_CREATING_ASEXUALS")) {
                 // sexually reproduce
-                Individual mateIndividual = getMateIndividual(parentIndividualAndIndex.getRow(), parentIndividualAndIndex.getColumn());
-                IndividualPair parentPair = new IndividualPair(parentIndividualAndIndex.getIndividual(), mateIndividual);
+                Individual mateIndividual = getMateIndividual(directions, parentRow, parentColumn);
+                IndividualPair parentPair = new IndividualPair(parentIndividual, mateIndividual);
                 IndividualPair offspringPair = parentPair.reproduce();
                 disperse(offspringPair);
             } else {
@@ -70,7 +74,7 @@ public class MetaPopulation {
                         }
                     } else {
                         // sexually reproduce
-                        Individual mateIndividual = getMateIndividual(parentIndividual);
+                        Individual mateIndividual = getMateIndividual(directions, parentRow, parentColumn);
                         IndividualPair parentPair = new IndividualPair(parentIndividual, mateIndividual);
                         IndividualPair offspringPair = parentPair.reproduce();
                         disperse(offspringPair);
@@ -96,9 +100,11 @@ public class MetaPopulation {
         }
     }
 
-    private Individual getMateIndividual(int row, int column) {
-
-        return ;
+    private Individual getMateIndividual(int[][] directions, int row, int column) {
+        int i = Rand.getInt(directions.length);
+        int newRow = row + directions[i][0];
+        int newColumn = column + directions[i][1];
+        return getIndividual(newRow, newColumn);
     }
 
     private boolean hasEmptyCells() {
