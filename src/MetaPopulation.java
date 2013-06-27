@@ -1,5 +1,8 @@
 import org.apache.commons.lang3.ArrayUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Bingjun Zhang
  */
@@ -7,7 +10,7 @@ import org.apache.commons.lang3.ArrayUtils;
 
 public class MetaPopulation {
 //    private ArrayList<ArrayList<Individual>> individuals;
-    private Individual[][] individuals;
+    private List<List<Individual>> individuals;
     private LociPattern lociPattern;
     private int popSize = ModelParameters.getInt("POPULATION_SIZE");
     private int side = (int) Math.sqrt(popSize);
@@ -16,12 +19,14 @@ public class MetaPopulation {
         // Create the founder population
         lociPattern = new LociPattern(ModelParameters.getInt("N_FITNESS_LOCI"),
                 ModelParameters.getInt("N_MUTATOR_LOCI"), ModelParameters.getInt("N_RECOMBINATION_LOCI"));
-        individuals = new Individual[side][side];
+        individuals = new ArrayList<List<Individual>>();
 
         for (int row = 0; row < side; row++) {
+            List<Individual> individualList = new ArrayList<Individual>();
+            individuals.add(individualList);
             for (int column = 0; column < side; column++) {
                 Individual individual = new Individual(lociPattern);
-                individuals[row][column] = individual;
+                individualList.add(individual);
                 for (int location = 0; location < ModelParameters.getGenomeSize(); location++) {
                     if (lociPattern.getLocusType(location) == LociPattern.LocusType.Fitness) {
                         individual.setFitnessLocus(location);
@@ -48,7 +53,7 @@ public class MetaPopulation {
                                          {matingDistance, -1 * matingDistance},
                                          {0, -1 * matingDistance}};
         lociPattern = metaParent.lociPattern;
-        individuals = new Individual[side][side];
+        individuals = new ArrayList<List<Individual>>();
 //        double[][] parentFitnessMatrix = metaParent.getFitnessMatrix();
 //        double[] totals = initTotals(parentFitnessMatrix);
         if (totals[totals.length - 1] < 1e-10) {
