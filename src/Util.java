@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import static java.lang.Double.*;
@@ -181,6 +182,20 @@ public class Util {
             totals[i++] = runningTotal;
         }
         return totals;
+    }
+
+    public static List<List<Integer>> getDirections() {
+        int matingDistance = ModelParameters.getInt("MATING_DISTANCE");
+        List<List<Integer>> directions = new ArrayList<List<Integer>>();
+        for (int i = -1 * matingDistance; i < matingDistance + 1; i++) {
+            for (int j = -1 * matingDistance; j < matingDistance + 1; j++) {
+                ArrayList<Integer> direction = new ArrayList<Integer>(2);
+                direction.add(i);
+                direction.add(j);
+                directions.add(direction);
+            }
+        }
+        return directions;
     }
 
 }
