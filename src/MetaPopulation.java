@@ -44,14 +44,16 @@ public class MetaPopulation {
         double[] parentFitnessArray = metaParent.getFitnessArray();
         double[] totals = Util.initTotals(parentFitnessArray);
         int matingDistance = ModelParameters.getInt("MATING_DISTANCE");
-        int[][] directions = new int[][]{{-1 * matingDistance, -1 * matingDistance},
-                                         {-1 * matingDistance, 0},
-                                         {-1 * matingDistance, matingDistance},
-                                         {0, matingDistance},
-                                         {matingDistance, matingDistance},
-                                         {matingDistance, 0},
-                                         {matingDistance, -1 * matingDistance},
-                                         {0, -1 * matingDistance}};
+        List<List<Integer>> directions = new ArrayList<List<Integer>>();
+        for (int i = -1 * matingDistance; i < matingDistance + 1; i++) {
+            for (int j = -1 * matingDistance; j < matingDistance + 1; j++) {
+                ArrayList<Integer> direction = new ArrayList<Integer>(2);
+                direction.add(i);
+                direction.add(j);
+                directions.add(direction);
+            }
+        }
+
         lociPattern = metaParent.lociPattern;
         individuals = new ArrayList<List<Individual>>();
 //        double[][] parentFitnessMatrix = metaParent.getFitnessMatrix();
