@@ -107,10 +107,20 @@ public class MetaPopulation {
         }
     }
 
-    private Individual getMateIndividual(int[][] directions, int row, int column) {
-        int i = Rand.getInt(directions.length);
-        int newRow = row + directions[i][0];
-        int newColumn = column + directions[i][1];
+    private Individual getMateIndividual(List<List<Integer>> directions, int row, int column) {
+        int i = Rand.getInt(directions.size());
+        int newRow = row + directions.get(i).get(0);
+        int newColumn = column + directions.get(i).get(1);
+        int loopCount = 0;
+        while (newRow < 0 || newRow > side - 1 || newColumn < 0 || newColumn > side - 1) {
+            if (loopCount > (int) Math.pow(directions.size(), 2)) {
+                return null;
+            }
+            loopCount++;
+            i = Rand.getInt(directions.size());
+            newRow = row + directions.get(i).get(0);
+            newColumn = column + directions.get(i).get(1);
+        }
         return getIndividual(newRow, newColumn);
     }
 
