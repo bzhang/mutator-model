@@ -113,7 +113,7 @@ public class MetaPopulation {
         int newColumn = column + directions.get(i).get(1);
         int loopCount = 0;
         while (newRow < 0 || newRow > side - 1 || newColumn < 0 || newColumn > side - 1) {
-            if (loopCount > (int) Math.pow(directions.size(), 2)) {
+            if (loopCount > (int) Math.pow(directions.size() + 1, 2)) {
                 return null;
             }
             loopCount++;
