@@ -3,8 +3,8 @@
  */
 public class IndividualInSpace {
     private Individual individual;
-    private int x;
-    private int y;
+    private float x;
+    private float y;
 
     public IndividualInSpace(Individual individual, int x, int y) {
         this.individual = individual;
@@ -16,11 +16,11 @@ public class IndividualInSpace {
         return individual;
     }
 
-    public int getX() {
+    public float getX() {
         return x;
     }
 
-    public int getY() {
+    public float getY() {
         return y;
     }
 }
