@@ -114,23 +114,29 @@ public class MetaPopulation {
 
         } else {
             while (getSize() < popSize) {
-                GroupReturn parentIndividualAndIndex = getRandomIndividual(totals);
-                Individual parentIndividual = parentIndividualAndIndex.getIndividual();
-                int parentRow = parentIndividualAndIndex.getRow();
-                int parentColumn = parentIndividualAndIndex.getColumn();
+                IndividualInSpace parentIndividualInSpace = getRandomIndividual(totals);
+                Individual parentIndividual = parentIndividualInSpace.getIndividual();
+                float parentX = parentIndividualInSpace.getX();
+                float parentY = parentIndividualInSpace.getY();
             }
 
         }
     }
 
-    private void disperse(IndividualPair offspringPair) {
+    private void disperseOffspringPair(IndividualPair offspringPair, float x, float y) {
+        disperse(offspringPair.getIndividualA(), x, y);
+        disperse(offspringPair.getIndividualB(), x, y);
+    }
 
+    private void disperse(Individual offspring, float x, float y) {
+        float disperseDistance = ModelParameters.getFloat("DISPERSE_DISTANCE");
+        float newX = x + Rand.getFloat() * disperseDistance * 2 - disperseDistance;
+        float newY = y + Rand.getFloat() * disperseDistance * 2 - disperseDistance;
+        individuals.add(new IndividualInSpace(offspring, newX, newY));
     }
 
     private IndividualInSpace getMateIndividual(float x, float y) {
         float matingDistance = ModelParameters.getFloat("MATING_DISTANCE");
-//        float newX = x + Rand.getFloat() * matingDistance * 2 - matingDistance;
-//        float newY = y + Rand.getFloat() * matingDistance * 2 - matingDistance;
         for (int i = 0; i < individuals.size(); i++) {
             IndividualInSpace individualInSpace = individuals.get(i);
             float newX = individualInSpace.getX();
