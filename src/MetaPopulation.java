@@ -78,7 +78,9 @@ public class MetaPopulation {
                     float mateY = mateIndividualInSpace.getY();
                     IndividualPair parentPair = new IndividualPair(parentIndividual, mateIndividualInSpace.getIndividual());
                     IndividualPair offspringPair = parentPair.reproduce();
-                    disperse(offspringPair);
+                    float offspringX = (parentX + mateX) / 2;
+                    float offspringY = (parentY + mateY) / 2;
+                    disperseOffspringPair(offspringPair, offspringX, offspringY);
                 } else {
                     if (parentIndividual.getRecombinationStrength() > 0) {
                         // convert to asexuals
@@ -87,26 +89,24 @@ public class MetaPopulation {
                             // asexually reproduction
                             for (int i = 0; i < 4; i++) {
                                 Individual offspring = new Individual(parentIndividual);
-                                disperse(offspring);
+                                disperse(offspring, parentX, parentY);
                             }
                         } else {
                             // sexually reproduce
-                            Individual mateIndividual = getMateIndividual(directions, parentRow, parentColumn);
-                            IndividualPair parentPair = new IndividualPair(parentIndividual, mateIndividual);
+                            IndividualInSpace mateIndividualInSpace = getMateIndividual(parentX, parentY);
+                            float mateX = mateIndividualInSpace.getX();
+                            float mateY = mateIndividualInSpace.getY();
+                            IndividualPair parentPair = new IndividualPair(parentIndividual, mateIndividualInSpace.getIndividual());
                             IndividualPair offspringPair = parentPair.reproduce();
-                            disperse(offspringPair);
-//                    for (int neighborID = 0; neighborID < 4; neighborID++) {
-//                        mateIndividual = getMateIndividual(neighborID);
-//                        if (mateIndividual.getRecombinationStrength() > 0) {
-//                            break;
-//                        }
-//                    }
+                            float offspringX = (parentX + mateX) / 2;
+                            float offspringY = (parentY + mateY) / 2;
+                            disperseOffspringPair(offspringPair, offspringX, offspringY);
                         }
                     } else {
                         // asexually reproduce
                         for (int i = 0; i < 4; i++) {
                             Individual offspring = new Individual(parentIndividual);
-                            disperse(offspring);
+                            disperse(offspring, parentX, parentY);
                         }
                     }
                 }
