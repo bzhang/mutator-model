@@ -13,7 +13,6 @@ public class MetaPopulation {
     private ArrayList<IndividualInSpace> individuals;
     private LociPattern lociPattern;
     private int popSize = ModelParameters.getInt("POPULATION_SIZE");
-    private int side = (int) Math.sqrt(popSize);
 
     public MetaPopulation() {
         // Create the founder population
@@ -21,18 +20,19 @@ public class MetaPopulation {
                 ModelParameters.getInt("N_MUTATOR_LOCI"), ModelParameters.getInt("N_RECOMBINATION_LOCI"));
         individuals = new ArrayList<IndividualInSpace>();
         int radius = 0;
+        initMetaPopulation:
         while (true) {
             for (int y = -radius; y <= radius; y++) {
                 individuals.add(new IndividualInSpace(createIndividual(), -radius, y));
-                if (individuals.size() >= popSize) break;
+                if (individuals.size() >= popSize) break initMetaPopulation;
                 individuals.add(new IndividualInSpace(createIndividual(), radius, y));
-                if (individuals.size() >= popSize) break;
+                if (individuals.size() >= popSize) break initMetaPopulation;
             }
             for (int x = -radius + 1; x < radius; x++) {
                 individuals.add(new IndividualInSpace(createIndividual(), -x, -radius));
-                if (individuals.size() >= popSize) break;
+                if (individuals.size() >= popSize) break initMetaPopulation;
                 individuals.add(new IndividualInSpace(createIndividual(), x, radius));
-                if (individuals.size() >= popSize) break;
+                if (individuals.size() >= popSize) break initMetaPopulation;
             }
             radius++;
         }
@@ -55,9 +55,9 @@ public class MetaPopulation {
     public MetaPopulation(MetaPopulation metaParent, int currentGeneration) {
         double[] parentFitnessArray = metaParent.getFitnessArray();
         double[] totals = Util.initTotals(parentFitnessArray);
-        List<List<Integer>> directions = Util.getDirections();
+//        List<List<Integer>> directions = Util.getDirections();
         lociPattern = metaParent.lociPattern;
-        individuals = new ArrayList<List<List<Individual>>>();
+        individuals = new ArrayList<IndividualInSpace>();
 //        double[][] parentFitnessMatrix = metaParent.getFitnessMatrix();
 //        double[] totals = initTotals(parentFitnessMatrix);
         if (totals[totals.length - 1] < 1e-10) {
@@ -67,14 +67,16 @@ public class MetaPopulation {
 
         if (ModelParameters.getBoolean("INVASION_EXPERIMENT")) {
             while (getSize() < popSize) {
-                GroupReturn parentIndividualAndIndex = getRandomIndividual(totals);
-                Individual parentIndividual = parentIndividualAndIndex.getIndividual();
-                int parentRow = parentIndividualAndIndex.getRow();
-                int parentColumn = parentIndividualAndIndex.getColumn();
+                IndividualInSpace parentIndividualInSpace = getRandomIndividual(totals);
+                Individual parentIndividual = parentIndividualInSpace.getIndividual();
+                float parentX = parentIndividualInSpace.getX();
+                float parentY = parentIndividualInSpace.getY();
                 if (currentGeneration <= ModelParameters.getInt("START_CREATING_ASEXUALS")) {
                     // sexually reproduce
-                    Individual mateIndividual = getMateIndividual(directions, parentRow, parentColumn);
-                    IndividualPair parentPair = new IndividualPair(parentIndividual, mateIndividual);
+                    IndividualInSpace mateIndividualInSpace = getMateIndividual(parentX, parentY);
+                    float mateX = mateIndividualInSpace.getX();
+                    float mateY = mateIndividualInSpace.getY();
+                    IndividualPair parentPair = new IndividualPair(parentIndividual, mateIndividualInSpace.getIndividual());
                     IndividualPair offspringPair = parentPair.reproduce();
                     disperse(offspringPair);
                 } else {
@@ -125,59 +127,45 @@ public class MetaPopulation {
 
     }
 
-    private Individual getMateIndividual(List<List<Integer>> directions, int row, int column) {
-        int i = Rand.getInt(directions.size());
-        int newRow = row + directions.get(i).get(0);
-        int newColumn = column + directions.get(i).get(1);
-        int loopCount = 0;
-        while (newRow < 0 || newRow > side - 1 || newColumn < 0 || newColumn > side - 1) {
-            if (loopCount > (int) Math.pow(directions.size() + 1, 2)) {
-                return null;
+    private IndividualInSpace getMateIndividual(float x, float y) {
+        float matingDistance = ModelParameters.getFloat("MATING_DISTANCE");
+//        float newX = x + Rand.getFloat() * matingDistance * 2 - matingDistance;
+//        float newY = y + Rand.getFloat() * matingDistance * 2 - matingDistance;
+        for (int i = 0; i < individuals.size(); i++) {
+            IndividualInSpace individualInSpace = individuals.get(i);
+            float newX = individualInSpace.getX();
+            float newY = individualInSpace.getY();
+            if (newX >= (x - matingDistance) && newX <= (x + matingDistance)) {
+                if (newY >= (y - matingDistance) && newY <= (y + matingDistance)) {
+                    return individualInSpace;
+                }
             }
-            loopCount++;
-            i = Rand.getInt(directions.size());
-            newRow = row + directions.get(i).get(0);
-            newColumn = column + directions.get(i).get(1);
         }
-        return getIndividual(newRow, newColumn);
+        return null;
     }
 
     private int getSize() {
-        int size = 0;
-        for (List<List<Individual>> individualRow : individuals) {
-            for (List<Individual> individualCell : individualRow) {
-                size += individualCell.size();
-            }
-        }
-        return size;
+        return individuals.size();
     }
 
     private double[] getFitnessArray() {
-        double[] fitnessArray = new double[popSize];
-        int i = 0;
-        for (int row = 0; row < side; row++) {
-            for (int column = 0; column < side; column++) {
-                fitnessArray[i] = getIndividual(row, column).getFitness();
-                i++;
-            }
+        double[] fitnessArray = new double[getSize()];
+        for (int i = 0; i < getSize(); i++) {
+            fitnessArray[i] = getIndividualInSpace(i).getIndividual().getFitness();
         }
         return fitnessArray;
     }
 
-    //TODO: change to list of list of list
-    private Individual getIndividual(int row, int column) {
-        return individuals[row][column];
+    private IndividualInSpace getIndividualInSpace(int i) {
+        return individuals.get(i);
     }
 
-    //TODO: change to get id of each random individual (row, column, IDInCell)
-    private GroupReturn getRandomIndividual(double[] totals) {
+    private IndividualInSpace getRandomIndividual(double[] totals) {
         int index = 0;
         while (index == totals.length) {
             index = WeightedRandomGenerator.nextInt(totals);
         }
-        int row = index / side;
-        int column = index % side;
-        return new GroupReturn(getIndividual(row, column), row, column) ;
+        return getIndividualInSpace(index) ;
     }
 
     private double getRandomMutatorStrength() {
