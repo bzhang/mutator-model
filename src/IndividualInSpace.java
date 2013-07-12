@@ -6,7 +6,7 @@ public class IndividualInSpace {
     private float x;
     private float y;
 
-    public IndividualInSpace(Individual individual, int x, int y) {
+    public IndividualInSpace(Individual individual, float x, float y) {
         this.individual = individual;
         this.x = x;
         this.y = y;
