@@ -10,7 +10,7 @@ import java.util.List;
 
 public class MetaPopulation {
 //    private ArrayList<ArrayList<Individual>> individuals;
-    private List<List<Individual>> individuals;
+    private List<List<List<Individual>>> individuals;
     private LociPattern lociPattern;
     private int popSize = ModelParameters.getInt("POPULATION_SIZE");
     private int side = (int) Math.sqrt(popSize);
@@ -19,14 +19,16 @@ public class MetaPopulation {
         // Create the founder population
         lociPattern = new LociPattern(ModelParameters.getInt("N_FITNESS_LOCI"),
                 ModelParameters.getInt("N_MUTATOR_LOCI"), ModelParameters.getInt("N_RECOMBINATION_LOCI"));
-        individuals = new ArrayList<List<Individual>>();
+        individuals = new ArrayList<List<List<Individual>>>();
 
         for (int row = 0; row < side; row++) {
-            List<Individual> individualList = new ArrayList<Individual>();
-            individuals.add(individualList);
+            List<List<Individual>> individualsRow = new ArrayList<List<Individual>>();
+            individuals.add(individualsRow);
             for (int column = 0; column < side; column++) {
+                List<Individual> individualsCell = new ArrayList<Individual>();
                 Individual individual = new Individual(lociPattern);
-                individualList.add(individual);
+                individualsCell.add(individual);
+                individualsRow.add(individualsCell);
                 for (int location = 0; location < ModelParameters.getGenomeSize(); location++) {
                     if (lociPattern.getLocusType(location) == LociPattern.LocusType.Fitness) {
                         individual.setFitnessLocus(location);
