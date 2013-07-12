@@ -57,56 +57,59 @@ public class MetaPopulation {
 
         //TODO: evolve until mutation-selection equilibrium, 500 generations
         //TODO: create asexual individuals after that
-        //TODO: change individuals to hold multiple individual in one cell
-
-        while (getSize() < popSize) {
-            GroupReturn parentIndividualAndIndex = getRandomIndividual(totals);
-            Individual parentIndividual = parentIndividualAndIndex.getIndividual();
-            int parentRow = parentIndividualAndIndex.getRow();
-            int parentColumn = parentIndividualAndIndex.getColumn();
-            if (currentGeneration <= ModelParameters.getInt("START_CREATING_ASEXUALS")) {
-                // sexually reproduce
-                Individual mateIndividual = getMateIndividual(directions, parentRow, parentColumn);
-                IndividualPair parentPair = new IndividualPair(parentIndividual, mateIndividual);
-                IndividualPair offspringPair = parentPair.reproduce();
-                disperse(offspringPair);
-            } else {
-                if (parentIndividual.getRecombinationStrength() > 0) {
-                    // convert to asexuals
-                    if (Rand.getFloat() < ModelParameters.getFloat("PROBABILITY_TO_ASEXUAL")) {
-                        parentIndividual.setRecombinationStrength(0);
-                        // asexually reproduction
-                        for (int i = 0; i < 4; i++) {
-                            Individual offspring = new Individual(parentIndividual);
-                            disperse(offspring);
-                        }
-                    } else {
-                        // sexually reproduce
-                        Individual mateIndividual = getMateIndividual(directions, parentRow, parentColumn);
-                        IndividualPair parentPair = new IndividualPair(parentIndividual, mateIndividual);
-                        IndividualPair offspringPair = parentPair.reproduce();
-                        disperse(offspringPair);
+        if (ModelParameters.getBoolean("INVASION_EXPERIMENT")) {
+            while (getSize() < popSize) {
+                GroupReturn parentIndividualAndIndex = getRandomIndividual(totals);
+                Individual parentIndividual = parentIndividualAndIndex.getIndividual();
+                int parentRow = parentIndividualAndIndex.getRow();
+                int parentColumn = parentIndividualAndIndex.getColumn();
+                if (currentGeneration <= ModelParameters.getInt("START_CREATING_ASEXUALS")) {
+                    // sexually reproduce
+                    Individual mateIndividual = getMateIndividual(directions, parentRow, parentColumn);
+                    IndividualPair parentPair = new IndividualPair(parentIndividual, mateIndividual);
+                    IndividualPair offspringPair = parentPair.reproduce();
+                    disperse(offspringPair);
+                } else {
+                    if (parentIndividual.getRecombinationStrength() > 0) {
+                        // convert to asexuals
+                        if (Rand.getFloat() < ModelParameters.getFloat("PROBABILITY_TO_ASEXUAL")) {
+                            parentIndividual.setRecombinationStrength(0);
+                            // asexually reproduction
+                            for (int i = 0; i < 4; i++) {
+                                Individual offspring = new Individual(parentIndividual);
+                                disperse(offspring);
+                            }
+                        } else {
+                            // sexually reproduce
+                            Individual mateIndividual = getMateIndividual(directions, parentRow, parentColumn);
+                            IndividualPair parentPair = new IndividualPair(parentIndividual, mateIndividual);
+                            IndividualPair offspringPair = parentPair.reproduce();
+                            disperse(offspringPair);
 //                    for (int neighborID = 0; neighborID < 4; neighborID++) {
 //                        mateIndividual = getMateIndividual(neighborID);
 //                        if (mateIndividual.getRecombinationStrength() > 0) {
 //                            break;
 //                        }
 //                    }
-                    }
-                } else {
-                    // asexually reproduce
-                    for (int i = 0; i < 4; i++) {
-                        Individual offspring = new Individual(parentIndividual);
-                        disperse(offspring);
+                        }
+                    } else {
+                        // asexually reproduce
+                        for (int i = 0; i < 4; i++) {
+                            Individual offspring = new Individual(parentIndividual);
+                            disperse(offspring);
+                        }
                     }
                 }
             }
-            // individuals in the same cell will compete
-            // empty cells will be occupied by the parent
-            // remove compete() for now
-//            compete();
+        } else {
 
         }
+
+
+    }
+
+    private void disperse(IndividualPair offspringPair) {
+
     }
 
     private Individual getMateIndividual(List<List<Integer>> directions, int row, int column) {
