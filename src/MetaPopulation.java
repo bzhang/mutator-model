@@ -47,7 +47,7 @@ public class MetaPopulation {
         double[] totals = Util.initTotals(parentFitnessArray);
         List<List<Integer>> directions = Util.getDirections();
         lociPattern = metaParent.lociPattern;
-        individuals = new ArrayList<List<Individual>>();
+        individuals = new ArrayList<List<List<Individual>>>();
 //        double[][] parentFitnessMatrix = metaParent.getFitnessMatrix();
 //        double[] totals = initTotals(parentFitnessMatrix);
         if (totals[totals.length - 1] < 1e-10) {
@@ -59,7 +59,7 @@ public class MetaPopulation {
         //TODO: create asexual individuals after that
         //TODO: change individuals to hold multiple individual in one cell
 
-        while (hasEmptyCells()) {
+        while (getSize() < popSize) {
             GroupReturn parentIndividualAndIndex = getRandomIndividual(totals);
             Individual parentIndividual = parentIndividualAndIndex.getIndividual();
             int parentRow = parentIndividualAndIndex.getRow();
@@ -126,15 +126,14 @@ public class MetaPopulation {
         return getIndividual(newRow, newColumn);
     }
 
-    private boolean hasEmptyCells() {
-        boolean empty = false;
-        for (Individual[] individual : individuals) {
-            if (ArrayUtils.isEmpty(individual)) {
-                empty = true;
-                break;
+    private int getSize() {
+        int size = 0;
+        for (List<List<Individual>> individualRow : individuals) {
+            for (List<Individual> individualCell : individualRow) {
+                size += individualCell.size();
             }
         }
-        return empty;
+        return size;
     }
 
     private double[] getFitnessArray() {
