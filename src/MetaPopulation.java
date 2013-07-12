@@ -10,7 +10,7 @@ import java.util.List;
 
 public class MetaPopulation {
 //    private ArrayList<ArrayList<Individual>> individuals;
-    private List<List<List<Individual>>> individuals;
+    private ArrayList<IndividualInSpace> individuals;
     private LociPattern lociPattern;
     private int popSize = ModelParameters.getInt("POPULATION_SIZE");
     private int side = (int) Math.sqrt(popSize);
@@ -19,27 +19,38 @@ public class MetaPopulation {
         // Create the founder population
         lociPattern = new LociPattern(ModelParameters.getInt("N_FITNESS_LOCI"),
                 ModelParameters.getInt("N_MUTATOR_LOCI"), ModelParameters.getInt("N_RECOMBINATION_LOCI"));
-        individuals = new ArrayList<List<List<Individual>>>();
+        individuals = new ArrayList<IndividualInSpace>();
+        int radius = 0;
+        while (true) {
+            if (individuals.size() >= popSize) break;
+            for (int y = -radius; y <= radius; y++) {
+                individuals.add(new IndividualInSpace(createIndividual(), -radius, y));
+                if (individuals.size() >= popSize) break;
+                individuals.add(new IndividualInSpace(createIndividual(), radius, y));
+                if (individuals.size() >= popSize) break;
+            }
+            for (int x = -radius + 1; x < radius; x++) {
+                individuals.add(new IndividualInSpace(createIndividual(), -x, -radius));
+                if (individuals.size() >= popSize) break;
+                individuals.add(new IndividualInSpace(createIndividual(), x, radius));
+                if (individuals.size() >= popSize) break;
+            }
+            radius++;
+        }
+    }
 
-        for (int row = 0; row < side; row++) {
-            List<List<Individual>> individualsRow = new ArrayList<List<Individual>>();
-            individuals.add(individualsRow);
-            for (int column = 0; column < side; column++) {
-                List<Individual> individualsCell = new ArrayList<Individual>();
-                Individual individual = new Individual(lociPattern);
-                individualsCell.add(individual);
-                individualsRow.add(individualsCell);
-                for (int location = 0; location < ModelParameters.getGenomeSize(); location++) {
-                    if (lociPattern.getLocusType(location) == LociPattern.LocusType.Fitness) {
-                        individual.setFitnessLocus(location);
-                    } else if (lociPattern.getLocusType(location) == LociPattern.LocusType.Mutator) {
-                        individual.setMutatorLocus(location, getRandomMutatorStrength());
-                    } else {
-                        individual.setRecombinationLocus(location, getRandomRecombinationStrength());
-                    }
-                }
+    private Individual createIndividual() {
+        Individual individual = new Individual(lociPattern);
+        for (int location = 0; location < ModelParameters.getGenomeSize(); location++) {
+            if (lociPattern.getLocusType(location) == LociPattern.LocusType.Fitness) {
+                individual.setFitnessLocus(location);
+            } else if (lociPattern.getLocusType(location) == LociPattern.LocusType.Mutator) {
+                individual.setMutatorLocus(location, getRandomMutatorStrength());
+            } else {
+                individual.setRecombinationLocus(location, getRandomRecombinationStrength());
             }
         }
+        return individual;
     }
 
     public MetaPopulation(MetaPopulation metaParent, int currentGeneration) {
@@ -55,8 +66,6 @@ public class MetaPopulation {
             System.exit(0);
         }
 
-        //TODO: evolve until mutation-selection equilibrium, 500 generations
-        //TODO: create asexual individuals after that
         if (ModelParameters.getBoolean("INVASION_EXPERIMENT")) {
             while (getSize() < popSize) {
                 GroupReturn parentIndividualAndIndex = getRandomIndividual(totals);
@@ -101,11 +110,16 @@ public class MetaPopulation {
                     }
                 }
             }
+
         } else {
+            while (getSize() < popSize) {
+                GroupReturn parentIndividualAndIndex = getRandomIndividual(totals);
+                Individual parentIndividual = parentIndividualAndIndex.getIndividual();
+                int parentRow = parentIndividualAndIndex.getRow();
+                int parentColumn = parentIndividualAndIndex.getColumn();
+            }
 
         }
-
-
     }
 
     private void disperse(IndividualPair offspringPair) {
@@ -151,10 +165,12 @@ public class MetaPopulation {
         return fitnessArray;
     }
 
+    //TODO: change to list of list of list
     private Individual getIndividual(int row, int column) {
         return individuals[row][column];
     }
 
+    //TODO: change to get id of each random individual (row, column, IDInCell)
     private GroupReturn getRandomIndividual(double[] totals) {
         int index = 0;
         while (index == totals.length) {
