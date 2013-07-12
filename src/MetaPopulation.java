@@ -1,7 +1,4 @@
-import org.apache.commons.lang3.ArrayUtils;
-
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Bingjun Zhang
@@ -118,8 +115,24 @@ public class MetaPopulation {
                 Individual parentIndividual = parentIndividualInSpace.getIndividual();
                 float parentX = parentIndividualInSpace.getX();
                 float parentY = parentIndividualInSpace.getY();
+                if (parentIndividual.getRecombinationStrength() > 0) {
+                    // sexually reproduce
+                    IndividualInSpace mateIndividualInSpace = getMateIndividual(parentX, parentY);
+                    float mateX = mateIndividualInSpace.getX();
+                    float mateY = mateIndividualInSpace.getY();
+                    IndividualPair parentPair = new IndividualPair(parentIndividual, mateIndividualInSpace.getIndividual());
+                    IndividualPair offspringPair = parentPair.reproduce();
+                    float offspringX = (parentX + mateX) / 2;
+                    float offspringY = (parentY + mateY) / 2;
+                    disperseOffspringPair(offspringPair, offspringX, offspringY);
+                } else {
+                    // asexually reproduce
+                    for (int i = 0; i < 4; i++) {
+                        Individual offspring = new Individual(parentIndividual);
+                        disperse(offspring, parentX, parentY);
+                    }
+                }
             }
-
         }
     }
 
