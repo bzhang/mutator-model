@@ -22,7 +22,6 @@ public class MetaPopulation {
         individuals = new ArrayList<IndividualInSpace>();
         int radius = 0;
         while (true) {
-            if (individuals.size() >= popSize) break;
             for (int y = -radius; y <= radius; y++) {
                 individuals.add(new IndividualInSpace(createIndividual(), -radius, y));
                 if (individuals.size() >= popSize) break;
