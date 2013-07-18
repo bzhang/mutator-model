@@ -212,7 +212,7 @@ public class MetaPopulation {
         return strength;
     }
 
-    public GroupReturn getFitnessPropertiesArrayAndCoordinates() {
+    public GroupReturn getFitnessPropertiesArray() {
         int popSize = getSize();
         double[] fitnessArray = new double[popSize];
         double[] meanDeleFitnessEffectArray = new double[popSize];
@@ -229,17 +229,15 @@ public class MetaPopulation {
             meanBeneFitnessEffectArray[i] = fitnessProperties.getMeanBeneFitnessEffect();
             nDeleMutArray[i] = fitnessProperties.getNDeleteriousMutations();
             nBeneMutArray[i] = fitnessProperties.getNBeneficialMutations();
-            x = individualInSpace.getX();
-            y = individualInSpace.getY();
         }
-        return new GroupReturn(fitnessArray, meanDeleFitnessEffectArray, meanBeneFitnessEffectArray, nDeleMutArray, nBeneMutArray, x, y);
+        return new GroupReturn(fitnessArray, meanDeleFitnessEffectArray, meanBeneFitnessEffectArray, nDeleMutArray, nBeneMutArray);
     }
 
     public double[] getMutatorStrengthArray() {
         double[] mutatorStrengthArray = new double[getSize()];
         int i = 0;
         while (i < getSize()) {
-            mutatorStrengthArray[i] = getIndividual(i).getMutatorStrength();
+            mutatorStrengthArray[i] = getIndividualInSpace(i).getIndividual().getMutatorStrength();
             i++;
         }
         return mutatorStrengthArray;

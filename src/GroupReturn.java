@@ -2,8 +2,6 @@
  * @author Bingjun Zhang
  */
 public class GroupReturn {
-    private float x;
-    private float y;
     private FitnessLocus fitnessLocus;
     private int position;
     private int nDeleteriousMutations;
@@ -58,16 +56,6 @@ public class GroupReturn {
         this.meanBeneFitnessEffectArray = meanBeneFitnessEffectArray;
         this.nDeleMutArray = nDeleMutArray;
         this.nBeneMutArray = nBeneMutArray;
-    }
-
-    public GroupReturn(double[] fitnessArray, double[] meanDeleFitnessEffectArray, double[] meanBeneFitnessEffectArray, int[] nDeleMutArray, int[] nBeneMutArray, float x, float y) {
-        this.fitnessArray = fitnessArray;
-        this.meanDeleFitnessEffectArray = meanDeleFitnessEffectArray;
-        this.meanBeneFitnessEffectArray = meanBeneFitnessEffectArray;
-        this.nDeleMutArray = nDeleMutArray;
-        this.nBeneMutArray = nBeneMutArray;
-        this.x = x;
-        this.y = y;
     }
 
     public Locus getFitnessLocus() {
@@ -128,13 +116,5 @@ public class GroupReturn {
 
     public Individual getIndividual() {
         return individual;
-    }
-
-    public float getX() {
-        return x;
-    }
-
-    public float getY() {
-        return y;
     }
 }
