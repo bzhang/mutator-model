@@ -64,19 +64,20 @@ public class MetaPopulation {
 
         if (ModelParameters.getBoolean("INVASION_EXPERIMENT")) {
             while (getSize() < popSize) {
-                IndividualInSpace parentIndividualInSpace = getRandomIndividual(totals);
+                IndividualInSpace parentIndividualInSpace = metaParent.getRandomIndividual(totals);
                 Individual parentIndividual = parentIndividualInSpace.getIndividual();
                 float parentX = parentIndividualInSpace.getX();
                 float parentY = parentIndividualInSpace.getY();
                 if (currentGeneration <= ModelParameters.getInt("START_CREATING_ASEXUALS")) {
                     // sexually reproduce
-                    IndividualInSpace mateIndividualInSpace = getMateIndividual(parentX, parentY);
+                    IndividualInSpace mateIndividualInSpace = metaParent.getMateIndividual(parentX, parentY, metaParent);
                     float mateX = mateIndividualInSpace.getX();
                     float mateY = mateIndividualInSpace.getY();
                     IndividualPair parentPair = new IndividualPair(parentIndividual, mateIndividualInSpace.getIndividual());
                     IndividualPair offspringPair = parentPair.reproduce();
                     float offspringX = (parentX + mateX) / 2;
                     float offspringY = (parentY + mateY) / 2;
+                    offspringPair.mutate(currentGeneration);
                     disperseOffspringPair(offspringPair, offspringX, offspringY);
                 } else {
                     if (parentIndividual.getRecombinationStrength() > 0) {
@@ -86,23 +87,26 @@ public class MetaPopulation {
                             // asexually reproduction
                             for (int i = 0; i < 4; i++) {
                                 Individual offspring = new Individual(parentIndividual);
+                                offspring.mutate(currentGeneration);
                                 disperse(offspring, parentX, parentY);
                             }
                         } else {
                             // sexually reproduce
-                            IndividualInSpace mateIndividualInSpace = getMateIndividual(parentX, parentY);
+                            IndividualInSpace mateIndividualInSpace = getMateIndividual(parentX, parentY, metaParent);
                             float mateX = mateIndividualInSpace.getX();
                             float mateY = mateIndividualInSpace.getY();
                             IndividualPair parentPair = new IndividualPair(parentIndividual, mateIndividualInSpace.getIndividual());
                             IndividualPair offspringPair = parentPair.reproduce();
                             float offspringX = (parentX + mateX) / 2;
                             float offspringY = (parentY + mateY) / 2;
+                            offspringPair.mutate(currentGeneration);
                             disperseOffspringPair(offspringPair, offspringX, offspringY);
                         }
                     } else {
                         // asexually reproduce
                         for (int i = 0; i < 4; i++) {
                             Individual offspring = new Individual(parentIndividual);
+                            offspring.mutate(currentGeneration);
                             disperse(offspring, parentX, parentY);
                         }
                     }
@@ -111,24 +115,26 @@ public class MetaPopulation {
 
         } else {
             while (getSize() < popSize) {
-                IndividualInSpace parentIndividualInSpace = getRandomIndividual(totals);
+                IndividualInSpace parentIndividualInSpace = metaParent.getRandomIndividual(totals);
                 Individual parentIndividual = parentIndividualInSpace.getIndividual();
                 float parentX = parentIndividualInSpace.getX();
                 float parentY = parentIndividualInSpace.getY();
                 if (parentIndividual.getRecombinationStrength() > 0) {
                     // sexually reproduce
-                    IndividualInSpace mateIndividualInSpace = getMateIndividual(parentX, parentY);
+                    IndividualInSpace mateIndividualInSpace = getMateIndividual(parentX, parentY, metaParent);
                     float mateX = mateIndividualInSpace.getX();
                     float mateY = mateIndividualInSpace.getY();
                     IndividualPair parentPair = new IndividualPair(parentIndividual, mateIndividualInSpace.getIndividual());
                     IndividualPair offspringPair = parentPair.reproduce();
                     float offspringX = (parentX + mateX) / 2;
                     float offspringY = (parentY + mateY) / 2;
+                    offspringPair.mutate(currentGeneration);
                     disperseOffspringPair(offspringPair, offspringX, offspringY);
                 } else {
                     // asexually reproduce
                     for (int i = 0; i < 4; i++) {
                         Individual offspring = new Individual(parentIndividual);
+                        offspring.mutate(currentGeneration);
                         disperse(offspring, parentX, parentY);
                     }
                 }
@@ -148,10 +154,10 @@ public class MetaPopulation {
         individuals.add(new IndividualInSpace(offspring, newX, newY));
     }
 
-    private IndividualInSpace getMateIndividual(float x, float y) {
+    private IndividualInSpace getMateIndividual(float x, float y, MetaPopulation metaParent) {
         float matingDistance = ModelParameters.getFloat("MATING_DISTANCE");
-        for (int i = 0; i < individuals.size(); i++) {
-            IndividualInSpace individualInSpace = individuals.get(i);
+        for (int i = 0; i < metaParent.individuals.size(); i++) {
+            IndividualInSpace individualInSpace = metaParent.individuals.get(i);
             float newX = individualInSpace.getX();
             float newY = individualInSpace.getY();
             if (newX >= (x - matingDistance) && newX <= (x + matingDistance)) {
