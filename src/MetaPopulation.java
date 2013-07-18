@@ -212,7 +212,7 @@ public class MetaPopulation {
         return strength;
     }
 
-    public GroupReturn getFitnessPropertiesArray() {
+    public GroupReturn getFitnessPropertiesArrayAndCoordinates() {
         int popSize = getSize();
         double[] fitnessArray = new double[popSize];
         double[] meanDeleFitnessEffectArray = new double[popSize];
