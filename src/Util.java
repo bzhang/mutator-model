@@ -198,4 +198,27 @@ public class Util {
         return directions;
     }
 
+    public static String outputMetaPopulationStat(int i, MetaPopulation metaPopulation) {
+        GroupReturn fitnessPropertiesArray = metaPopulation.getFitnessPropertiesArray();
+        double[] fitnessArray = fitnessPropertiesArray.getFitnessArray();
+        int[] nDeleMutArray = fitnessPropertiesArray.getNDeleMutArray();
+        int[] nBeneMutArray = fitnessPropertiesArray.getnBeneMutArray();
+        double[] meanDeleFitnessEffectArray = fitnessPropertiesArray.getMeanDeleFitnessEffectArray();
+        double[] meanBeneFitnessEffectArray = fitnessPropertiesArray.getMeanBeneFitnessEffectArray();
+        double[] mutatorStrengthArray = metaPopulation.getMutatorStrengthArray();
+
+        return i + "\t" + Util.mean(fitnessArray)
+                + "\t" + Util.mean(mutatorStrengthArray)
+                + "\t" + Util.mean(nDeleMutArray)
+                + "\t" + Util.mean(nBeneMutArray)
+                + "\t" + Util.mean(meanDeleFitnessEffectArray)
+                + "\t" + Util.mean(meanBeneFitnessEffectArray)
+                + "\t" + Util.standardDeviation(fitnessArray)
+                + "\t" + Util.standardDeviation(mutatorStrengthArray)
+                + "\t" + Util.standardDeviation(nDeleMutArray)
+                + "\t" + Util.standardDeviation(nBeneMutArray)
+                + "\t" + Util.standardDeviation(meanDeleFitnessEffectArray)
+                + "\t" + Util.standardDeviation(meanBeneFitnessEffectArray)
+                + "\n";
+    }
 }
