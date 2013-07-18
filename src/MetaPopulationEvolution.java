@@ -18,9 +18,35 @@ public class MetaPopulationEvolution {
 
             // Create founder population
             System.out.println("Output file: " + popFilename + "\nFounder population creating...");
-            Population population = new Population(ModelParameters.getInt("POPULATION_SIZE"));
-            popFileOutput += Util.outputPopulationStat(1, population);
+            MetaPopulation metaPopulation = new MetaPopulation();
+            popFileOutput += Util.outputMetaPopulationStat(1, metaPopulation);
 
+            System.out.println("Founder population created.");
+
+            for (int i = 2; i <= ModelParameters.getInt("N_GENERATIONS"); i++) {
+                // Create the next generation
+//                Long genStart = System.currentTimeMillis();
+                metaPopulation = new MetaPopulation(metaPopulation, i);
+                if (i % ModelParameters.getInt("POP_OUTPUT_PERIOD") == 0) {
+                    popFileOutput = Util.outputMetaPopulationStat(i, metaPopulation);
+                    Util.writeFile(popFilename, popFileOutput);
+                }
+//                if (i % ModelParameters.getInt("MUT_STRUCTURE_OUTPUT_PERIOD") == 0) {
+//                    mutStructureFileOutput = outputMutStructure(i, population);
+//                    Util.writeFile(mutStructureFilename, mutStructureFileOutput);
+//                }
+                System.out.println("Generation " + i);
+
+//                int reminderGen = (int) ((System.currentTimeMillis() - genStart) % (24L * 3600 * 1000));
+//                Float secondsElapsedGen = (float) reminderGen / 1000;
+//                System.out.println("Seconds elapsed = " + secondsElapsedGen);
+
+                System.out.println("# of Recombinations = " + ModelParameters.getNRecombination());
+            }
+
+            int reminder = (int) ((System.currentTimeMillis() - start) % (24L * 3600 * 1000));
+            Float secondsElapsed = (float) reminder / 1000;
+            System.out.println("Seconds elapsed = " + secondsElapsed);
         }
     }
 }
