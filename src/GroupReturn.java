@@ -2,6 +2,8 @@
  * @author Bingjun Zhang
  */
 public class GroupReturn {
+    private int index;
+    private IndividualInSpace individualInSpace;
     private FitnessLocus fitnessLocus;
     private int position;
     private int nDeleteriousMutations;
@@ -56,6 +58,12 @@ public class GroupReturn {
         this.meanBeneFitnessEffectArray = meanBeneFitnessEffectArray;
         this.nDeleMutArray = nDeleMutArray;
         this.nBeneMutArray = nBeneMutArray;
+    }
+
+    public GroupReturn(IndividualInSpace individualInSpace, int index) {
+        this.individualInSpace = individualInSpace;
+        this.index = index;
+
     }
 
     public Locus getFitnessLocus() {
@@ -116,5 +124,13 @@ public class GroupReturn {
 
     public Individual getIndividual() {
         return individual;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public IndividualInSpace getIndividualInSpace() {
+        return individualInSpace;
     }
 }
