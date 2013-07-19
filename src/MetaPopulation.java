@@ -144,12 +144,19 @@ public class MetaPopulation {
     }
 
     private double[][] getDistantMatrix() {
-        double[][] distanceMatrix;
+        double[][] distanceMatrix = new double[individuals.size()][individuals.size()];
+        int triangleSide = 0;
+        double distance;
         for (int i = 0; i < individuals.size(); i++) {
-            int triangleSide = 0;
+            IndividualInSpace individualInSpaceI = getIndividualInSpace(i);
+            float xi = individualInSpaceI.getX();
+            float yi = individualInSpaceI.getY();
             for (int j = triangleSide; j < individuals.size(); j++) {
-
-
+                IndividualInSpace individualInSpaceJ = getIndividualInSpace(j);
+                float xj = individualInSpaceJ.getX();
+                float yj = individualInSpaceJ.getY();
+                distance = Math.sqrt(Math.pow((xj - xi), 2) + Math.pow((yj - yi), 2));
+                distanceMatrix[i][j] = distance;
             }
             triangleSide++;
         }
