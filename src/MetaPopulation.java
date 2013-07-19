@@ -153,16 +153,22 @@ public class MetaPopulation {
         int triangleSide = 0;
         double distance;
         double p;
+        double IndividualJFitness;
         for (int i = 0; i < individuals.size(); i++) {
             IndividualInSpace individualInSpaceI = getIndividualInSpace(i);
             float xi = individualInSpaceI.getX();
             float yi = individualInSpaceI.getY();
             for (int j = triangleSide; j < individuals.size(); j++) {
                 IndividualInSpace individualInSpaceJ = getIndividualInSpace(j);
+                IndividualJFitness = individualInSpaceJ.getIndividual().getFitness();
                 float xj = individualInSpaceJ.getX();
                 float yj = individualInSpaceJ.getY();
                 distance = Math.sqrt(Math.pow((xj - xi), 2) + Math.pow((yj - yi), 2));
-                p = 1 / matingDistance * Math.exp(-1 * (1 / matingDistance) * distance);
+                if (distance == 0) {
+                    p = 0;
+                } else {
+                    p = 1 / matingDistance * Math.exp(-1 * (1 / matingDistance) * distance) * IndividualJFitness;
+                }
                 probabilityMatrix[i][j] = p;
                 probabilityMatrix[j][i] = p;
             }
@@ -183,8 +189,7 @@ public class MetaPopulation {
         individuals.add(new IndividualInSpace(offspring, newX, newY));
     }
 
-    private IndividualInSpace getMateIndividual(MetaPopulation metaParent, double[][] parentDistanceMatrix, int parentIndex, double[] ) {
-
+    private IndividualInSpace getMateIndividual(MetaPopulation metaParent, double[][] parentProbabilityMatrix, int parentIndex) {
         for (int i = 0; i < metaParent.individuals.size(); i++) {
             IndividualInSpace individualInSpace = metaParent.individuals.get(i);
             float newX = individualInSpace.getX();
