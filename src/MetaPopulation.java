@@ -74,7 +74,7 @@ public class MetaPopulation {
                 float parentY = parentIndividualInSpace.getY();
                 if (currentGeneration <= ModelParameters.getInt("START_CREATING_ASEXUALS")) {
                     // sexually reproduce
-                    IndividualInSpace mateIndividualInSpace = metaParent.getMateIndividual(metaParent, parentDistanceMatrix, parentIndex);
+                    IndividualInSpace mateIndividualInSpace = metaParent.getMateIndividual(metaParent, parentDistanceMatrix[parentIndex]);
                     float mateX = mateIndividualInSpace.getX();
                     float mateY = mateIndividualInSpace.getY();
                     IndividualPair parentPair = new IndividualPair(parentIndividual, mateIndividualInSpace.getIndividual());
@@ -96,7 +96,7 @@ public class MetaPopulation {
                             }
                         } else {
                             // sexually reproduce
-                            IndividualInSpace mateIndividualInSpace = getMateIndividual(metaParent, parentDistanceMatrix, parentIndex);
+                            IndividualInSpace mateIndividualInSpace = getMateIndividual(metaParent, parentDistanceMatrix[parentIndex]);
                             float mateX = mateIndividualInSpace.getX();
                             float mateY = mateIndividualInSpace.getY();
                             IndividualPair parentPair = new IndividualPair(parentIndividual, mateIndividualInSpace.getIndividual());
@@ -127,7 +127,7 @@ public class MetaPopulation {
                 float parentY = parentIndividualInSpace.getY();
                 if (parentIndividual.getRecombinationStrength() > 0) {
                     // sexually reproduce
-                    IndividualInSpace mateIndividualInSpace = getMateIndividual(metaParent, parentDistanceMatrix, parentIndex);
+                    IndividualInSpace mateIndividualInSpace = getMateIndividual(metaParent, parentDistanceMatrix[parentIndex]);
                     float mateX = mateIndividualInSpace.getX();
                     float mateY = mateIndividualInSpace.getY();
                     IndividualPair parentPair = new IndividualPair(parentIndividual, mateIndividualInSpace.getIndividual());
@@ -189,18 +189,9 @@ public class MetaPopulation {
         individuals.add(new IndividualInSpace(offspring, newX, newY));
     }
 
-    private IndividualInSpace getMateIndividual(MetaPopulation metaParent, double[][] parentProbabilityMatrix, int parentIndex) {
-        for (int i = 0; i < metaParent.individuals.size(); i++) {
-            IndividualInSpace individualInSpace = metaParent.individuals.get(i);
-            float newX = individualInSpace.getX();
-            float newY = individualInSpace.getY();
-            if (newX >= (x - matingDistance) && newX <= (x + matingDistance)) {
-                if (newY >= (y - matingDistance) && newY <= (y + matingDistance)) {
-                    return individualInSpace;
-                }
-            }
-        }
-        return null;
+    private IndividualInSpace getMateIndividual(MetaPopulation metaParent, double[] parentProbabilityRow) {
+        double[] totals = Util.initTotals(parentProbabilityRow);
+        return metaParent.getRandomIndividual(totals).getIndividualInSpace();
     }
 
     private int getSize() {
