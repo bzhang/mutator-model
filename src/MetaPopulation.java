@@ -50,6 +50,7 @@ public class MetaPopulation {
     }
 
     public MetaPopulation(MetaPopulation metaParent, int currentGeneration) {
+        double[][] parentDistanceMatrix = metaParent.getDistantMatrix();
         double[] parentFitnessArray = metaParent.getFitnessArray();
         double[] totals = Util.initTotals(parentFitnessArray);
 //        List<List<Integer>> directions = Util.getDirections();
@@ -140,6 +141,19 @@ public class MetaPopulation {
                 }
             }
         }
+    }
+
+    private double[][] getDistantMatrix() {
+        double[][] distanceMatrix;
+        for (int i = 0; i < individuals.size(); i++) {
+            int triangleSide = 0;
+            for (int j = triangleSide; j < individuals.size(); j++) {
+
+
+            }
+            triangleSide++;
+        }
+        return distanceMatrix;
     }
 
     private void disperseOffspringPair(IndividualPair offspringPair, float x, float y) {
