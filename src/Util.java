@@ -1,5 +1,8 @@
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.math.stat.correlation.PearsonsCorrelation;
+import org.jfree.data.xy.XYDataset;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -220,5 +223,13 @@ public class Util {
                 + "\t" + Util.standardDeviation(meanDeleFitnessEffectArray)
                 + "\t" + Util.standardDeviation(meanBeneFitnessEffectArray)
                 + "\n";
+    }
+
+    public static XYDataset createDataset(MetaPopulation metaPopulation) {
+        XYSeriesCollection result = new XYSeriesCollection();
+        XYSeries series = new XYSeries();
+
+
+        return xyDataset;
     }
 }

@@ -1,3 +1,5 @@
+import org.jfree.data.xy.XYDataset;
+
 /**
  * @author Bingjun Zhang
  */
@@ -30,6 +32,8 @@ public class MetaPopulationEvolution {
                 if (i % ModelParameters.getInt("POP_OUTPUT_PERIOD") == 0) {
                     popFileOutput = Util.outputMetaPopulationStat(i, metaPopulation);
                     Util.writeFile(popFilename, popFileOutput);
+                    XYDataset xyDataset = Util.createDataset(metaPopulation);
+                    Util.scatterPlot();
                 }
 //                if (i % ModelParameters.getInt("MUT_STRUCTURE_OUTPUT_PERIOD") == 0) {
 //                    mutStructureFileOutput = outputMutStructure(i, population);
