@@ -1,3 +1,6 @@
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
+
 import java.util.ArrayList;
 
 /**
@@ -11,6 +14,8 @@ public class MetaPopulation {
     private LociPattern lociPattern;
     private int popSize = ModelParameters.getInt("POPULATION_SIZE");
     private float matingDistance = ModelParameters.getFloat("MATING_DISTANCE");
+    private XYSeriesCollection dataset = new XYSeriesCollection();
+    private XYSeries data = new XYSeries("plotData");
 
     public MetaPopulation() {
         // Create the founder population
@@ -187,6 +192,7 @@ public class MetaPopulation {
         float newX = x + Rand.getFloat() * disperseDistance * 2 - disperseDistance;
         float newY = y + Rand.getFloat() * disperseDistance * 2 - disperseDistance;
         individuals.add(new IndividualInSpace(offspring, newX, newY));
+        data.add(newX, newY);
     }
 
     private IndividualInSpace getMateIndividual(MetaPopulation metaParent, double[] parentProbabilityRow) {

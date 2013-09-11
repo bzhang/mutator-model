@@ -232,4 +232,8 @@ public class Util {
 
         return xyDataset;
     }
+
+    public static void scatterPlot() {
+
+    }
 }
