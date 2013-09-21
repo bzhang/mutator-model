@@ -227,10 +227,10 @@ public class Util {
 
     public static XYDataset createDataset(MetaPopulation metaPopulation) {
         XYSeriesCollection result = new XYSeriesCollection();
-        XYSeries series = new XYSeries();
-
-
-        return xyDataset;
+//        XYSeries series = new XYSeries();
+//
+//
+        return result;
     }
 
     public static void scatterPlot() {

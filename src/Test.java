@@ -1,10 +1,30 @@
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.util.*;
+import javax.swing.AbstractAction;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import org.jfree.chart.*;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.XYItemRenderer;
+import org.jfree.data.xy.XYDataset;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
+import org.jfree.ui.ApplicationFrame;
+
 import java.lang.reflect.Array;
 import java.util.Arrays;
 
 /**
  * @author Bingjun Zhang
  */
-public class Test {
+public class Test{
+
     public static void main(String[] args) {
 
 //        String propertiesFileName = args.length > 0 ? args[0] : "MutatorModel.properties";
@@ -42,16 +62,27 @@ public class Test {
 //            Util.writeFile("mutationRate.txt", mutationRate + "\n");
 
 //        }
-        double[] data1 = {0.9696176324044004, 0.9922179334446213, 0.9922179334446213, 0.9922179334446213, 1.0};
-        double[] data2 = {1.0, 1.0, 1.0, 1.0, 1.0};
-        System.out.println(Arrays.toString(data1));
-
-        System.out.println(Arrays.toString(data2));
-        System.out.println(data1.length + " " + data2.length);
-        double cor = Util.pearsonCorrelation(data1, data2);
-        System.out.println(cor);
-
-
+//        double[] data1 = {0.9696176324044004, 0.9922179334446213, 0.9922179334446213, 0.9922179334446213, 1.0};
+//        double[] data2 = {1.0, 1.0, 1.0, 1.0, 1.0};
+//        System.out.println(Arrays.toString(data1));
+//
+//        System.out.println(Arrays.toString(data2));
+//        System.out.println(data1.length + " " + data2.length);
+//        double cor = Util.pearsonCorrelation(data1, data2);
+//        System.out.println(cor);
+        final String title = "Demo";
+        XYSeriesCollection dataset = new XYSeriesCollection();
+        XYSeries data = new XYSeries("plotData");
+        for (int i = 0; i < 5; i++) {
+            data.add(i, i);
+        }
+        dataset.addSeries(data);
+        JFreeChart jfreechart = ChartFactory.createScatterPlot(title, "X", "Y", dataset, PlotOrientation.VERTICAL, true, true, false);
+        XYPlot xyPlot = (XYPlot) jfreechart.getPlot();
+        xyPlot.setDomainCrosshairVisible(true);
+        xyPlot.setRangeCrosshairVisible(true);
+//        XYItemRenderer renderer = new xyPlot.getRenderer();
+//        renderer.setSeriesPaint(0, Color.blue);
 
     }
 }
