@@ -1,6 +1,4 @@
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.EventQueue;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.*;
 import javax.swing.AbstractAction;
@@ -12,6 +10,7 @@ import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
@@ -44,11 +43,11 @@ public class ScatterAdd extends JFrame {
         JFreeChart jfreechart = ChartFactory.createScatterPlot(
                 title, "X", "Y", createSampleData(),
                 PlotOrientation.VERTICAL, true, true, false);
-        XYPlot xyPlot = (XYPlot) jfreechart.getPlot();
+        final XYPlot xyPlot = (XYPlot) jfreechart.getPlot();
 //        xyPlot.setDomainCrosshairVisible(false);
 //        xyPlot.setRangeCrosshairVisible(false);
-        XYItemRenderer renderer = xyPlot.getRenderer();
-        renderer.setItem
+//        XYItemRenderer renderer = xyPlot.getRenderer();
+
         NumberAxis domain = (NumberAxis) xyPlot.getDomainAxis();
         domain.setVerticalTickLabels(true);
         return new ChartPanel(jfreechart);
