@@ -1,7 +1,10 @@
+import org.jfree.data.xy.DefaultXYZDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
 import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * @author Bingjun Zhang
@@ -9,13 +12,15 @@ import java.util.ArrayList;
 
 
 public class MetaPopulation {
-//    private ArrayList<ArrayList<Individual>> individuals;
+    //    private ArrayList<ArrayList<Individual>> individuals;
     private ArrayList<IndividualInSpace> individuals;
     private LociPattern lociPattern;
     private int popSize = ModelParameters.getInt("POPULATION_SIZE");
     private float matingDistance = ModelParameters.getFloat("MATING_DISTANCE");
-    private XYSeriesCollection dataset = new XYSeriesCollection();
-    private XYSeries data = new XYSeries("plotData");
+    public DefaultXYZDataset dataset = new DefaultXYZDataset();
+    private double[] xValues = new double[popSize];
+    private double[] yValues = new double[popSize];
+    private double[] zValues = new double[popSize];
 
     public MetaPopulation() {
         // Create the founder population
@@ -25,8 +30,12 @@ public class MetaPopulation {
         int radius = 0;
         initMetaPopulation:
         while (true) {
+            int counter = 0;
             for (int y = -radius; y <= radius; y++) {
                 individuals.add(new IndividualInSpace(createIndividual(), -radius, y));
+                xValues[counter] = -radius;
+                yValues[counter] = y;
+                counter++;
                 if (individuals.size() >= popSize) break initMetaPopulation;
                 individuals.add(new IndividualInSpace(createIndividual(), radius, y));
                 if (individuals.size() >= popSize) break initMetaPopulation;
@@ -38,6 +47,7 @@ public class MetaPopulation {
                 if (individuals.size() >= popSize) break initMetaPopulation;
             }
             radius++;
+
         }
     }
 
@@ -192,7 +202,7 @@ public class MetaPopulation {
         float newX = x + Rand.getFloat() * disperseDistance * 2 - disperseDistance;
         float newY = y + Rand.getFloat() * disperseDistance * 2 - disperseDistance;
         individuals.add(new IndividualInSpace(offspring, newX, newY));
-        data.add(newX, newY);
+//        data.add(newX, newY);
     }
 
     private IndividualInSpace getMateIndividual(MetaPopulation metaParent, double[] parentProbabilityRow) {
@@ -221,7 +231,7 @@ public class MetaPopulation {
         while (index == totals.length) {
             index = WeightedRandomGenerator.nextInt(totals);
         }
-        return new GroupReturn(getIndividualInSpace(index), index) ;
+        return new GroupReturn(getIndividualInSpace(index), index);
     }
 
     private double getRandomMutatorStrength() {
