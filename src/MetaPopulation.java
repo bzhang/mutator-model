@@ -33,22 +33,33 @@ public class MetaPopulation {
             int counter = 0;
             for (int y = -radius; y <= radius; y++) {
                 individuals.add(new IndividualInSpace(createIndividual(), -radius, y));
-                xValues[counter] = -radius;
-                yValues[counter] = y;
+                addXYZData(-radius, y, 1);
                 counter++;
                 if (individuals.size() >= popSize) break initMetaPopulation;
                 individuals.add(new IndividualInSpace(createIndividual(), radius, y));
+                addXYZData(radius, y, 1);
+                counter++;
                 if (individuals.size() >= popSize) break initMetaPopulation;
             }
             for (int x = -radius + 1; x < radius; x++) {
                 individuals.add(new IndividualInSpace(createIndividual(), -x, -radius));
+                addXYZData(-x, radius, 1);
+                counter++;
                 if (individuals.size() >= popSize) break initMetaPopulation;
                 individuals.add(new IndividualInSpace(createIndividual(), x, radius));
+                addXYZData(x, radius, 1);
+                counter++;
                 if (individuals.size() >= popSize) break initMetaPopulation;
             }
             radius++;
 
         }
+    }
+
+    private void addXYZData(int x, int y, int z) {
+        xValues[z] = x;
+        yValues[z] = y;
+        zValues[z] = z;
     }
 
     private Individual createIndividual() {
