@@ -56,12 +56,6 @@ public class MetaPopulation {
         }
     }
 
-    private void addXYZData(int x, int y, int z) {
-        xValues[z] = x;
-        yValues[z] = y;
-        zValues[z] = z;
-    }
-
     private Individual createIndividual() {
         Individual individual = new Individual(lociPattern);
         for (int location = 0; location < ModelParameters.getGenomeSize(); location++) {
@@ -219,6 +213,12 @@ public class MetaPopulation {
     private IndividualInSpace getMateIndividual(MetaPopulation metaParent, double[] parentProbabilityRow) {
         double[] totals = Util.initTotals(parentProbabilityRow);
         return metaParent.getRandomIndividual(totals).getIndividualInSpace();
+    }
+
+    private void addXYZData(int x, int y, int z) {
+        xValues[z] = x;
+        yValues[z] = y;
+        zValues[z] = z;
     }
 
     private int getSize() {
