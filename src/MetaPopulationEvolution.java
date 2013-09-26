@@ -1,4 +1,5 @@
 import org.jfree.data.xy.XYDataset;
+import org.jfree.data.xy.XYZDataset;
 
 /**
  * @author Bingjun Zhang
@@ -22,6 +23,8 @@ public class MetaPopulationEvolution {
             System.out.println("Output file: " + popFilename + "\nFounder population creating...");
             MetaPopulation metaPopulation = new MetaPopulation();
             popFileOutput += Util.outputMetaPopulationStat(1, metaPopulation);
+            XYZDataset xyzDatasetFirstGen = metaPopulation.xyzDataset;
+            Util.scatterPlot(xyzDatasetFirstGen, 1);
 
             System.out.println("Founder population created.");
 
@@ -32,8 +35,8 @@ public class MetaPopulationEvolution {
                 if (i % ModelParameters.getInt("POP_OUTPUT_PERIOD") == 0) {
                     popFileOutput = Util.outputMetaPopulationStat(i, metaPopulation);
                     Util.writeFile(popFilename, popFileOutput);
-                    XYDataset xyDataset = Util.createDataset(metaPopulation);
-                    Util.scatterPlot();
+                    XYZDataset xyzDataset = metaPopulation.xyzDataset;
+                    Util.scatterPlot(xyzDataset, i);
                 }
 //                if (i % ModelParameters.getInt("MUT_STRUCTURE_OUTPUT_PERIOD") == 0) {
 //                    mutStructureFileOutput = outputMutStructure(i, population);
