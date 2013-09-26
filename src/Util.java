@@ -1,9 +1,26 @@
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.math.stat.correlation.PearsonsCorrelation;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.ChartUtilities;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.axis.ValueAxis;
+import org.jfree.chart.plot.CrosshairState;
+import org.jfree.chart.plot.PlotRenderingInfo;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.AbstractXYItemRenderer;
+import org.jfree.chart.renderer.xy.XYItemRenderer;
+import org.jfree.chart.renderer.xy.XYItemRendererState;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
+import org.jfree.data.xy.XYZDataset;
+import org.jfree.util.ShapeUtilities;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -233,7 +250,62 @@ public class Util {
         return result;
     }
 
-    public static void scatterPlot() {
+    public static void scatterPlot(XYZDataset xyzDataset, int currentGeneration) {
+        JFrame frame = new JFrame("Mutators in Space");
+        XYItemRenderer r = new XYZColorRenderer();
+        NumberAxis xAxis = new NumberAxis("x");
+        NumberAxis yAxis = new NumberAxis("y");
+        XYPlot plot = new XYPlot(xyzDataset, xAxis, yAxis, r);
+        JFreeChart chart = new JFreeChart("XYZ Demo", new Font("Helvetica",0,18), plot, false);
+        frame.setContentPane(new ChartPanel(chart));
+        frame.pack();
+        frame.setVisible(true);
+        try{
+            ChartUtilities.saveChartAsPNG(new File(currentGeneration + ".png"), chart, 700, 600);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
+    }
+
+    static class XYZColorRenderer extends AbstractXYItemRenderer {
+        public void drawItem(Graphics2D g2, XYItemRendererState state,
+                             Rectangle2D dataArea, PlotRenderingInfo info, XYPlot plot,
+                             ValueAxis domainAxis, ValueAxis rangeAxis, XYDataset dataset,
+                             int series, int item, CrosshairState crosshairState, int pass) {
+            double x = dataset.getXValue(series, item);
+            double y = dataset.getYValue(series, item);
+            if (Double.isNaN(x) || Double.isNaN(y)) {
+                // can't draw anything
+                return;
+            }
+
+            double transX = domainAxis.valueToJava2D(x, dataArea,
+                    plot.getDomainAxisEdge());
+            double transY = rangeAxis.valueToJava2D(y, dataArea,
+                    plot.getRangeAxisEdge());
+
+            Shape shape = null;
+            Color color = null;
+            if(dataset instanceof XYZDataset){
+                XYZDataset xyz = (XYZDataset)dataset;
+                double z = xyz.getZValue(series, item);
+                int red = 0;
+                if (z > 1) {
+                    red = (int) Math.floor(Math.atan((z-1) * ModelParameters.getFloat("COLOR_SCALE")) * 2 / Math.PI * 256);
+                }
+                color = new Color(255, 255-red, 255-red);
+            }
+            shape = new Ellipse2D.Double(-4, -4, 8, 8);
+            shape = ShapeUtilities.createTranslatedShape(shape, transX,
+                    transY);
+            if (shape.intersects(dataArea)) {
+                g2.setPaint(color);
+                g2.fill(shape);
+                g2.setPaint(getItemOutlinePaint(series, item));
+                g2.setStroke(getItemOutlineStroke(series, item));
+                g2.draw(shape);
+            }
+        }
     }
 }
