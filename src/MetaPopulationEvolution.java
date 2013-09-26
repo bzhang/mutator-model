@@ -23,7 +23,7 @@ public class MetaPopulationEvolution {
             MetaPopulation metaPopulation = new MetaPopulation();
             popFileOutput += Util.outputMetaPopulationStat(1, metaPopulation);
             XYZDataset xyzDatasetFirstGen = metaPopulation.xyzDataset;
-            Util.scatterPlot(xyzDatasetFirstGen, 1);
+            Util.scatterPlot(xyzDatasetFirstGen, 1, resultFileNamePrefix);
 
             System.out.println("Founder population created.");
 
@@ -35,7 +35,7 @@ public class MetaPopulationEvolution {
                     popFileOutput = Util.outputMetaPopulationStat(i, metaPopulation);
                     Util.writeFile(popFilename, popFileOutput);
                     XYZDataset xyzDataset = metaPopulation.xyzDataset;
-                    Util.scatterPlot(xyzDataset, i);
+                    Util.scatterPlot(xyzDataset, i, resultFileNamePrefix);
                 }
 //                if (i % ModelParameters.getInt("MUT_STRUCTURE_OUTPUT_PERIOD") == 0) {
 //                    mutStructureFileOutput = outputMutStructure(i, population);
