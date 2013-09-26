@@ -1,4 +1,5 @@
 .idea/*.xml
+*.png
 .idea/ant.xml
 .idea/*
 src/*.orig
