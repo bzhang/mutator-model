@@ -242,14 +242,6 @@ public class Util {
                 + "\n";
     }
 
-    public static XYDataset createDataset(MetaPopulation metaPopulation) {
-        XYSeriesCollection result = new XYSeriesCollection();
-//        XYSeries series = new XYSeries();
-//
-//
-        return result;
-    }
-
     public static void scatterPlot(XYZDataset xyzDataset, int currentGeneration) {
         JFrame frame = new JFrame("Mutators in Space");
         XYItemRenderer r = new XYZColorRenderer();
