@@ -242,22 +242,17 @@ public class Util {
                 + "\n";
     }
 
-    public static void scatterPlot(XYZDataset xyzDataset, int currentGeneration) {
-        JFrame frame = new JFrame("Mutators in Space");
+    public static void scatterPlot(XYZDataset xyzDataset, int currentGeneration, String resultFileNamePrefix) {
         XYItemRenderer r = new XYZColorRenderer();
         NumberAxis xAxis = new NumberAxis("x");
         NumberAxis yAxis = new NumberAxis("y");
         XYPlot plot = new XYPlot(xyzDataset, xAxis, yAxis, r);
-        JFreeChart chart = new JFreeChart("XYZ Demo", new Font("Helvetica",0,18), plot, false);
-        frame.setContentPane(new ChartPanel(chart));
-        frame.pack();
-        frame.setVisible(true);
+        JFreeChart chart = new JFreeChart("Mutator in Space", new Font("Helvetica",0,18), plot, false);
         try{
-            ChartUtilities.saveChartAsPNG(new File(currentGeneration + ".png"), chart, 700, 600);
+            ChartUtilities.saveChartAsPNG(new File(resultFileNamePrefix + currentGeneration + ".png"), chart, 700, 600);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     static class XYZColorRenderer extends AbstractXYItemRenderer {
