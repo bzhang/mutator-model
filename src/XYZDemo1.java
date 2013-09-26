@@ -36,8 +36,8 @@ public class XYZDemo1 {
     public static void main(String[] args) {
         String propertiesFileName = args.length > 0 ? args[0] : "MutatorModel.properties";
         ModelParameters.setPropertiesFileName(propertiesFileName);
-        JFrame frame = new JFrame("XYZDemo");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        JFrame frame = new JFrame("XYZDemo");
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         int rows = 4;
         int columns = 2;
         String[] rowKeys = {"X1", "X2", "X3", "X4"};
@@ -56,11 +56,11 @@ public class XYZDemo1 {
         NumberAxis yAxis = new NumberAxis("y");
         XYPlot plot = new XYPlot(dataset, xAxis, yAxis, r);
         JFreeChart chart = new JFreeChart("XYZ Demo", new Font("Helvetica",0,18), plot, false);
-        frame.setContentPane(new ChartPanel(chart));
-        frame.pack();
-        frame.setVisible(true);
+//        frame.setContentPane(new ChartPanel(chart));
+//        frame.pack();
+//        frame.setVisible(true);
         try{
-            ChartUtilities.saveChartAsPNG(new File("test.png"), chart, 700, 600);
+            ChartUtilities.saveChartAsPNG(new File("test1.png"), chart, 700, 600);
         } catch (IOException e) {
             e.printStackTrace();
         }
