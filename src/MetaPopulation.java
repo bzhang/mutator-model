@@ -1,9 +1,7 @@
+import com.google.common.primitives.Doubles;
 import org.jfree.data.xy.DefaultXYZDataset;
-import org.jfree.data.xy.XYSeries;
-import org.jfree.data.xy.XYSeriesCollection;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -17,10 +15,10 @@ public class MetaPopulation {
     private LociPattern lociPattern;
     private int popSize = ModelParameters.getInt("POPULATION_SIZE");
     private float matingDistance = ModelParameters.getFloat("MATING_DISTANCE");
-    public DefaultXYZDataset dataset = new DefaultXYZDataset();
-    private double[] xValues = new double[popSize];
-    private double[] yValues = new double[popSize];
-    private double[] zValues = new double[popSize];
+    public DefaultXYZDataset xyzDataset = new DefaultXYZDataset();
+    private ArrayList<Double> xValues = new ArrayList<Double>();
+    private ArrayList<Double> yValues = new ArrayList<Double>();
+    private ArrayList<Double> zValues = new ArrayList<Double>();
 
     public MetaPopulation() {
         // Create the founder population
@@ -30,44 +28,25 @@ public class MetaPopulation {
         int radius = 0;
         initMetaPopulation:
         while (true) {
-            int counter = 0;
             for (int y = -radius; y <= radius; y++) {
                 individuals.add(new IndividualInSpace(createIndividual(), -radius, y));
-                addXYZData(-radius, y, 1);
-                counter++;
+                addToXYZArrays(-radius, y, 1);
                 if (individuals.size() >= popSize) break initMetaPopulation;
                 individuals.add(new IndividualInSpace(createIndividual(), radius, y));
-                addXYZData(radius, y, 1);
-                counter++;
+                addToXYZArrays(radius, y, 1);
                 if (individuals.size() >= popSize) break initMetaPopulation;
             }
             for (int x = -radius + 1; x < radius; x++) {
                 individuals.add(new IndividualInSpace(createIndividual(), -x, -radius));
-                addXYZData(-x, radius, 1);
-                counter++;
+                addToXYZArrays(-x, radius, 1);
                 if (individuals.size() >= popSize) break initMetaPopulation;
                 individuals.add(new IndividualInSpace(createIndividual(), x, radius));
-                addXYZData(x, radius, 1);
-                counter++;
+                addToXYZArrays(x, radius, 1);
                 if (individuals.size() >= popSize) break initMetaPopulation;
             }
             radius++;
-
         }
-    }
-
-    private Individual createIndividual() {
-        Individual individual = new Individual(lociPattern);
-        for (int location = 0; location < ModelParameters.getGenomeSize(); location++) {
-            if (lociPattern.getLocusType(location) == LociPattern.LocusType.Fitness) {
-                individual.setFitnessLocus(location);
-            } else if (lociPattern.getLocusType(location) == LociPattern.LocusType.Mutator) {
-                individual.setMutatorLocus(location, getRandomMutatorStrength());
-            } else {
-                individual.setRecombinationLocus(location, getRandomRecombinationStrength());
-            }
-        }
-        return individual;
+        addToXYZDataset(xValues, yValues, zValues);
     }
 
     public MetaPopulation(MetaPopulation metaParent, int currentGeneration) {
@@ -166,6 +145,15 @@ public class MetaPopulation {
                 }
             }
         }
+        addToXYZDataset(xValues, yValues, zValues);
+    }
+
+    private void addToXYZDataset(ArrayList<Double> xValues, ArrayList<Double> yValues, ArrayList<Double> zValues) {
+        double[][] data = new double[3][];
+        data[0] = Doubles.toArray(xValues);
+        data[1] = Doubles.toArray(yValues);
+        data[2] = Doubles.toArray(zValues);
+        xyzDataset.addSeries("xyzData", data);
     }
 
     private double[][] getProbabilityMatrix() {
@@ -197,6 +185,20 @@ public class MetaPopulation {
         return probabilityMatrix;
     }
 
+    private Individual createIndividual() {
+        Individual individual = new Individual(lociPattern);
+        for (int location = 0; location < ModelParameters.getGenomeSize(); location++) {
+            if (lociPattern.getLocusType(location) == LociPattern.LocusType.Fitness) {
+                individual.setFitnessLocus(location);
+            } else if (lociPattern.getLocusType(location) == LociPattern.LocusType.Mutator) {
+                individual.setMutatorLocus(location, getRandomMutatorStrength());
+            } else {
+                individual.setRecombinationLocus(location, getRandomRecombinationStrength());
+            }
+        }
+        return individual;
+    }
+
     private void disperseOffspringPair(IndividualPair offspringPair, float x, float y) {
         disperse(offspringPair.getIndividualA(), x, y);
         disperse(offspringPair.getIndividualB(), x, y);
@@ -207,7 +209,7 @@ public class MetaPopulation {
         float newX = x + Rand.getFloat() * disperseDistance * 2 - disperseDistance;
         float newY = y + Rand.getFloat() * disperseDistance * 2 - disperseDistance;
         individuals.add(new IndividualInSpace(offspring, newX, newY));
-//        data.add(newX, newY);
+        addToXYZArrays(newX, newY, offspring.getMutatorStrength());
     }
 
     private IndividualInSpace getMateIndividual(MetaPopulation metaParent, double[] parentProbabilityRow) {
@@ -215,10 +217,10 @@ public class MetaPopulation {
         return metaParent.getRandomIndividual(totals).getIndividualInSpace();
     }
 
-    private void addXYZData(int x, int y, int z) {
-        xValues[z] = x;
-        yValues[z] = y;
-        zValues[z] = z;
+    private void addToXYZArrays(double x, double y, double z) {
+        xValues.add(x);
+        yValues.add(y);
+        zValues.add(z);
     }
 
     private int getSize() {
