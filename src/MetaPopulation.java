@@ -208,8 +208,10 @@ public class MetaPopulation {
 
     private void disperse(Individual offspring, float x, float y) {
         float disperseDistance = ModelParameters.getFloat("DISPERSE_DISTANCE");
-        float newX = x + Rand.getFloat() * disperseDistance * 2 - disperseDistance;
-        float newY = y + Rand.getFloat() * disperseDistance * 2 - disperseDistance;
+        double angle = Math.toRadians(Math.random() * 360);
+        double distance = -disperseDistance * Math.log(Rand.getDouble());
+        float newX = (float) (x + distance * Math.cos(angle));
+        float newY = (float) (y + distance * Math.sin(angle));
         individuals.add(new IndividualInSpace(offspring, newX, newY));
         addToXYZArrays(newX, newY, offspring.getMutatorStrength());
     }
