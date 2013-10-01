@@ -27,9 +27,11 @@ import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.AbstractXYItemRenderer;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.chart.renderer.xy.XYItemRendererState;
+import org.jfree.chart.title.TextTitle;
 import org.jfree.data.xy.DefaultXYZDataset;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYZDataset;
+import org.jfree.ui.RectangleEdge;
 import org.jfree.util.ShapeUtilities;
 
 public class XYZDemo1 {
@@ -53,9 +55,16 @@ public class XYZDemo1 {
         dataset.addSeries("Series 1", data);
         XYItemRenderer r = new XYZColorRenderer();
         NumberAxis xAxis = new NumberAxis("x");
+        xAxis.setRange(-100, 100);
         NumberAxis yAxis = new NumberAxis("y");
+        yAxis.setRange(-100, 100);
         XYPlot plot = new XYPlot(dataset, xAxis, yAxis, r);
         JFreeChart chart = new JFreeChart("XYZ Demo", new Font("Helvetica",0,18), plot, false);
+//        double min = Math.min(dataset.);
+//        System.out.print(min);
+        TextTitle legendText = new TextTitle("Current Generation: 1");
+        legendText.setPosition(RectangleEdge.BOTTOM);
+        chart.addSubtitle(legendText);
 //        frame.setContentPane(new ChartPanel(chart));
 //        frame.pack();
 //        frame.setVisible(true);
