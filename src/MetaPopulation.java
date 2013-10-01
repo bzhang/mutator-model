@@ -25,7 +25,9 @@ public class MetaPopulation {
         lociPattern = new LociPattern(ModelParameters.getInt("N_FITNESS_LOCI"),
                 ModelParameters.getInt("N_MUTATOR_LOCI"), ModelParameters.getInt("N_RECOMBINATION_LOCI"));
         individuals = new ArrayList<IndividualInSpace>();
-        int radius = 0;
+        individuals.add(new IndividualInSpace(createIndividual(), 0, 0));
+        addToXYZArrays(0, 0, 1);
+        int radius = 1;
         initMetaPopulation:
         while (true) {
             for (int y = -radius; y <= radius; y++) {
@@ -37,8 +39,8 @@ public class MetaPopulation {
                 if (individuals.size() >= popSize) break initMetaPopulation;
             }
             for (int x = -radius + 1; x < radius; x++) {
-                individuals.add(new IndividualInSpace(createIndividual(), -x, -radius));
-                addToXYZArrays(-x, radius, 1);
+                individuals.add(new IndividualInSpace(createIndividual(), x, -radius));
+                addToXYZArrays(x, -radius, 1);
                 if (individuals.size() >= popSize) break initMetaPopulation;
                 individuals.add(new IndividualInSpace(createIndividual(), x, radius));
                 addToXYZArrays(x, radius, 1);
@@ -240,7 +242,7 @@ public class MetaPopulation {
     }
 
     private GroupReturn getRandomIndividual(double[] totals) {
-        int index = 0;
+        int index = WeightedRandomGenerator.nextInt(totals);
         while (index == totals.length) {
             index = WeightedRandomGenerator.nextInt(totals);
         }
