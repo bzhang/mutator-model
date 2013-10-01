@@ -27,8 +27,8 @@ public class Test{
 
     public static void main(String[] args) {
 
-//        String propertiesFileName = args.length > 0 ? args[0] : "MutatorModel.properties";
-//        ModelParameters.setPropertiesFileName(propertiesFileName);
+        String propertiesFileName = args.length > 0 ? args[0] : "MutatorModel.properties";
+        ModelParameters.setPropertiesFileName(propertiesFileName);
 //
 //        int nIndividual = 614666;
 //        int nDeleMutation = 15;
@@ -70,19 +70,26 @@ public class Test{
 //        System.out.println(data1.length + " " + data2.length);
 //        double cor = Util.pearsonCorrelation(data1, data2);
 //        System.out.println(cor);
-        final String title = "Demo";
-        XYSeriesCollection dataset = new XYSeriesCollection();
-        XYSeries data = new XYSeries("plotData");
-        for (int i = 0; i < 5; i++) {
-            data.add(i, i);
-        }
-        dataset.addSeries(data);
-        JFreeChart jfreechart = ChartFactory.createScatterPlot(title, "X", "Y", dataset, PlotOrientation.VERTICAL, true, true, false);
-        XYPlot xyPlot = (XYPlot) jfreechart.getPlot();
-        xyPlot.setDomainCrosshairVisible(true);
-        xyPlot.setRangeCrosshairVisible(true);
+//        final String title = "Demo";
+//        XYSeriesCollection dataset = new XYSeriesCollection();
+//        XYSeries data = new XYSeries("plotData");
+//        for (int i = 0; i < 5; i++) {
+//            data.add(i, i);
+//        }
+//        dataset.addSeries(data);
+//        JFreeChart jfreechart = ChartFactory.createScatterPlot(title, "X", "Y", dataset, PlotOrientation.VERTICAL, true, true, false);
+//        XYPlot xyPlot = (XYPlot) jfreechart.getPlot();
+//        xyPlot.setDomainCrosshairVisible(true);
+//        xyPlot.setRangeCrosshairVisible(true);
 //        XYItemRenderer renderer = new xyPlot.getRenderer();
 //        renderer.setSeriesPaint(0, Color.blue);
-
+        for (int i = 0; i < 10000; i++) {
+            float disperseDistance = ModelParameters.getFloat("DISPERSE_DISTANCE");
+            double angle = Math.toRadians(Math.random() * 360);
+            double distance = -disperseDistance * Math.log(Rand.getDouble());
+            float newX = (float) (distance * Math.cos(angle));
+            float newY = (float) (distance * Math.sin(angle));
+            Util.writeFile("Demo_Disperse.txt", newX + "\t" + newY + "\n");
+        }
     }
 }
