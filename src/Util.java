@@ -11,10 +11,12 @@ import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.AbstractXYItemRenderer;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.chart.renderer.xy.XYItemRendererState;
+import org.jfree.chart.title.TextTitle;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.data.xy.XYZDataset;
+import org.jfree.ui.RectangleEdge;
 import org.jfree.util.ShapeUtilities;
 
 import javax.swing.*;
@@ -246,10 +248,15 @@ public class Util {
         XYItemRenderer r = new XYZColorRenderer();
         NumberAxis xAxis = new NumberAxis("x");
         NumberAxis yAxis = new NumberAxis("y");
+        xAxis.setRange(-1 * ModelParameters.getDouble("IMAGE_RANGE"), ModelParameters.getDouble("IMAGE_RANGE"));
+        yAxis.setRange(-1 * ModelParameters.getDouble("IMAGE_RANGE"), ModelParameters.getDouble("IMAGE_RANGE"));
         XYPlot plot = new XYPlot(xyzDataset, xAxis, yAxis, r);
         JFreeChart chart = new JFreeChart("Mutator in Space", new Font("Helvetica",0,18), plot, false);
+        TextTitle legendText = new TextTitle("Current Generation: " + currentGeneration);
+        legendText.setPosition(RectangleEdge.BOTTOM);
+        chart.addSubtitle(legendText);
         try{
-            ChartUtilities.saveChartAsPNG(new File(resultFileNamePrefix + currentGeneration + ".png"), chart, 700, 600);
+            ChartUtilities.saveChartAsPNG(new File(resultFileNamePrefix + currentGeneration + ".png"), chart, 700, 700);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -283,7 +290,7 @@ public class Util {
                 }
                 color = new Color(255, 255-red, 255-red);
             }
-            shape = new Ellipse2D.Double(-4, -4, 8, 8);
+            shape = new Ellipse2D.Double(-3, -3, 6, 6);
             shape = ShapeUtilities.createTranslatedShape(shape, transX,
                     transY);
             if (shape.intersects(dataArea)) {
