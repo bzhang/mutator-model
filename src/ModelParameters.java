@@ -68,7 +68,9 @@ public class ModelParameters {
         String path = getProperty("OUTPUT_PATH");
 //        return "/project/worm/MutatorModel/Expo"
         return path + "/"
-                + "Meta" + getFloat("METAPOPULATION")
+                + "Meta" + getInt("METAPOPULATION")
+                + "_MatingD" + getFloat("MATING_DISTANCE")
+                + "_DisperseD" + getFloat("DISPERSE_DISTANCE")
                 + "_M" + getFloat("MUTATOR_RATIO")
                 + "_R" + getFloat("RECOMBINATION_RATIO") + "_" + getFloat("RECOMBINATION_RATE")
                 + "_G" + getInt("N_GENERATIONS")
@@ -86,7 +88,9 @@ public class ModelParameters {
                 + "_Prob2MutaE1" + getFloat("PROBABILITY_TO_MUTCLASS_1")
                 + "_AntiMutE" + getFloat("ANTIMUTATOR_MUTATION_EFFECT")
                 + "_EvlFrom" + getInt("START_EVOLVING_GENERATION")
-                + "_Period" + getInt("POP_OUTPUT_PERIOD");
+                + "_Period" + getInt("POP_OUTPUT_PERIOD")
+                + "_ColorScale" + getFloat("COLOR_SCALE")
+                + "_IMGRange" + getDouble("IMAGE_RANGE");
     }
 
     public static long getMutationID() {
