@@ -73,49 +73,15 @@ public class MetaPopulation {
                 Individual parentIndividual = parentIndividualInSpace.getIndividual();
                 float parentX = parentIndividualInSpace.getX();
                 float parentY = parentIndividualInSpace.getY();
-                if (currentGeneration <= ModelParameters.getInt("START_CREATING_ASEXUALS")) {
-                    // sexually reproduce
-                    IndividualInSpace mateIndividualInSpace = metaParent.getMateIndividual(metaParent, parentDistanceMatrix[parentIndex]);
-                    float mateX = mateIndividualInSpace.getX();
-                    float mateY = mateIndividualInSpace.getY();
-                    IndividualPair parentPair = new IndividualPair(parentIndividual, mateIndividualInSpace.getIndividual());
-                    IndividualPair offspringPair = parentPair.reproduce();
-                    float offspringX = (parentX + mateX) / 2;
-                    float offspringY = (parentY + mateY) / 2;
-                    offspringPair.mutate(currentGeneration);
-                    disperseOffspringPair(offspringPair, offspringX, offspringY);
-                } else {
+                if (currentGeneration > ModelParameters.getInt("START_CREATING_ASEXUALS")) {
                     if (parentIndividual.getRecombinationStrength() > 0) {
                         // convert to asexuals
                         if (Rand.getFloat() < ModelParameters.getFloat("PROBABILITY_TO_ASEXUAL")) {
                             parentIndividual.setRecombinationStrength(0);
-                            // asexually reproduction
-                            for (int i = 0; i < 4; i++) {
-                                Individual offspring = new Individual(parentIndividual);
-                                offspring.mutate(currentGeneration);
-                                disperse(offspring, parentX, parentY);
-                            }
-                        } else {
-                            // sexually reproduce
-                            IndividualInSpace mateIndividualInSpace = getMateIndividual(metaParent, parentDistanceMatrix[parentIndex]);
-                            float mateX = mateIndividualInSpace.getX();
-                            float mateY = mateIndividualInSpace.getY();
-                            IndividualPair parentPair = new IndividualPair(parentIndividual, mateIndividualInSpace.getIndividual());
-                            IndividualPair offspringPair = parentPair.reproduce();
-                            float offspringX = (parentX + mateX) / 2;
-                            float offspringY = (parentY + mateY) / 2;
-                            offspringPair.mutate(currentGeneration);
-                            disperseOffspringPair(offspringPair, offspringX, offspringY);
-                        }
-                    } else {
-                        // asexually reproduce
-                        for (int i = 0; i < 4; i++) {
-                            Individual offspring = new Individual(parentIndividual);
-                            offspring.mutate(currentGeneration);
-                            disperse(offspring, parentX, parentY);
                         }
                     }
                 }
+                reproduce(getMateIndividual(metaParent, parentDistanceMatrix[parentIndex]), currentGeneration, parentIndividual, parentX, parentY);
             }
 
         } else {
@@ -126,28 +92,21 @@ public class MetaPopulation {
                 Individual parentIndividual = parentIndividualInSpace.getIndividual();
                 float parentX = parentIndividualInSpace.getX();
                 float parentY = parentIndividualInSpace.getY();
-                if (parentIndividual.getRecombinationStrength() > 0) {
-                    // sexually reproduce
-                    IndividualInSpace mateIndividualInSpace = getMateIndividual(metaParent, parentDistanceMatrix[parentIndex]);
-                    float mateX = mateIndividualInSpace.getX();
-                    float mateY = mateIndividualInSpace.getY();
-                    IndividualPair parentPair = new IndividualPair(parentIndividual, mateIndividualInSpace.getIndividual());
-                    IndividualPair offspringPair = parentPair.reproduce();
-                    float offspringX = (parentX + mateX) / 2;
-                    float offspringY = (parentY + mateY) / 2;
-                    offspringPair.mutate(currentGeneration);
-                    disperseOffspringPair(offspringPair, offspringX, offspringY);
-                } else {
-                    // asexually reproduce
-                    for (int i = 0; i < 4; i++) {
-                        Individual offspring = new Individual(parentIndividual);
-                        offspring.mutate(currentGeneration);
-                        disperse(offspring, parentX, parentY);
-                    }
-                }
+                reproduce(getMateIndividual(metaParent, parentDistanceMatrix[parentIndex]), currentGeneration, parentIndividual, parentX, parentY);
             }
         }
         addToXYZDataset(xValues, yValues, zValues);
+    }
+
+    private void reproduce(IndividualInSpace mateIndividualInSpace, int currentGeneration, Individual parentIndividual, float parentX, float parentY) {
+        float mateX = mateIndividualInSpace.getX();
+        float mateY = mateIndividualInSpace.getY();
+        IndividualPair parentPair = new IndividualPair(parentIndividual, mateIndividualInSpace.getIndividual());
+        IndividualPair offspringPair = parentPair.reproduce();
+        float offspringX = (parentX + mateX) / 2;
+        float offspringY = (parentY + mateY) / 2;
+        offspringPair.mutate(currentGeneration);
+        disperseOffspringPair(offspringPair, offspringX, offspringY);
     }
 
     private void addToXYZDataset(ArrayList<Double> xValues, ArrayList<Double> yValues, ArrayList<Double> zValues) {
