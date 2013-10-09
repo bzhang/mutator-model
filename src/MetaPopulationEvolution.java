@@ -22,6 +22,7 @@ public class MetaPopulationEvolution {
             System.out.println("Output file: " + popFilename + "\nFounder population creating...");
             MetaPopulation metaPopulation = new MetaPopulation();
             popFileOutput += Util.outputMetaPopulationStat(1, metaPopulation);
+            Util.writeFile(popFilename, popFileOutput);
             XYZDataset xyzDatasetFirstGen = metaPopulation.xyzDataset;
             Util.scatterPlot(xyzDatasetFirstGen, 1, resultFileNamePrefix);
 
