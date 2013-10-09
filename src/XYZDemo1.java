@@ -5,18 +5,17 @@
 
 //package com.jpmorgan.dqreport.util;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.Shape;
+import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 import javax.swing.JFrame;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.AxisLocation;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.entity.EntityCollection;
@@ -24,14 +23,19 @@ import org.jfree.chart.plot.CrosshairState;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.PlotRenderingInfo;
 import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.LookupPaintScale;
 import org.jfree.chart.renderer.xy.AbstractXYItemRenderer;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.chart.renderer.xy.XYItemRendererState;
+import org.jfree.chart.title.PaintScaleLegend;
 import org.jfree.chart.title.TextTitle;
+import org.jfree.data.DomainOrder;
+import org.jfree.data.Range;
 import org.jfree.data.xy.DefaultXYZDataset;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYZDataset;
 import org.jfree.ui.RectangleEdge;
+import org.jfree.ui.RectangleInsets;
 import org.jfree.util.ShapeUtilities;
 
 public class XYZDemo1 {
@@ -60,11 +64,45 @@ public class XYZDemo1 {
         yAxis.setRange(-100, 100);
         XYPlot plot = new XYPlot(dataset, xAxis, yAxis, r);
         JFreeChart chart = new JFreeChart("XYZ Demo", new Font("Helvetica",0,18), plot, false);
-//        double min = Math.min(dataset.);
-//        System.out.print(min);
-        TextTitle legendText = new TextTitle("Current Generation: 1");
+        double zMax = Double.NEGATIVE_INFINITY;
+        double zMin = Double.POSITIVE_INFINITY;
+        System.out.println(dataset.getSeriesCount());
+        for (int i = 0; i < dataset.getItemCount(0); i++) {
+            double z = dataset.getZValue(0, i);
+            zMin = Math.min(zMin, z);
+            zMax = Math.max(zMax, z);
+        }
+
+        System.out.println(zMax);
+        System.out.println(zMin);
+        TextTitle legendText = new TextTitle("Current Generation: 1; " + "Mutator Max = " + zMax + "; " + "Min = " + zMin);
         legendText.setPosition(RectangleEdge.BOTTOM);
         chart.addSubtitle(legendText);
+        TextTitle legendMutatorText = new TextTitle("Mutator Max = " + zMax + " " + "Max = " + zMin);
+        legendText.setPosition(RectangleEdge.BOTTOM);
+        chart.addSubtitle(legendMutatorText);
+//        GradientPaint colorMap = new GradientPaint(
+//                50, 50, Color.white,
+//                100, 100, Color.red);
+//        float[] dist = {0.0f, 1.0f};
+//        Color[] colors = {Color.WHITE, Color.RED};
+//        LinearGradientPaint colorMap = new LinearGradientPaint(0, 0, 0, 10, dist, colors);
+//        LookupPaintScale paintScale = new LookupPaintScale(0.0,100.0,colorMap);
+//        NumberAxis scaleAxis = new NumberAxis("Mutator Strength");
+//        scaleAxis.setUpperBound(100);
+//        scaleAxis.setAxisLinePaint(Color.black);
+//        scaleAxis.setTickMarkPaint(Color.black);
+//        scaleAxis.setTickLabelFont(new Font("Dialog", Font.PLAIN, 12));
+//        PaintScaleLegend legend = new PaintScaleLegend(paintScale, scaleAxis);
+////        PaintScaleLegend legend = new PaintScaleLegend(colorMap, scaleAxis);
+//
+//        legend.setPadding(new RectangleInsets(10, 10, 10, 10));
+//        legend.setStripWidth(25);
+//        legend.setPosition(RectangleEdge.RIGHT);
+//        legend.setBackgroundPaint(Color.white);
+//        legend.setAxisLocation(AxisLocation.TOP_OR_RIGHT);
+//        chart.addSubtitle(legend);
+
 //        frame.setContentPane(new ChartPanel(chart));
 //        frame.pack();
 //        frame.setVisible(true);

@@ -252,11 +252,20 @@ public class Util {
         yAxis.setRange(-1 * ModelParameters.getDouble("IMAGE_RANGE"), ModelParameters.getDouble("IMAGE_RANGE"));
         XYPlot plot = new XYPlot(xyzDataset, xAxis, yAxis, r);
         JFreeChart chart = new JFreeChart("Mutator in Space", new Font("Helvetica",0,18), plot, false);
-        TextTitle legendText = new TextTitle("Current Generation: " + currentGeneration);
+        double zMax = Double.NEGATIVE_INFINITY;
+        double zMin = Double.POSITIVE_INFINITY;
+//        System.out.println(xyzDataset.getSeriesCount());
+        for (int i = 0; i < xyzDataset.getItemCount(0); i++) {
+            double z = xyzDataset.getZValue(0, i);
+            zMin = Math.min(zMin, z);
+            zMax = Math.max(zMax, z);
+        }
+        TextTitle legendText = new TextTitle("Current Generation: " + currentGeneration + "\n" + "Mutator Max = " + zMax + "\n" + "Mutator Min = " + zMin);
         legendText.setPosition(RectangleEdge.BOTTOM);
+//        xyzDataset.getZValue(1, )
         chart.addSubtitle(legendText);
         try{
-            ChartUtilities.saveChartAsPNG(new File(resultFileNamePrefix + currentGeneration + ".png"), chart, 700, 700);
+            ChartUtilities.saveChartAsPNG(new File(resultFileNamePrefix + "_" + currentGeneration + ".png"), chart, 700, 700);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -265,10 +274,10 @@ public class Util {
     static class XYZColorRenderer extends AbstractXYItemRenderer {
         public void drawItem(Graphics2D g2, XYItemRendererState state,
                              Rectangle2D dataArea, PlotRenderingInfo info, XYPlot plot,
-                             ValueAxis domainAxis, ValueAxis rangeAxis, XYDataset dataset,
+                             ValueAxis domainAxis, ValueAxis rangeAxis, XYDataset xyzDataset,
                              int series, int item, CrosshairState crosshairState, int pass) {
-            double x = dataset.getXValue(series, item);
-            double y = dataset.getYValue(series, item);
+            double x = xyzDataset.getXValue(series, item);
+            double y = xyzDataset.getYValue(series, item);
             if (Double.isNaN(x) || Double.isNaN(y)) {
                 // can't draw anything
                 return;
@@ -281,16 +290,18 @@ public class Util {
 
             Shape shape = null;
             Color color = null;
-            if(dataset instanceof XYZDataset){
-                XYZDataset xyz = (XYZDataset)dataset;
+            if(xyzDataset instanceof XYZDataset){
+                XYZDataset xyz = (XYZDataset)xyzDataset;
                 double z = xyz.getZValue(series, item);
                 int red = 0;
                 if (z > 1) {
                     red = (int) Math.floor(Math.atan((z-1) * ModelParameters.getFloat("COLOR_SCALE")) * 2 / Math.PI * 256);
+//                    System.out.println("z = " + z);
+//                    System.out.println("red = " + red);
                 }
                 color = new Color(255, 255-red, 255-red);
             }
-            shape = new Ellipse2D.Double(-3, -3, 6, 6);
+            shape = new Ellipse2D.Double(-2, -2, 4, 4);
             shape = ShapeUtilities.createTranslatedShape(shape, transX,
                     transY);
             if (shape.intersects(dataArea)) {
