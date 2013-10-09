@@ -130,10 +130,15 @@ public class Util {
     }
 
     public static String prepareOutputDirectory() {
+        long fileID = System.nanoTime();
         String directoryName = ModelParameters.getDirectoryName();
         File outputDir = new File(directoryName);
+        File pngDir = new File(directoryName + "/" + fileID + "/");
         if (!outputDir.exists() && outputDir.mkdir()) {
             System.out.println("Directory: " + directoryName + " created.");
+        }
+        if (!pngDir.exists() && pngDir.mkdir()) {
+            System.out.println("Directory: " + directoryName + "/" + fileID + "/" + " created.");
         }
 
         File propertiesFile  = new File(ModelParameters.getPropertiesFilename());
@@ -146,7 +151,7 @@ public class Util {
             }
         }
 
-        return directoryName + "/" + System.nanoTime();
+        return directoryName + "/" + fileID;
     }
 
     public static String getResultFileNamePrefix() {
@@ -265,7 +270,7 @@ public class Util {
 //        xyzDataset.getZValue(1, )
         chart.addSubtitle(legendText);
         try{
-            ChartUtilities.saveChartAsPNG(new File(resultFileNamePrefix + "_" + currentGeneration + ".png"), chart, 700, 700);
+            ChartUtilities.saveChartAsPNG(new File(resultFileNamePrefix + "/" + currentGeneration + ".png"), chart, 700, 700);
         } catch (IOException e) {
             e.printStackTrace();
         }
