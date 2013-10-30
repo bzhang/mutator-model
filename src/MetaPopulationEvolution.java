@@ -47,8 +47,7 @@ public class MetaPopulationEvolution {
 //                int reminderGen = (int) ((System.currentTimeMillis() - genStart) % (24L * 3600 * 1000));
 //                Float secondsElapsedGen = (float) reminderGen / 1000;
 //                System.out.println("Seconds elapsed = " + secondsElapsedGen);
-
-                System.out.println("# of Recombinations = " + ModelParameters.getNRecombination());
+//                System.out.println("# of Recombinations = " + ModelParameters.getNRecombination());
             }
 
             int reminder = (int) ((System.currentTimeMillis() - start) % (24L * 3600 * 1000));

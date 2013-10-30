@@ -253,8 +253,8 @@ public class Util {
         XYItemRenderer r = new XYZColorRenderer();
         NumberAxis xAxis = new NumberAxis("x");
         NumberAxis yAxis = new NumberAxis("y");
-        xAxis.setRange(-1 * ModelParameters.getDouble("IMAGE_RANGE"), ModelParameters.getDouble("IMAGE_RANGE"));
-        yAxis.setRange(-1 * ModelParameters.getDouble("IMAGE_RANGE"), ModelParameters.getDouble("IMAGE_RANGE"));
+//        xAxis.setRange(-1 * ModelParameters.getDouble("IMAGE_RANGE"), ModelParameters.getDouble("IMAGE_RANGE"));
+//        yAxis.setRange(-1 * ModelParameters.getDouble("IMAGE_RANGE"), ModelParameters.getDouble("IMAGE_RANGE"));
         XYPlot plot = new XYPlot(xyzDataset, xAxis, yAxis, r);
         JFreeChart chart = new JFreeChart("Mutator in Space", new Font("Helvetica",0,18), plot, false);
         double zMax = Double.NEGATIVE_INFINITY;
@@ -306,7 +306,7 @@ public class Util {
                 }
                 color = new Color(255, 255-red, 255-red);
             }
-            shape = new Ellipse2D.Double(-2, -2, 4, 4);
+            shape = new Ellipse2D.Double(-3, -3, 6, 6);
             shape = ShapeUtilities.createTranslatedShape(shape, transX,
                     transY);
             if (shape.intersects(dataArea)) {
