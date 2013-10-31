@@ -214,8 +214,8 @@ public class Util {
     public static List<List<Integer>> getDirections() {
         int matingDistance = ModelParameters.getInt("MATING_DISTANCE");
         List<List<Integer>> directions = new ArrayList<List<Integer>>();
-        for (int i = -1 * matingDistance; i < matingDistance + 1; i++) {
-            for (int j = -1 * matingDistance; j < matingDistance + 1; j++) {
+        for (int i = -matingDistance; i < matingDistance + 1; i++) {
+            for (int j = -matingDistance; j < matingDistance + 1; j++) {
                 ArrayList<Integer> direction = new ArrayList<Integer>(2);
                 direction.add(i);
                 direction.add(j);

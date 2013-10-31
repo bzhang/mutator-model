@@ -2,6 +2,7 @@ import com.google.common.primitives.Doubles;
 import org.jfree.data.xy.DefaultXYZDataset;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 public class MetaPopulation {
     //    private ArrayList<ArrayList<Individual>> individuals;
     private ArrayList<IndividualInSpace> individuals;
+    private Individual[][] individualsDiscrete;
     private LociPattern lociPattern;
     private int popSize = ModelParameters.getInt("POPULATION_SIZE");
     private float matingDistance = ModelParameters.getFloat("MATING_DISTANCE");
@@ -19,83 +21,144 @@ public class MetaPopulation {
     private ArrayList<Double> xValues = new ArrayList<Double>();
     private ArrayList<Double> yValues = new ArrayList<Double>();
     private ArrayList<Double> zValues = new ArrayList<Double>();
+    private int spaceRange = ModelParameters.getInt("SPACE_RANGE");
 
     public MetaPopulation() {
-        // Create the founder population
-        lociPattern = new LociPattern(ModelParameters.getInt("N_FITNESS_LOCI"),
-                ModelParameters.getInt("N_MUTATOR_LOCI"), ModelParameters.getInt("N_RECOMBINATION_LOCI"));
-        individuals = new ArrayList<IndividualInSpace>();
-        individuals.add(new IndividualInSpace(createIndividual(), 0, 0));
-        addToXYZArrays(0, 0, 1);
-        int radius = 1;
-        initMetaPopulation:
-        while (true) {
-            for (int y = -radius; y <= radius; y++) {
-                individuals.add(new IndividualInSpace(createIndividual(), -radius, y));
-                addToXYZArrays(-radius, y, 1);
-                if (individuals.size() >= popSize) break initMetaPopulation;
-                individuals.add(new IndividualInSpace(createIndividual(), radius, y));
-                addToXYZArrays(radius, y, 1);
-                if (individuals.size() >= popSize) break initMetaPopulation;
+        if (ModelParameters.getBoolean("META_POPULATION_DISCRETE")) {
+            // Create the founder population
+            lociPattern = new LociPattern(ModelParameters.getInt("N_FITNESS_LOCI"),
+                    ModelParameters.getInt("N_MUTATOR_LOCI"), ModelParameters.getInt("N_RECOMBINATION_LOCI"));
+
+            individualsDiscrete = new Individual[spaceRange][spaceRange];
+            for (int i = 0; i < spaceRange; i++) {
+                for (int j = 0; i < spaceRange; j++) {
+                    individualsDiscrete[i][j] = createIndividual();
+                    addToXYZArrays(i, j, 1);
+                }
             }
-            for (int x = -radius + 1; x < radius; x++) {
-                individuals.add(new IndividualInSpace(createIndividual(), x, -radius));
-                addToXYZArrays(x, -radius, 1);
-                if (individuals.size() >= popSize) break initMetaPopulation;
-                individuals.add(new IndividualInSpace(createIndividual(), x, radius));
-                addToXYZArrays(x, radius, 1);
-                if (individuals.size() >= popSize) break initMetaPopulation;
+            addToXYZDataset(xValues, yValues, zValues);
+        } else {
+            // Create the founder population
+            lociPattern = new LociPattern(ModelParameters.getInt("N_FITNESS_LOCI"),
+                    ModelParameters.getInt("N_MUTATOR_LOCI"), ModelParameters.getInt("N_RECOMBINATION_LOCI"));
+            individuals = new ArrayList<IndividualInSpace>();
+            individuals.add(new IndividualInSpace(createIndividual(), 0, 0));
+            addToXYZArrays(0, 0, 1);
+            int radius = 1;
+            initMetaPopulation:
+            while (true) {
+                for (int y = -radius; y <= radius; y++) {
+                    individuals.add(new IndividualInSpace(createIndividual(), -radius, y));
+                    addToXYZArrays(-radius, y, 1);
+                    if (individuals.size() >= popSize) break initMetaPopulation;
+                    individuals.add(new IndividualInSpace(createIndividual(), radius, y));
+                    addToXYZArrays(radius, y, 1);
+                    if (individuals.size() >= popSize) break initMetaPopulation;
+                }
+                for (int x = -radius + 1; x < radius; x++) {
+                    individuals.add(new IndividualInSpace(createIndividual(), x, -radius));
+                    addToXYZArrays(x, -radius, 1);
+                    if (individuals.size() >= popSize) break initMetaPopulation;
+                    individuals.add(new IndividualInSpace(createIndividual(), x, radius));
+                    addToXYZArrays(x, radius, 1);
+                    if (individuals.size() >= popSize) break initMetaPopulation;
+                }
+                radius++;
             }
-            radius++;
+            addToXYZDataset(xValues, yValues, zValues);
         }
-        addToXYZDataset(xValues, yValues, zValues);
     }
 
     public MetaPopulation(MetaPopulation metaParent, int currentGeneration) {
-        double[][] parentDistanceMatrix = metaParent.getProbabilityMatrix();
-        double[] parentFitnessArray = metaParent.getFitnessArray();
-        double[] totals = Util.initTotals(parentFitnessArray);
-//        List<List<Integer>> directions = Util.getDirections();
-        lociPattern = metaParent.lociPattern;
-        individuals = new ArrayList<IndividualInSpace>();
-//        double[][] parentFitnessMatrix = metaParent.getFitnessMatrix();
-//        double[] totals = initTotals(parentFitnessMatrix);
-        if (totals[totals.length - 1] < 1e-10) {
-            System.out.println("Population is extinct at generation " + currentGeneration + "!");
-            System.exit(0);
-        }
-
-        if (ModelParameters.getBoolean("INVASION_EXPERIMENT")) {
+        if (ModelParameters.getBoolean("META_POPULATION_DISCRETE")) {
+            List<List<Integer>> directions = Util.getDirections();
+            double[] parentFitnessArray = metaParent.getFitnessArrayDiscrete();
+            double[] totals = Util.initTotals(parentFitnessArray);
+            lociPattern = metaParent.lociPattern;
+            individuals = new ArrayList<IndividualInSpace>();
+            if (totals[totals.length - 1] < 1e-10) {
+                System.out.println("Population is extinct at generation " + currentGeneration + "!");
+                System.exit(0);
+            }
             while (getSize() < popSize) {
-                GroupReturn parentIndividualInSpaceAndIndex = metaParent.getRandomIndividual(totals);
-                IndividualInSpace parentIndividualInSpace = parentIndividualInSpaceAndIndex.getIndividualInSpace();
-                int parentIndex = parentIndividualInSpaceAndIndex.getIndex();
-                Individual parentIndividual = parentIndividualInSpace.getIndividual();
-                float parentX = parentIndividualInSpace.getX();
-                float parentY = parentIndividualInSpace.getY();
-                if (currentGeneration > ModelParameters.getInt("START_CREATING_ASEXUALS")) {
-                    if (parentIndividual.getRecombinationStrength() > 0) {
-                        // convert to asexuals
-                        if (Rand.getFloat() < ModelParameters.getFloat("PROBABILITY_TO_ASEXUAL")) {
-                            parentIndividual.setRecombinationStrength(0);
+                GroupReturn parentIndividualAndIndex = metaParent.getRandomIndividualDiscrete(totals);
+                Individual parentIndividual = parentIndividualAndIndex.getIndividual();
+                int parentX = parentIndividualAndIndex.getX();
+                int parentY = parentIndividualAndIndex.getY();
+                reproduceDiscrete(getMateIndividualDiscrete(parentX, parentY, directions), currentGeneration, parentIndividual, parentX, parentY);
+            }
+        } else {
+            double[][] parentDistanceMatrix = metaParent.getProbabilityMatrix();
+            double[] parentFitnessArray = metaParent.getFitnessArray();
+            double[] totals = Util.initTotals(parentFitnessArray);
+            lociPattern = metaParent.lociPattern;
+            individuals = new ArrayList<IndividualInSpace>();
+            if (totals[totals.length - 1] < 1e-10) {
+                System.out.println("Population is extinct at generation " + currentGeneration + "!");
+                System.exit(0);
+            }
+
+            if (ModelParameters.getBoolean("INVASION_EXPERIMENT")) {
+                while (getSize() < popSize) {
+                    GroupReturn parentIndividualInSpaceAndIndex = metaParent.getRandomIndividual(totals);
+                    IndividualInSpace parentIndividualInSpace = parentIndividualInSpaceAndIndex.getIndividualInSpace();
+                    int parentIndex = parentIndividualInSpaceAndIndex.getIndex();
+                    Individual parentIndividual = parentIndividualInSpace.getIndividual();
+                    float parentX = parentIndividualInSpace.getX();
+                    float parentY = parentIndividualInSpace.getY();
+                    if (currentGeneration > ModelParameters.getInt("START_CREATING_ASEXUALS")) {
+                        if (parentIndividual.getRecombinationStrength() > 0) {
+                            // convert to asexuals
+                            if (Rand.getFloat() < ModelParameters.getFloat("PROBABILITY_TO_ASEXUAL")) {
+                                parentIndividual.setRecombinationStrength(0);
+                            }
                         }
                     }
+                    reproduce(getMateIndividual(metaParent, parentDistanceMatrix[parentIndex]), currentGeneration, parentIndividual, parentX, parentY);
                 }
-                reproduce(getMateIndividual(metaParent, parentDistanceMatrix[parentIndex]), currentGeneration, parentIndividual, parentX, parentY);
-            }
 
-        } else {
-            while (getSize() < popSize) {
-                GroupReturn parentIndividualInSpaceAndIndex = metaParent.getRandomIndividual(totals);
-                IndividualInSpace parentIndividualInSpace = parentIndividualInSpaceAndIndex.getIndividualInSpace();
-                int parentIndex = parentIndividualInSpaceAndIndex.getIndex();
-                Individual parentIndividual = parentIndividualInSpace.getIndividual();
-                float parentX = parentIndividualInSpace.getX();
-                float parentY = parentIndividualInSpace.getY();
-                reproduce(getMateIndividual(metaParent, parentDistanceMatrix[parentIndex]), currentGeneration, parentIndividual, parentX, parentY);
+            } else {
+                while (getSize() < popSize) {
+                    GroupReturn parentIndividualInSpaceAndIndex = metaParent.getRandomIndividual(totals);
+                    IndividualInSpace parentIndividualInSpace = parentIndividualInSpaceAndIndex.getIndividualInSpace();
+                    int parentIndex = parentIndividualInSpaceAndIndex.getIndex();
+                    Individual parentIndividual = parentIndividualInSpace.getIndividual();
+                    float parentX = parentIndividualInSpace.getX();
+                    float parentY = parentIndividualInSpace.getY();
+                    reproduce(getMateIndividual(metaParent, parentDistanceMatrix[parentIndex]), currentGeneration, parentIndividual, parentX, parentY);
+                }
+            }
+            addToXYZDataset(xValues, yValues, zValues);
+        }
+    }
+
+    private double[] getFitnessArrayDiscrete() {
+        double[] fitnessArray = new double[spaceRange * spaceRange];
+        for (int i = 0; i < individualsDiscrete.length; i++) {
+            for (int j = 0; j < individualsDiscrete[0].length; j++) {
+                fitnessArray[i * spaceRange + j] = individualsDiscrete[i][j].getFitness();
             }
         }
-        addToXYZDataset(xValues, yValues, zValues);
+        for (int i = 0; i < popSize; i++) {
+            fitnessArray[i] = getIndividualInSpace(i).getIndividual().getFitness();
+        }
+        return fitnessArray;
+    }
+
+    private GroupReturn getRandomIndividualDiscrete(double[] totals) {
+        int index = WeightedRandomGenerator.nextInt(totals);
+        while (index == totals.length) {
+            index = WeightedRandomGenerator.nextInt(totals);
+        }
+        return new GroupReturn(getIndividualDiscete(x, y), x, y);
+    }
+
+    private IndividualInSpace getMateIndividualDiscrete(int parentX, int parentY, List<List<Integer>> directions) {
+
+    }
+
+    private void reproduceDiscrete(IndividualInSpace mateIndividualInSpace, int currentGeneration, Individual parentIndividual, float parentX, float parentY) {
+
     }
 
     private void reproduce(IndividualInSpace mateIndividualInSpace, int currentGeneration, Individual parentIndividual, float parentX, float parentY) {
@@ -188,6 +251,10 @@ public class MetaPopulation {
 
     private int getSize() {
         return individuals.size();
+    }
+
+    private int getSizeDiscrete() {
+//        return individuals.size();
     }
 
     private double[] getFitnessArray() {
