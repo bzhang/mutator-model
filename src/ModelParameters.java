@@ -71,7 +71,7 @@ public class ModelParameters {
 //                + "Meta" + getInt("METAPOPULATION")
 //                + "_MatingD" + getFloat("MATING_DISTANCE")
 //                + "_DisperseD" + getFloat("DISPERSE_DISTANCE")
-                + "Epi0.9" + getFloat("EPISTASIS")
+                + "Epi" + getFloat("EPISTASIS")
                 + "_M" + getFloat("MUTATOR_RATIO")
                 + "_R" + getFloat("RECOMBINATION_RATIO") + "_" + getFloat("RECOMBINATION_RATE")
                 + "_G" + getInt("N_GENERATIONS")
