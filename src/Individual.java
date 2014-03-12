@@ -10,6 +10,7 @@ public class Individual implements Cloneable{
     private LociPattern lociPattern;
     private boolean alive;
     private double mutatorStrength = 1.0d;
+    public double fitness = 1.0d;
 
     public Individual(LociPattern pattern) {
         lociPattern = pattern;
@@ -245,14 +246,19 @@ public class Individual implements Cloneable{
 
 //        int startingEvolvingGeneration = ModelParameters.getInt("START_EVOLVING_GENERATION");
 
+//    public double getFitness() {
+//        double fitness = 1;
+//        for (int i = 0; i < getGenomeSize(); i++) {
+//            if (lociPattern.getLocusType(i) == LociPattern.LocusType.Fitness) {
+//                FitnessLocus locus = (FitnessLocus)getLocus(i);
+//                fitness *= locus.getFitnessEffect();
+//            }
+//        }
+//        return fitness;
+//    }
+
     public double getFitness() {
-        double fitness = 1;
-        for (int i = 0; i < getGenomeSize(); i++) {
-            if (lociPattern.getLocusType(i) == LociPattern.LocusType.Fitness) {
-                FitnessLocus locus = (FitnessLocus)getLocus(i);
-                fitness *= locus.getFitnessEffect();
-            }
-        }
+        fitness = Math.exp(Math.pow(Math.log(fitness), ModelParameters.getFloat("EPISTASIS")));
         return fitness;
     }
 
