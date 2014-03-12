@@ -50,7 +50,9 @@ public class Individual implements Cloneable{
             antimutatorMutate(currentGeneration);
         }
 
-        if (getFitness() <= 0) {
+        fitness = Math.exp(Math.pow(Math.log(fitness), ModelParameters.getFloat("EPISTASIS")));
+
+        if (fitness <= 0) {
             die();
         }
     }
@@ -67,7 +69,9 @@ public class Individual implements Cloneable{
             antimutatorMutate(currentGeneration);
         }
 
-        if (getFitness() <= 0) {
+        fitness = Math.exp(Math.pow(Math.log(fitness), ModelParameters.getFloat("EPISTASIS")));
+
+        if (fitness <= 0) {
             die();
         }
     }
@@ -262,7 +266,6 @@ public class Individual implements Cloneable{
 //    }
 
     public double getFitness() {
-        fitness = Math.exp(Math.pow(Math.log(fitness), ModelParameters.getFloat("EPISTASIS")));
         return fitness;
     }
 
