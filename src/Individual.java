@@ -10,16 +10,18 @@ public class Individual implements Cloneable{
     private LociPattern lociPattern;
     private boolean alive;
     private double mutatorStrength = 1.0d;
-    public double fitness = 1.0d;
+    private double fitness = 1.0d;
 
     public Individual(LociPattern pattern) {
         lociPattern = pattern;
         loci = new Locus[lociPattern.getGenomeSize()];
         alive = true;
+//        fitness = 1.0d;
     }
 
     public Individual(Individual individual) {
         this(individual.getLociPattern());
+        this.fitness = individual.getFitness();
         for (int i = 0; i < individual.getGenomeSize(); i++) {
             Object clonedLocus = null;
             try {
@@ -43,7 +45,7 @@ public class Individual implements Cloneable{
         }
 
         if (isAlive()) {
-            double parentFitnessZScore = (getFitness() - parentFitnessMean) / parentFitnessSD;
+            double parentFitnessZScore = (fitness - parentFitnessMean) / parentFitnessSD;
             deleteriousMutate(currentGeneration, mutationProperties, parentFitnessZScore, corFitnessMutatorStrength);
             beneficialMutate(currentGeneration, mutationProperties, parentFitnessZScore, corFitnessMutatorStrength);
             mutatorMutate(currentGeneration);
@@ -69,7 +71,7 @@ public class Individual implements Cloneable{
             antimutatorMutate(currentGeneration);
         }
 
-        fitness = Math.exp(Math.pow(Math.log(fitness), ModelParameters.getFloat("EPISTASIS")));
+        fitness = Math.pow(fitness, ModelParameters.getFloat("EPISTASIS"));
 
         if (fitness <= 0) {
             die();
