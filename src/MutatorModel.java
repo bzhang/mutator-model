@@ -12,6 +12,7 @@ public class MutatorModel {
 
         String propertiesFileName = args.length > 0 ? args[0] : "MutatorModel.properties";
         ModelParameters.setPropertiesFileName(propertiesFileName);
+        System.out.println(propertiesFileName);
 
         for (int nExperiment = 0; nExperiment < ModelParameters.getInt("N_EXPERIMENT"); nExperiment++) {
             String resultFileNamePrefix = Util.prepareOutputDirectory();
