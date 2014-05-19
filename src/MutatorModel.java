@@ -60,7 +60,7 @@ public class MutatorModel {
 //                Float secondsElapsedGen = (float) reminderGen / 1000;
 //                System.out.println("Seconds elapsed = " + secondsElapsedGen);
 
-                System.out.println("# of Recombinations = " + ModelParameters.getNRecombination());
+//                System.out.println("# of Recombinations = " + ModelParameters.getNRecombination());
             }
 
         }
