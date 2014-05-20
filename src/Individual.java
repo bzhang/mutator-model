@@ -11,6 +11,7 @@ public class Individual implements Cloneable{
     private boolean alive;
     private double mutatorStrength = 1.0d;
     private double fitness = 1.0d;
+    private double transformedFitness = 1.0d;
 
     public Individual(LociPattern pattern) {
         lociPattern = pattern;
@@ -74,7 +75,9 @@ public class Individual implements Cloneable{
         }
 
         if (fitness > 1.0) {
-            fitness = Math.pow(fitness, ModelParameters.getFloat("EPISTASIS"));
+            transformedFitness = Math.pow(fitness, ModelParameters.getFloat("EPISTASIS"));
+        } else {
+            transformedFitness = fitness;
         }
 
         if (fitness <= 0) {
@@ -272,7 +275,7 @@ public class Individual implements Cloneable{
 //    }
 
     public double getFitness() {
-        return fitness;
+        return transformedFitness;
     }
 
     public GroupReturn getFitnessProperties() {
