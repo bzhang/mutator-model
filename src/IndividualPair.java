@@ -51,13 +51,15 @@ public class IndividualPair {
         Individual offspringB = new Individual(getIndividualB());
         IndividualPair offspringPair = new IndividualPair(offspringA, offspringB);
 
-        float recombinationStrengthA = offspringA.getRecombinationStrength();
-        float recombinationStrengthB = offspringB.getRecombinationStrength();
-        float recombinationProbability = (recombinationStrengthA + recombinationStrengthB) / 2;
+        if (ModelParameters.getFloat("RECOMBINATION_RATIO") != 0.0) {
+            float recombinationStrengthA = offspringA.getRecombinationStrength();
+            float recombinationStrengthB = offspringB.getRecombinationStrength();
+            float recombinationProbability = (recombinationStrengthA + recombinationStrengthB) / 2;
 
-        if (Rand.getFloat() < recombinationProbability) {
-            offspringPair.recombine();
-            ModelParameters.addNRecombination();
+            if (Rand.getFloat() < recombinationProbability) {
+                offspringPair.recombine();
+                ModelParameters.addNRecombination();
+            }
         }
 
         return offspringPair;
