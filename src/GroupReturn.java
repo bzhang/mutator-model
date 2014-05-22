@@ -44,8 +44,8 @@ public class GroupReturn {
     public GroupReturn(double[] deleFitnessEffectArray, double[] beneFitnessEffectArray) {
     }
 
-    public GroupReturn(double fitness, double meanDeleFitnessEffect, double meanBeneFitnessEffect, int nDeleteriousMutations, int nBeneficialMutations) {
-        this.fitness = fitness;
+    public GroupReturn(double meanDeleFitnessEffect, double meanBeneFitnessEffect, int nDeleteriousMutations, int nBeneficialMutations) {
+//        this.fitness = fitness;
         this.meanDeleFitnessEffect = meanDeleFitnessEffect;
         this.meanBeneFitnessEffect = meanBeneFitnessEffect;
         this.nDeleteriousMutations = nDeleteriousMutations;
