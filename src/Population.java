@@ -40,13 +40,15 @@ public class Population {
         ArrayList<Object> mutationProperties = new ArrayList<Object>();
         String mutMapFileOutput;
         double[] parentFitnessArray = parent.getFitnessArray();
+        System.out.println("parent fitness array: " + Arrays.toString(parentFitnessArray));
         double[] totals = Util.initTotals(parentFitnessArray);
+//        System.out.println("totals: " + Arrays.toString(totals));
         double parentFitnessMean = Util.mean(parentFitnessArray);
         double parentFitnessSD = Util.standardDeviation(parentFitnessArray);
         double[] parentMutatorStrengthArray = parent.getMutatorStrengthArray();
         double corFitnessMutatorStrength = Util.pearsonCorrelation(parentFitnessArray, parentMutatorStrengthArray);
 
-        if (totals[totals.length - 1] < 1e-10) {
+        if (parentFitnessMean < 1e-10) {
             System.out.println("Population is extinct at generation " + currentGeneration + "!");
             System.exit(0);
         }
@@ -95,7 +97,7 @@ public class Population {
         int[] nBeneMutArray = new int[popSize];
         for (int i = 0; i < popSize; i++) {
             GroupReturn fitnessProperties = getIndividual(i).getFitnessProperties();
-            fitnessArray[i] = fitnessProperties.getFitness();
+            fitnessArray[i] = getIndividual(i).getFitness();
             meanDeleFitnessEffectArray[i] = fitnessProperties.getMeanDeleFitnessEffect();
             meanBeneFitnessEffectArray[i] = fitnessProperties.getMeanBeneFitnessEffect();
             nDeleMutArray[i] = fitnessProperties.getNDeleteriousMutations();
