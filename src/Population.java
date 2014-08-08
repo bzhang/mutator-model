@@ -40,7 +40,7 @@ public class Population {
         ArrayList<Object> mutationProperties = new ArrayList<Object>();
         String mutMapFileOutput;
         double[] parentFitnessArray = parent.getFitnessArray();
-        System.out.println("parent fitness array: " + Arrays.toString(parentFitnessArray));
+//        System.out.println("parent fitness array: " + Arrays.toString(parentFitnessArray));
         double[] totals = Util.initTotals(parentFitnessArray);
 //        System.out.println("totals: " + Arrays.toString(totals));
         double parentFitnessMean = Util.mean(parentFitnessArray);
@@ -83,7 +83,7 @@ public class Population {
     public double[] getFitnessArray() {
         double[] fitnessArray = new double[getSize()];
         for (int i = 0; i < getSize(); i++) {
-            fitnessArray[i] = getIndividual(i).getFitness();
+            fitnessArray[i] = getIndividual(i).getTransformedFitness();
         }
         return fitnessArray;
     }
@@ -97,7 +97,7 @@ public class Population {
         int[] nBeneMutArray = new int[popSize];
         for (int i = 0; i < popSize; i++) {
             GroupReturn fitnessProperties = getIndividual(i).getFitnessProperties();
-            fitnessArray[i] = getIndividual(i).getFitness();
+            fitnessArray[i] = getIndividual(i).getTransformedFitness();
             meanDeleFitnessEffectArray[i] = fitnessProperties.getMeanDeleFitnessEffect();
             meanBeneFitnessEffectArray[i] = fitnessProperties.getMeanBeneFitnessEffect();
             nDeleMutArray[i] = fitnessProperties.getNDeleteriousMutations();

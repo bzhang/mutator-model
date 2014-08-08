@@ -50,6 +50,8 @@ public class IndividualPair {
         Individual offspringA = new Individual(getIndividualA());
         Individual offspringB = new Individual(getIndividualB());
         IndividualPair offspringPair = new IndividualPair(offspringA, offspringB);
+//        System.out.println("offspringA fitness = " + offspringA.getTransformedFitness());
+//        System.out.println("offspringB fitness = " + offspringB.getTransformedFitness());
 
         if (ModelParameters.getFloat("RECOMBINATION_RATIO") != 0.0) {
             float recombinationStrengthA = offspringA.getRecombinationStrength();

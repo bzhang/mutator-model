@@ -10,19 +10,21 @@ public class Individual implements Cloneable{
     private LociPattern lociPattern;
     private boolean alive;
     private double mutatorStrength = 1.0d;
-    private double fitness = 1.0d;
-    private double transformedFitness = 1.0d;
+    private double fitness;
+    private double transformedFitness;
 
     public Individual(LociPattern pattern) {
         lociPattern = pattern;
         loci = new Locus[lociPattern.getGenomeSize()];
         alive = true;
-//        fitness = 1.0d;
+        fitness = 1.0d;
+        transformedFitness = 1.0d;
     }
 
     public Individual(Individual individual) {
         this(individual.getLociPattern());
-        this.fitness = individual.getFitness();
+        this.fitness = individual.getNonTransformedFitness();
+        this.transformedFitness = individual.getTransformedFitness();
         for (int i = 0; i < individual.getGenomeSize(); i++) {
             Object clonedLocus = null;
             try {
@@ -46,7 +48,7 @@ public class Individual implements Cloneable{
         }
 
         if (isAlive()) {
-            double parentFitnessZScore = (fitness - parentFitnessMean) / parentFitnessSD;
+            double parentFitnessZScore = (transformedFitness - parentFitnessMean) / parentFitnessSD;
             deleteriousMutate(currentGeneration, mutationProperties, parentFitnessZScore, corFitnessMutatorStrength);
             beneficialMutate(currentGeneration, mutationProperties, parentFitnessZScore, corFitnessMutatorStrength);
             mutatorMutate(currentGeneration);
@@ -54,12 +56,15 @@ public class Individual implements Cloneable{
         }
 
         if (fitness > 1.0) {
-            fitness = Math.exp(Math.pow(Math.log(fitness), ModelParameters.getFloat("EPISTASIS")));
+            transformedFitness = Math.exp(Math.pow(Math.log(fitness), ModelParameters.getFloat("EPISTASIS")));
         } else {
             transformedFitness = fitness;
         }
+//        System.out.println("Fitness = " + fitness);
+//        System.out.println("transformedFitness = " + transformedFitness);
+        if (
 
-        if (fitness <= 0) {
+                fitness <= 0) {
             die();
         }
     }
@@ -76,7 +81,7 @@ public class Individual implements Cloneable{
             antimutatorMutate(currentGeneration);
         }
 
-        if (fitness > 1.0) {
+        if (fitness > Math.exp(1)) {
             transformedFitness = Math.exp(Math.pow(Math.log(fitness), ModelParameters.getFloat("EPISTASIS")));
         } else {
             transformedFitness = fitness;
@@ -115,10 +120,10 @@ public class Individual implements Cloneable{
                 fitnessEffect = 1 - ((-ModelParameters.getFloat("DEFAULT_DELETERIOUS_EFFECT")) * Math.log(1 - u));
             }
             updateMutationInformation(currentGeneration, mutationProperties, fitnessEffect, parentFitnessZScore, corFitnessMutatorStrength);
-            if (fitness != 1.0) {
-                System.out.println(fitness);
-                System.out.println(fitnessEffect);
-            }
+//            if (fitness != 1.0) {
+//                System.out.println(fitness);
+//                System.out.println(fitnessEffect);
+//            }
             fitness *= fitnessEffect;
 //            System.out.println(fitness);
         }
@@ -152,12 +157,12 @@ public class Individual implements Cloneable{
                 fitnessEffect = 1 + ((-ModelParameters.getFloat("DEFAULT_BENEFICIAL_EFFECT")) * Math.log(1 - u));
             }
             updateMutationInformation(currentGeneration, mutationProperties, fitnessEffect, parentFitnessZScore, corFitnessMutatorStrength);
-            if (fitness != 1.0) {
-                System.out.println(fitness);
-                System.out.println(fitnessEffect);
-            }
-            fitness *= fitnessEffect;
+//            if (fitness != 1.0) {
 //                System.out.println(fitness);
+//                System.out.println(fitnessEffect);
+//            }
+            fitness *= fitnessEffect;
+//            System.out.println(fitness);
 
         }
     }
@@ -276,7 +281,7 @@ public class Individual implements Cloneable{
 
 //        int startingEvolvingGeneration = ModelParameters.getInt("START_EVOLVING_GENERATION");
 
-//    public double getFitness() {
+//    public double getTransformedFitness() {
 //        double fitness = 1;
 //        for (int i = 0; i < getGenomeSize(); i++) {
 //            if (lociPattern.getLocusType(i) == LociPattern.LocusType.Fitness) {
@@ -287,12 +292,12 @@ public class Individual implements Cloneable{
 //        return fitness;
 //    }
 
-    public double getFitness() {
+    public double getTransformedFitness() {
         return transformedFitness;
     }
 
     public GroupReturn getFitnessProperties() {
-        double fitness = getFitness();
+//        double fitness = getTransformedFitness();
         double meanDeleFitnessEffect = 0;
         double meanBeneFitnessEffect = 0;
         int nDeleteriousMutations = 0;
@@ -310,7 +315,7 @@ public class Individual implements Cloneable{
         meanDeleFitnessEffect /= nDeleteriousMutations;
         meanBeneFitnessEffect /= nBeneficialMutations;
 
-        return new GroupReturn(fitness, meanDeleFitnessEffect, meanBeneFitnessEffect, nDeleteriousMutations, nBeneficialMutations);
+        return new GroupReturn(meanDeleFitnessEffect, meanBeneFitnessEffect, nDeleteriousMutations, nBeneficialMutations);
     }
 
     public void calculateMutatorStrength() {
@@ -364,5 +369,9 @@ public class Individual implements Cloneable{
         // TODO: multiple all recombination strength values
         int recombinationLocusPosition = lociPattern.getRecombinationLociPositions()[0];
         ((RecombinationLocus) getLocus(recombinationLocusPosition)).setStrength(i);
+    }
+
+    public double getNonTransformedFitness() {
+        return fitness;
     }
 }

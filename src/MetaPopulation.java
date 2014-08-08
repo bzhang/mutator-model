@@ -136,11 +136,11 @@
 //        double[] fitnessArray = new double[spaceRange * spaceRange];
 //        for (int i = 0; i < individualsDiscrete.length; i++) {
 //            for (int j = 0; j < individualsDiscrete[0].length; j++) {
-//                fitnessArray[i * spaceRange + j] = individualsDiscrete[i][j].getFitness();
+//                fitnessArray[i * spaceRange + j] = individualsDiscrete[i][j].getTransformedFitness();
 //            }
 //        }
 //        for (int i = 0; i < popSize; i++) {
-//            fitnessArray[i] = getIndividualInSpace(i).getIndividual().getFitness();
+//            fitnessArray[i] = getIndividualInSpace(i).getIndividual().getTransformedFitness();
 //        }
 //        return fitnessArray;
 //    }
@@ -192,7 +192,7 @@
 //            float yi = individualInSpaceI.getY();
 //            for (int j = triangleSide; j < individuals.size(); j++) {
 //                IndividualInSpace individualInSpaceJ = getIndividualInSpace(j);
-//                IndividualJFitness = individualInSpaceJ.getIndividual().getFitness();
+//                IndividualJFitness = individualInSpaceJ.getIndividual().getTransformedFitness();
 //                float xj = individualInSpaceJ.getX();
 //                float yj = individualInSpaceJ.getY();
 //                distance = Math.sqrt(Math.pow((xj - xi), 2) + Math.pow((yj - yi), 2));
@@ -260,7 +260,7 @@
 //    private double[] getFitnessArray() {
 //        double[] fitnessArray = new double[getSize()];
 //        for (int i = 0; i < getSize(); i++) {
-//            fitnessArray[i] = getIndividualInSpace(i).getIndividual().getFitness();
+//            fitnessArray[i] = getIndividualInSpace(i).getIndividual().getTransformedFitness();
 //        }
 //        return fitnessArray;
 //    }
@@ -314,7 +314,7 @@
 //        for (int i = 0; i < popSize; i++) {
 //            IndividualInSpace individualInSpace = getIndividualInSpace(i);
 //            GroupReturn fitnessProperties = individualInSpace.getIndividual().getFitnessProperties();
-//            fitnessArray[i] = fitnessProperties.getFitness();
+//            fitnessArray[i] = fitnessProperties.getTransformedFitness();
 //            meanDeleFitnessEffectArray[i] = fitnessProperties.getMeanDeleFitnessEffect();
 //            meanBeneFitnessEffectArray[i] = fitnessProperties.getMeanBeneFitnessEffect();
 //            nDeleMutArray[i] = fitnessProperties.getNDeleteriousMutations();
