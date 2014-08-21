@@ -116,6 +116,18 @@ public class Population {
         return mutatorStrengthArray;
     }
 
+    public GroupReturn getMutatorAndRecombinationStrengthArray() {
+        double[] mutatorStrengthArray = new double[getSize()];
+        double[] recombinationStrengthArray = new double[getSize()];
+        int i = 0;
+        while (i < getSize()) {
+            mutatorStrengthArray[i] = getIndividual(i).getMutatorStrength();
+            recombinationStrengthArray[i] = getIndividual(i).getRecombinationStrength();
+            i++;
+        }
+        return new GroupReturn(mutatorStrengthArray, recombinationStrengthArray);
+    }
+
     private void addIndividualPair(IndividualPair offspringPair, int parentSize) {
         addIndividual(offspringPair.getIndividualA(), parentSize);
         addIndividual(offspringPair.getIndividualB(), parentSize);
