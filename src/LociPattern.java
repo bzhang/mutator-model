@@ -8,15 +8,14 @@ public class LociPattern {
 
 
 
+
     public enum LocusType {
-        Fitness, Mutator, Recombination
+        Fitness, Mutator, Recombination;
     }
     private int genomeSize;
-
     private LocusType[] pattern;
-    private int[] mutatorLociPositions, recombinationLociPositions;
-//    private Random random = new Random(System.nanoTime());
 
+    private int[] mutatorLociPositions, recombinationLociPositions;
     public LociPattern(int nFitness, int nMutator, int nRecombination) {
 
         genomeSize = nFitness + nMutator + nRecombination;
@@ -61,6 +60,15 @@ public class LociPattern {
 
     public int[] getMutatorLociPositions() {
         return mutatorLociPositions;
+    }
+
+    //    private Random random = new Random(System.nanoTime());
+    public int getFirstRecombinationPosition() {
+        return recombinationLociPositions[0];
+    }
+
+    public int getFirstMutatorPosition() {
+        return mutatorLociPositions[0];
     }
 
     public int getRandomMutatorPosition() {
