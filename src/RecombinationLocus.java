@@ -18,4 +18,12 @@ public class RecombinationLocus extends Locus {
     public void setStrength(float strength) {
         this.strength = strength;
     }
+
+    public void increaseStrength() {
+        this.strength *= Math.pow(Rand.getDouble(), -ModelParameters.getFloat("RECOMBINATION_MODIFIER_EFFECT"));
+    }
+
+    public void decreaseStrength() {
+        this.strength *= Math.pow(Rand.getDouble(), ModelParameters.getFloat("ANTIRECOMBINATION_MODIFIER_EFFECT"));
+    }
 }
