@@ -182,17 +182,21 @@ public class Util {
         int[] nBeneMutArray = fitnessPropertiesArray.getnBeneMutArray();
         double[] meanDeleFitnessEffectArray = fitnessPropertiesArray.getMeanDeleFitnessEffectArray();
         double[] meanBeneFitnessEffectArray = fitnessPropertiesArray.getMeanBeneFitnessEffectArray();
-        double[] mutatorStrengthArray = population.getMutatorStrengthArray();
+        GroupReturn mutatorAndRecombinationStrengthArray = population.getMutatorAndRecombinationStrengthArray();
+        double[] mutatorStrengthArray = mutatorAndRecombinationStrengthArray.getMutatorStrengthArray();
+        double[] recombinationStrengthArray = mutatorAndRecombinationStrengthArray.getRecombinationStrengthArray();
 
 
         return i + "\t" + Util.mean(fitnessArray)
                 + "\t" + Util.mean(mutatorStrengthArray)
                 + "\t" + Util.mean(nDeleMutArray)
                 + "\t" + Util.mean(nBeneMutArray)
+                + "\t" + Util.mean(recombinationStrengthArray)
                 + "\t" + Util.mean(meanDeleFitnessEffectArray)
                 + "\t" + Util.mean(meanBeneFitnessEffectArray)
                 + "\t" + Util.standardDeviation(fitnessArray)
                 + "\t" + Util.standardDeviation(mutatorStrengthArray)
+                + "\t" + Util.standardDeviation(recombinationStrengthArray)
                 + "\t" + Util.standardDeviation(nDeleMutArray)
                 + "\t" + Util.standardDeviation(nBeneMutArray)
                 + "\t" + Util.standardDeviation(meanDeleFitnessEffectArray)
