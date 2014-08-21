@@ -2,6 +2,8 @@
  * @author Bingjun Zhang
  */
 
+import com.sun.org.apache.xpath.internal.operations.Mod;
+
 import java.util.ArrayList;
 
 public class Individual implements Cloneable{
@@ -51,9 +53,16 @@ public class Individual implements Cloneable{
             double parentFitnessZScore = (transformedFitness - parentFitnessMean) / parentFitnessSD;
             deleteriousMutate(currentGeneration, mutationProperties, parentFitnessZScore, corFitnessMutatorStrength);
             beneficialMutate(currentGeneration, mutationProperties, parentFitnessZScore, corFitnessMutatorStrength);
-            mutatorMutate(currentGeneration);
-            antimutatorMutate(currentGeneration);
+            if (currentGeneration >= ModelParameters.getDouble("INITIAL_ANTIMUTATOR_MUTATION_RATE")) {
+                mutatorMutate(currentGeneration);
+                antimutatorMutate(currentGeneration);
+            }
+            if (currentGeneration >= ModelParameters.getInt("START_EVOLVE_RECOMBINATION_RATE")) {
+                recombinationMutate(currentGeneration);
+                antiRecombinationMutate(currentGeneration);
+            }
         }
+
 
         if (fitness > 1.0) {
             transformedFitness = Math.exp(Math.pow(Math.log(fitness), ModelParameters.getFloat("EPISTASIS")));
@@ -77,8 +86,14 @@ public class Individual implements Cloneable{
         if (isAlive()) {
             deleteriousMutate(currentGeneration);
             beneficialMutate(currentGeneration);
-            mutatorMutate(currentGeneration);
-            antimutatorMutate(currentGeneration);
+            if (currentGeneration >= ModelParameters.getDouble("INITIAL_ANTIMUTATOR_MUTATION_RATE")) {
+                mutatorMutate(currentGeneration);
+                antimutatorMutate(currentGeneration);
+            }
+            if (currentGeneration >= ModelParameters.getInt("START_EVOLVE_RECOMBINATION_RATE")) {
+                recombinationMutate(currentGeneration);
+                antiRecombinationMutate(currentGeneration);
+            }
         }
 
         if (fitness > Math.exp(1)) {
@@ -208,21 +223,21 @@ public class Individual implements Cloneable{
 
     private void mutatorMutate(int currentGeneration) {
 //        double mutationRate = ModelParameters.getDouble("INITIAL_MUTATOR_MUTATION_RATE");
-        if (currentGeneration >= ModelParameters.getInt("START_EVOLVING_GENERATION")) {
+
             double mutationRate = ModelParameters.getDouble("EVOLVING_MUTATOR_MUTATION_RATE") * mutatorStrength;
             int poissonObs = Util.getPoisson(mutationRate);
             for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
                 MutatorLocus locus = getRandomMutatorLocus();
                 locus.increaseStrength();
             }
-        }
+
     }
 
     private void antimutatorMutate(int currentGeneration) {
-        int startingEvolvingGeneration = ModelParameters.getInt("START_EVOLVING_GENERATION");
+//        int startingEvolvingGeneration = ModelParameters.getInt("START_EVOLVING_GENERATION");
 //        double mutationRate = ModelParameters.getDouble("INITIAL_ANTIMUTATOR_MUTATION_RATE");
 
-        if (currentGeneration >= startingEvolvingGeneration) {
+
             double mutationRate = ModelParameters.getDouble("EVOLVING_ANTIMUTATOR_MUTATION_RATE") * mutatorStrength;
 //        Poisson poisson = new Poisson(mutationRate, Rand.getEngine());
 //        int poissonObs = poisson.nextInt();
@@ -231,9 +246,33 @@ public class Individual implements Cloneable{
                 MutatorLocus locus = getRandomMutatorLocus();
                 locus.decreaseStrength();
             }
+
+    }
+
+    private void recombinationMutate(int currentGeneration) {
+        double mutationRate = ModelParameters.getDouble("EVOLVING_RECOMBINATION_MUTATION_RATE") * mutatorStrength;
+        int poissonObs = Util.getPoisson(mutationRate);
+        for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
+            RecombinationLocus locus = getRandomRecombinationLocus();
+            locus.increaseStrength();
         }
     }
 
+    private void antiRecombinationMutate(int currentGeneration) {
+        if (currentGeneration >= ModelParameters.getInt("START_EVOLVE_RECOMBINATION_RATE")) {
+            double mutationRate = ModelParameters.getDouble("EVOLVING_RECOMBINATION_MUTATION_RATE") * mutatorStrength;
+            int poissonObs = Util.getPoisson(mutationRate);
+            for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
+                RecombinationLocus locus = getRandomRecombinationLocus();
+                locus.decreaseStrength();
+            }
+        }
+    }
+
+    private RecombinationLocus getRandomRecombinationLocus() {
+        int position = lociPattern.getRandomRecombinationLocus();
+        return (RecombinationLocus) getLocus(position);
+    }
 
     // TODO: modify getRandomXXLocus to remove redundant codes; extract new methods
     private MutatorLocus getRandomMutatorLocus() {
