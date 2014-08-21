@@ -255,13 +255,11 @@ public class Individual implements Cloneable{
     }
 
     private void antiRecombinationMutate(int currentGeneration) {
-        if (currentGeneration >= ModelParameters.getInt("START_EVOLVE_RECOMBINATION_RATE")) {
-            double mutationRate = ModelParameters.getDouble("EVOLVING_RECOMBINATION_MUTATION_RATE") * mutatorStrength;
-            int poissonObs = Util.getPoisson(mutationRate);
-            for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
-                RecombinationLocus locus = getRandomRecombinationLocus();
-                locus.decreaseStrength();
-            }
+        double mutationRate = ModelParameters.getDouble("EVOLVING_ANTIRECOMBINATION_MUTATION_RATE") * mutatorStrength;
+        int poissonObs = Util.getPoisson(mutationRate);
+        for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
+            RecombinationLocus locus = getRandomRecombinationLocus();
+            locus.decreaseStrength();
         }
     }
 
