@@ -19,6 +19,8 @@ public class GroupReturn {
     private int row;
     private int column;
     private Individual individual;
+    private double[] mutatorStrengthArray;
+    private double[] recombinationStrengthArray;
 
     public GroupReturn(Individual individual, int row, int column) {
         this.individual = individual;
@@ -41,8 +43,8 @@ public class GroupReturn {
         this.nBeneMutArray = nBeneMutArray;
     }
 
-    public GroupReturn(double[] deleFitnessEffectArray, double[] beneFitnessEffectArray) {
-    }
+//    public GroupReturn(double[] deleFitnessEffectArray, double[] beneFitnessEffectArray) {
+//    }
 
     public GroupReturn(double meanDeleFitnessEffect, double meanBeneFitnessEffect, int nDeleteriousMutations, int nBeneficialMutations) {
 //        this.fitness = fitness;
@@ -64,6 +66,11 @@ public class GroupReturn {
         this.individualInSpace = individualInSpace;
         this.index = index;
 
+    }
+
+    public GroupReturn(double[] mutatorStrengthArray, double[] recombinationStrengthArray) {
+        this.mutatorStrengthArray = mutatorStrengthArray;
+        this.recombinationStrengthArray = recombinationStrengthArray;
     }
 
     public Locus getFitnessLocus() {
@@ -132,5 +139,13 @@ public class GroupReturn {
 
     public IndividualInSpace getIndividualInSpace() {
         return individualInSpace;
+    }
+
+    public double[] getMutatorStrengthArray() {
+        return mutatorStrengthArray;
+    }
+
+    public double[] getRecombinationStrengthArray() {
+        return recombinationStrengthArray;
     }
 }
