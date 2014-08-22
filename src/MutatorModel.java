@@ -20,8 +20,9 @@ public class MutatorModel {
             String mutMapFilename = resultFileNamePrefix + "_MutMap.txt";
             String mutStructureFilename = resultFileNamePrefix + "_MutStructure.txt";
             String popFileOutput = "Generation\tFitnessMean\tMutatorStrengthMean\tnDeleMutMean\tnBeneMutMean\t" +
+                                   "RecombinationRateMean\t" +
                                    "MeanDeleFitnessEffect\tMeanBeneFitnessEffect\t" +
-                                   "FitnessSD\tMutatorStrengthSD\tnDeleMutSD\tnBeneMutSD\t" +
+                                   "FitnessSD\tMutatorStrengthSD\tRecombinationRateSD\tnDeleMutSD\tnBeneMutSD\t" +
                                    "deleFitnessEffectSD\tbeneFitnessEffectSD\n";
             String mutMapFileOutput = "MutationID\tFitnessEffect\tMutatorStrength\tGeneration\tLocus\tParentFitnessZScore\tCorrelationBtwFitnessAndMutatorStrength\n";
             String mutStructureFileOutput = "Generation\tMutationID\tNIndividual\n";
