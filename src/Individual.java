@@ -53,7 +53,7 @@ public class Individual implements Cloneable{
             double parentFitnessZScore = (transformedFitness - parentFitnessMean) / parentFitnessSD;
             deleteriousMutate(currentGeneration, mutationProperties, parentFitnessZScore, corFitnessMutatorStrength);
             beneficialMutate(currentGeneration, mutationProperties, parentFitnessZScore, corFitnessMutatorStrength);
-            if (currentGeneration >= ModelParameters.getDouble("INITIAL_ANTIMUTATOR_MUTATION_RATE")) {
+            if (currentGeneration >= ModelParameters.getDouble("START_EVOLVING_GENERATION")) {
                 mutatorMutate(currentGeneration);
                 antimutatorMutate(currentGeneration);
             }
@@ -86,7 +86,7 @@ public class Individual implements Cloneable{
         if (isAlive()) {
             deleteriousMutate(currentGeneration);
             beneficialMutate(currentGeneration);
-            if (currentGeneration >= ModelParameters.getDouble("INITIAL_ANTIMUTATOR_MUTATION_RATE")) {
+            if (currentGeneration >= ModelParameters.getDouble("START_EVOLVING_GENERATION")) {
                 mutatorMutate(currentGeneration);
                 antimutatorMutate(currentGeneration);
             }
