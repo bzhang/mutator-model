@@ -58,7 +58,8 @@ public class IndividualPair {
             float recombinationStrengthB = offspringB.getRecombinationStrength();
             float recombinationProbability = (recombinationStrengthA + recombinationStrengthB) / 2;
 
-            if (Rand.getFloat() < recombinationProbability) {
+            float r = Rand.getFloat();
+            if (r < recombinationProbability) {
                 offspringPair.recombine();
                 ModelParameters.addNRecombination();
             }
