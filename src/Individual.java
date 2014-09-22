@@ -65,7 +65,7 @@ public class Individual implements Cloneable{
 
 
         if (fitness > 1.0) {
-            transformedFitness = Math.exp(Math.pow(Math.log(fitness), ModelParameters.getFloat("EPISTASIS")));
+            transformedFitness = transformFitness(fitness);
         } else {
             transformedFitness = fitness;
         }
@@ -97,7 +97,7 @@ public class Individual implements Cloneable{
         }
 
         if (fitness > Math.exp(1)) {
-            transformedFitness = Math.exp(Math.pow(Math.log(fitness), ModelParameters.getFloat("EPISTASIS")));
+            transformedFitness = transformFitness(fitness);
         } else {
             transformedFitness = fitness;
         }
@@ -105,6 +105,10 @@ public class Individual implements Cloneable{
         if (fitness <= 0) {
             die();
         }
+    }
+
+    private double transformFitness(double fitness) {
+        return Math.exp(Math.pow(Math.log(fitness), ModelParameters.getFloat("EPISTASIS")));
     }
 
     private void lethalMutate() {
