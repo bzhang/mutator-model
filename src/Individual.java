@@ -411,4 +411,15 @@ public class Individual implements Cloneable{
     public double getNonTransformedFitness() {
         return fitness;
     }
+
+    public double updateFitness() {
+        double fitness = 1.0;
+        for (int i = 0; i < getGenomeSize(); i++) {
+            if (lociPattern.getLocusType(i) == LociPattern.LocusType.Fitness) {
+                FitnessLocus locus = (FitnessLocus) getLocus(i);
+                fitness *= locus.getFitnessEffect();
+            }
+        }
+        return fitness;
+    }
 }

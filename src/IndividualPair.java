@@ -78,6 +78,7 @@ public class IndividualPair {
             individualA.setLocus(i, locusB);
             individualB.setLocus(i, locusA);
         }
-
+        individualA.updateFitness();
+        individualB.updateFitness();
     }
 }
