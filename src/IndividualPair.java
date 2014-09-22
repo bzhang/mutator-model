@@ -26,19 +26,19 @@ public class IndividualPair {
     }
 
     public void mutate(int currentGeneration, ArrayList mutationProperties, double parentFitnessMean, double parentFitnessSD, double corFitnessMutatorStrength) {
-        getIndividualA().calculateMutatorStrength();
-        getIndividualB().calculateMutatorStrength();
-        getIndividualA().mutate(currentGeneration, mutationProperties, parentFitnessMean, parentFitnessSD, corFitnessMutatorStrength);
-        getIndividualB().mutate(currentGeneration, mutationProperties, parentFitnessMean, parentFitnessSD, corFitnessMutatorStrength);
+        individualA.calculateMutatorStrength();
+        individualB.calculateMutatorStrength();
+        individualA.mutate(currentGeneration, mutationProperties, parentFitnessMean, parentFitnessSD, corFitnessMutatorStrength);
+        individualB.mutate(currentGeneration, mutationProperties, parentFitnessMean, parentFitnessSD, corFitnessMutatorStrength);
     }
 
     public void mutate(int currentGeneration) {
-        getIndividualA().calculateMutatorStrength();
-        getIndividualB().calculateMutatorStrength();
+        individualA.calculateMutatorStrength();
+        individualB.calculateMutatorStrength();
 //        System.out.println("before mutate = " + getIndividualA().getMutatorStrength());
 //        System.out.println("before mutate = " + getIndividualB().getMutatorStrength());
-        getIndividualA().mutate(currentGeneration);
-        getIndividualB().mutate(currentGeneration);
+        individualA.mutate(currentGeneration);
+        individualB.mutate(currentGeneration);
 //        getIndividualA().calculateMutatorStrength();
 //        getIndividualB().calculateMutatorStrength();
 //        System.out.println("after mutate = " + getIndividualA().getMutatorStrength());
@@ -47,8 +47,8 @@ public class IndividualPair {
 
     public IndividualPair reproduce() {
 
-        Individual offspringA = new Individual(getIndividualA());
-        Individual offspringB = new Individual(getIndividualB());
+        Individual offspringA = new Individual(individualA);
+        Individual offspringB = new Individual(individualB);
         IndividualPair offspringPair = new IndividualPair(offspringA, offspringB);
 //        System.out.println("offspringA fitness = " + offspringA.getTransformedFitness());
 //        System.out.println("offspringB fitness = " + offspringB.getTransformedFitness());
@@ -69,14 +69,15 @@ public class IndividualPair {
     }
 
     private void recombine() {
-        int genomeSize = getIndividualA().getGenomeSize();
+        int genomeSize = individualA.getGenomeSize();
         int position = Rand.getInt(genomeSize);
 
         for (int i = position; i < genomeSize; i++) {
-            Locus locusA = getIndividualA().getLocus(i);
-            Locus locusB = getIndividualB().getLocus(i);
-            getIndividualA().setLocus(i, locusB);
-            getIndividualB().setLocus(i, locusA);
+            Locus locusA = individualA.getLocus(i);
+            Locus locusB = individualB.getLocus(i);
+            individualA.setLocus(i, locusB);
+            individualB.setLocus(i, locusA);
         }
+
     }
 }
