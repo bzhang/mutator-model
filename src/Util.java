@@ -183,7 +183,7 @@ public class Util {
         double[] meanDeleFitnessEffectArray = fitnessPropertiesArray.getMeanDeleFitnessEffectArray();
         double[] meanBeneFitnessEffectArray = fitnessPropertiesArray.getMeanBeneFitnessEffectArray();
         double[] mutatorStrengthArray = population.getMutatorStrengthArray();
-
+        System.out.println(Util.mean(fitnessArray));
 
         return i + "\t" + Util.mean(fitnessArray)
                 + "\t" + Util.mean(mutatorStrengthArray)

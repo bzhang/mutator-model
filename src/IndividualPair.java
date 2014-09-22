@@ -77,5 +77,8 @@ public class IndividualPair {
             getIndividualA().setLocus(i, locusB);
             getIndividualB().setLocus(i, locusA);
         }
+        getIndividualA();
+        getIndividualB();
+        getIndividualB();
     }
 }
