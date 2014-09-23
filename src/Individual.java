@@ -412,7 +412,7 @@ public class Individual implements Cloneable{
         return fitness;
     }
 
-    public double updateFitness() {
+    public void updateFitness() {
         double fitness = 1.0;
         for (int i = 0; i < getGenomeSize(); i++) {
             if (lociPattern.getLocusType(i) == LociPattern.LocusType.Fitness) {
@@ -420,6 +420,7 @@ public class Individual implements Cloneable{
                 fitness *= locus.getFitnessEffect();
             }
         }
-        return fitness;
+        this.fitness = fitness;
+        this.transformedFitness = transformFitness(fitness);
     }
 }

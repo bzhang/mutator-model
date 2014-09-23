@@ -185,9 +185,10 @@ public class Util {
         GroupReturn mutatorAndRecombinationStrengthArray = population.getMutatorAndRecombinationStrengthArray();
         double[] mutatorStrengthArray = mutatorAndRecombinationStrengthArray.getMutatorStrengthArray();
         double[] recombinationStrengthArray = mutatorAndRecombinationStrengthArray.getRecombinationStrengthArray();
+        double fitness = Util.mean(fitnessArray);
+        System.out.println("Fitness = " + fitness);
 
-
-        return i + "\t" + Util.mean(fitnessArray)
+        return i + "\t" + fitness
                 + "\t" + Util.mean(mutatorStrengthArray)
                 + "\t" + Util.mean(nDeleMutArray)
                 + "\t" + Util.mean(nBeneMutArray)
