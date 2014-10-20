@@ -7,7 +7,7 @@ public class FitnessLocus extends Locus {
     public static final int FITNESS_EFFECTS_INITIAL_SIZE = ModelParameters.getInt("FITNESS_EFFECTS_INITIAL_SIZE");
 
     private long[] mutationIDs = new long[FITNESS_EFFECTS_INITIAL_SIZE];
-    private float currentFitness = 1f;
+    private double currentFitness = 1;
     private int   nMutations     = 0;
     private int   nDeleteriousMutations = 0;
     private int   nBeneficialMutations  = 0;
@@ -87,7 +87,7 @@ public class FitnessLocus extends Locus {
 //    }
 
 
-    public float getFitnessEffect() {
+    public double getFitnessEffect() {
         return currentFitness;
 /*
         float effect = 1;
