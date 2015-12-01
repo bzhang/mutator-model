@@ -274,7 +274,8 @@ public class Individual implements Cloneable{
 
     // TODO: modify getRandomXXLocus to remove redundant codes; extract new methods
     private MutatorLocus getRandomMutatorLocus() {
-        int position = lociPattern.getFirstMutatorPosition();
+//        int position = lociPattern.getFirstMutatorPosition();
+        int position = lociPattern.getRandomMutatorPosition();
         return (MutatorLocus) getLocus(position);
     }
 
