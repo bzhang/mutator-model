@@ -73,9 +73,12 @@ public class LociPattern {
 
     public int getRandomMutatorPosition() {
         int position;
-        do {
-            position = getRandomLocation();
-        } while (getLocusType(position) != LocusType.Mutator);
+        System.out.println(mutatorLociPositions.length);
+        int index = Rand.getInt(mutatorLociPositions.length);
+        position = mutatorLociPositions[index];
+//        do {
+//            position = getRandomLocation();
+//        } while (getLocusType(position) != LocusType.Mutator);
         return position;
     }
 
