@@ -189,7 +189,7 @@ public class Util {
         double[] mutatorStrengthArray = mutatorAndRecombinationStrengthArray.getMutatorStrengthArray();
         double[] recombinationStrengthArray = mutatorAndRecombinationStrengthArray.getRecombinationStrengthArray();
         double fitness = Util.mean(fitnessArray);
-        System.out.println("Fitness = " + fitness);
+//        System.out.println("Fitness = " + fitness);
 
         return i + "\t" + fitness
                 + "\t" + Util.mean(mutatorStrengthArray)
