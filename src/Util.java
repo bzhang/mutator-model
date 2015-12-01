@@ -50,14 +50,17 @@ public class Util {
 
     public static double mean(double[] array) {
         double sum = 0;
-        int arraySize = 0;
+        double arraySize = 0;
         for (double element : array) {
+//            System.out.println("element = " + element);
             if (!isNaN(element)) {
                 sum += element;
                 arraySize += 1;
             }
         }
+//        System.out.println("sum / arraySize = " + sum / arraySize);
         return sum / arraySize;
+
     }
 
     public static double mean(int[] array) {
@@ -207,7 +210,7 @@ public class Util {
 
     public static double[] initTotals(double[] weights) {
         double[] totals = new double[weights.length];
-        float runningTotal = 0;
+        double runningTotal = 0;
         int i = 0;
         for (double weight : weights) {
             runningTotal += weight;
