@@ -21,6 +21,9 @@ public class GroupReturn {
     private Individual individual;
     private double[] mutatorStrengthArray;
     private double[] recombinationStrengthArray;
+    private double variance;
+    private double std;
+    private double skewness;
 
     public GroupReturn(Individual individual, int row, int column) {
         this.individual = individual;
@@ -71,6 +74,12 @@ public class GroupReturn {
     public GroupReturn(double[] mutatorStrengthArray, double[] recombinationStrengthArray) {
         this.mutatorStrengthArray = mutatorStrengthArray;
         this.recombinationStrengthArray = recombinationStrengthArray;
+    }
+
+    public GroupReturn(double variance, double std, double skewness) {
+        this.variance = variance;
+        this.std = std;
+        this.skewness = skewness;
     }
 
     public Locus getFitnessLocus() {
@@ -147,5 +156,17 @@ public class GroupReturn {
 
     public double[] getRecombinationStrengthArray() {
         return recombinationStrengthArray;
+    }
+
+    public double getVariance() {
+        return variance;
+    }
+
+    public double getStd() {
+        return std;
+    }
+
+    public double getSkewness() {
+        return skewness;
     }
 }
