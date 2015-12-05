@@ -24,6 +24,7 @@ public class GroupReturn {
     private double variance;
     private double std;
     private double skewness;
+    private double meanTransformedValue;
 
     public GroupReturn(Individual individual, int row, int column) {
         this.individual = individual;
@@ -76,7 +77,8 @@ public class GroupReturn {
         this.recombinationStrengthArray = recombinationStrengthArray;
     }
 
-    public GroupReturn(double variance, double std, double skewness) {
+    public GroupReturn(double meanTransformedValue, double variance, double std, double skewness) {
+        this.meanTransformedValue = meanTransformedValue;
         this.variance = variance;
         this.std = std;
         this.skewness = skewness;
@@ -168,5 +170,9 @@ public class GroupReturn {
 
     public double getSkewness() {
         return skewness;
+    }
+
+    public double getMeanTransformedValue() {
+        return meanTransformedValue;
     }
 }

@@ -197,21 +197,33 @@ public class Util {
         return new PearsonsCorrelation().correlation(data1, data2);
     }
 
-    public static GroupReturn getVarianceStdSkewnessOfU(double[] mutatorStrengthArray){
+    public static GroupReturn getVarianceStdSkewnessOfU(int gen, double[] mutatorStrengthArray, String mutStatFilename){
         double[] statArray = new double[mutatorStrengthArray.length];
+        String mutStatFileOutput = "";
+//        System.out.println(mutatorStrengthArray.length);
+        int j = 0;
         for (int i=0; i < mutatorStrengthArray.length; i++) {
-            double lnU = Math.log(mutatorStrengthArray[i] * ModelParameters.getDouble("BASE_DELETERIOUS_MUTATION_RATE") * 2);
+            double U = mutatorStrengthArray[i] * ModelParameters.getDouble("BASE_DELETERIOUS_MUTATION_RATE") * 2;
+            double lnU = Math.log(U);
 //            Uopt = 0.6591, tau = 0.8152
-            statArray[i] = (lnU - 0.6591) / 0.8152;
+            double stat = (lnU - 0.6591) / 0.8152;
+            statArray[i] = stat;
+//            if ((gen >= 50000) && ((gen % 10000) == 0)) {
+            if ((gen >= 60000) && ((gen % 1000) == 0)) {
+                System.out.println(j);
+                j++;
+                mutStatFileOutput += gen + "\t" + U + "\n";
+            }
         }
+        Util.writeFile(mutStatFilename, mutStatFileOutput);
+        double meanTransformedValue = Util.mean(statArray);
         double variance = Util.variance(statArray);
         double std = Math.sqrt(variance);
         double skewness = Util.skewness(statArray);
-        return new GroupReturn(variance, std, skewness);
+        return new GroupReturn(meanTransformedValue, variance, std, skewness);
     }
 
-
-    public static String outputPopulationStat(int i, Population population) {
+    public static String outputPopulationStat(int i, Population population, String mutStatFilename) {
         GroupReturn fitnessPropertiesArray = population.getFitnessPropertiesArray();
         double[] fitnessArray = fitnessPropertiesArray.getFitnessArray();
         int[] nDeleMutArray = fitnessPropertiesArray.getNDeleMutArray();
@@ -222,7 +234,8 @@ public class Util {
         double[] mutatorStrengthArray = mutatorAndRecombinationStrengthArray.getMutatorStrengthArray();
         double[] recombinationStrengthArray = mutatorAndRecombinationStrengthArray.getRecombinationStrengthArray();
         double fitness = Util.mean(fitnessArray);
-        GroupReturn varianceStdSkewnessArray = Util.getVarianceStdSkewnessOfU(mutatorStrengthArray);
+        GroupReturn varianceStdSkewnessArray = Util.getVarianceStdSkewnessOfU(i, mutatorStrengthArray, mutStatFilename);
+        double meanTransformedValue = varianceStdSkewnessArray.getMeanTransformedValue();
         double variance = varianceStdSkewnessArray.getVariance();
         double std = varianceStdSkewnessArray.getStd();
         double skewness = varianceStdSkewnessArray.getSkewness();
@@ -235,6 +248,7 @@ public class Util {
                 + "\t" + Util.mean(recombinationStrengthArray)
                 + "\t" + Util.mean(meanDeleFitnessEffectArray)
                 + "\t" + Util.mean(meanBeneFitnessEffectArray)
+                + "\t" + meanTransformedValue
                 + "\t" + variance
                 + "\t" + std
                 + "\t" + skewness
