@@ -19,14 +19,19 @@ public class MutatorModel {
             String popFilename = resultFileNamePrefix + "_Pop.txt";
             String mutMapFilename = resultFileNamePrefix + "_MutMap.txt";
             String mutStructureFilename = resultFileNamePrefix + "_MutStructure.txt";
+            String mutStatFilename = resultFileNamePrefix + "_MutStat.txt";
             String popFileOutput = "Generation\tFitnessMean\tMutatorStrengthMean\tnDeleMutMean\tnBeneMutMean\t" +
                                    "RecombinationRateMean\t" +
                                    "MeanDeleFitnessEffect\tMeanBeneFitnessEffect\t" +
-                                   "variance\tstd\tskewness\t" +
+                                   "MeanTransformedValue\tvariance\tstd\tskewness\t" +
                                    "FitnessSD\tMutatorStrengthSD\tRecombinationRateSD\tnDeleMutSD\tnBeneMutSD\t" +
                                    "deleFitnessEffectSD\tbeneFitnessEffectSD\n";
             String mutMapFileOutput = "MutationID\tFitnessEffect\tMutatorStrength\tGeneration\tLocus\tParentFitnessZScore\tCorrelationBtwFitnessAndMutatorStrength\n";
             String mutStructureFileOutput = "Generation\tMutationID\tNIndividual\n";
+            String mutStatFileOutput = "Generation\tU\n";
+
+            // Write file header for mutStatFile
+            Util.writeFile(mutStatFilename, mutStatFileOutput);
 
             // Write file headers for mutMapFile
             Util.writeFile(mutMapFilename, mutMapFileOutput);
@@ -34,7 +39,7 @@ public class MutatorModel {
             // Founder population
 //            System.out.println("Output file: " + popFilename + "\nFounder population creating...");
             Population population = new Population(ModelParameters.getInt("POPULATION_SIZE"));
-            popFileOutput += Util.outputPopulationStat(1, population);
+            popFileOutput += Util.outputPopulationStat(1, population, mutStatFilename);
             Util.writeFile(popFilename, popFileOutput);
             Util.writeFile(mutStructureFilename, mutStructureFileOutput);
 
@@ -49,7 +54,7 @@ public class MutatorModel {
 //                Long genStart = System.currentTimeMillis();
                 population = new Population(population, i, mutMapFilename);
                 if (i % ModelParameters.getInt("POP_OUTPUT_PERIOD") == 0) {
-                    popFileOutput = Util.outputPopulationStat(i, population);
+                    popFileOutput = Util.outputPopulationStat(i, population, mutStatFilename);
                     Util.writeFile(popFilename, popFileOutput);
                 }
                 if (i % ModelParameters.getInt("MUT_STRUCTURE_OUTPUT_PERIOD") == 0) {
