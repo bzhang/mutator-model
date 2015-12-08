@@ -205,8 +205,8 @@ public class Util {
         for (int i=0; i < mutatorStrengthArray.length; i++) {
             double U = mutatorStrengthArray[i] * ModelParameters.getDouble("BASE_DELETERIOUS_MUTATION_RATE") * 2;
             double lnU = Math.log(U);
-//            Uopt = 0.6591, tau = 0.8152
-            double stat = (lnU - 0.6591) / 0.8152;
+//            ln(U_opt) = 0.6591, tau = 0.8152
+            double stat = (lnU - ModelParameters.getDouble("LN_U_OPT")) / ModelParameters.getDouble("TAU");
             statArray[i] = stat;
 //            if ((gen >= 50000) && ((gen % 10000) == 0)) {
             if ((gen >= 60000) && ((gen % 1000) == 0)) {
