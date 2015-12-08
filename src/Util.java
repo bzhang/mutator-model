@@ -210,7 +210,7 @@ public class Util {
             statArray[i] = stat;
 //            if ((gen >= 50000) && ((gen % 10000) == 0)) {
             if ((gen >= 60000) && ((gen % 1000) == 0)) {
-                System.out.println(j);
+//                System.out.println(j);
                 j++;
                 mutStatFileOutput += gen + "\t" + U + "\n";
             }
