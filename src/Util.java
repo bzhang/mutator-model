@@ -239,6 +239,7 @@ public class Util {
         double variance = varianceStdSkewnessArray.getVariance();
         double std = varianceStdSkewnessArray.getStd();
         double skewness = varianceStdSkewnessArray.getSkewness();
+        double corFitnessMutatorStrength = Util.pearsonCorrelation(fitnessArray, mutatorStrengthArray);
 //        System.out.println("Fitness = " + fitness);
 
         return i + "\t" + fitness
@@ -252,6 +253,7 @@ public class Util {
                 + "\t" + variance
                 + "\t" + std
                 + "\t" + skewness
+                + "\t" + corFitnessMutatorStrength
                 + "\t" + Util.standardDeviation(fitnessArray)
                 + "\t" + Util.standardDeviation(mutatorStrengthArray)
                 + "\t" + Util.standardDeviation(recombinationStrengthArray)

@@ -23,7 +23,7 @@ public class MutatorModel {
             String popFileOutput = "Generation\tFitnessMean\tMutatorStrengthMean\tnDeleMutMean\tnBeneMutMean\t" +
                                    "RecombinationRateMean\t" +
                                    "MeanDeleFitnessEffect\tMeanBeneFitnessEffect\t" +
-                                   "MeanTransformedValue\tvariance\tstd\tskewness\t" +
+                                   "MeanTransformedValue\tvariance\tstd\tskewness\tcorFitnessU\t" +
                                    "FitnessSD\tMutatorStrengthSD\tRecombinationRateSD\tnDeleMutSD\tnBeneMutSD\t" +
                                    "deleFitnessEffectSD\tbeneFitnessEffectSD\n";
             String mutMapFileOutput = "MutationID\tFitnessEffect\tMutatorStrength\tGeneration\tLocus\tParentFitnessZScore\tCorrelationBtwFitnessAndMutatorStrength\n";
