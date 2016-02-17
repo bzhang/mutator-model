@@ -6,9 +6,6 @@ import java.util.Random;
 
 public class LociPattern {
 
-
-    private int firstNeutralPosition;
-
     public enum LocusType {
         Fitness, Mutator, Recombination, Neutral;
     }
@@ -22,6 +19,7 @@ public class LociPattern {
         pattern = new LocusType[genomeSize];
         mutatorLociPositions = new int[nMutator];
         recombinationLociPositions = new int[nRecombination];
+        neutralLociPositions = new int[nNeutral];
 
         for (int i = 0; i < genomeSize; i++) {
             pattern[i] = LocusType.Fitness;
@@ -47,7 +45,7 @@ public class LociPattern {
 
         for (int i = 0; i < nNeutral; i++) {
             int position = getRandomLocation();
-            while (pattern[position] != LocusType.Neutral) {
+            while (pattern[position] != LocusType.Fitness) {
                 position = getRandomLocation();
             }
             pattern[position] = LocusType.Neutral;
@@ -65,6 +63,10 @@ public class LociPattern {
 
     public int[] getRecombinationLociPositions() {
         return recombinationLociPositions;
+    }
+
+    public int[] getNeutralLociPositions() {
+        return neutralLociPositions;
     }
 
     public int[] getMutatorLociPositions() {
