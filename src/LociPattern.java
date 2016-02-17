@@ -7,18 +7,18 @@ import java.util.Random;
 public class LociPattern {
 
 
-
+    private int firstNeutralPosition;
 
     public enum LocusType {
-        Fitness, Mutator, Recombination;
+        Fitness, Mutator, Recombination, Neutral;
     }
     private int genomeSize;
     private LocusType[] pattern;
 
-    private int[] mutatorLociPositions, recombinationLociPositions;
-    public LociPattern(int nFitness, int nMutator, int nRecombination) {
+    private int[] mutatorLociPositions, recombinationLociPositions, neutralLociPositions;
+    public LociPattern(int nFitness, int nMutator, int nRecombination, int nNeutral) {
 
-        genomeSize = nFitness + nMutator + nRecombination;
+        genomeSize = nFitness + nMutator + nRecombination + nNeutral;
         pattern = new LocusType[genomeSize];
         mutatorLociPositions = new int[nMutator];
         recombinationLociPositions = new int[nRecombination];
@@ -44,6 +44,15 @@ public class LociPattern {
             pattern[position] = LocusType.Recombination;
             recombinationLociPositions[i] = position;
         }
+
+        for (int i = 0; i < nNeutral; i++) {
+            int position = getRandomLocation();
+            while (pattern[position] != LocusType.Neutral) {
+                position = getRandomLocation();
+            }
+            pattern[position] = LocusType.Neutral;
+            neutralLociPositions[i] = position;
+        }
     }
 
     public int getGenomeSize() {
@@ -65,6 +74,10 @@ public class LociPattern {
     //    private Random random = new Random(System.nanoTime());
     public int getFirstRecombinationPosition() {
         return recombinationLociPositions[0];
+    }
+
+    public int getFirstNeutralPosition() {
+        return neutralLociPositions[0];
     }
 
     public int getFirstMutatorPosition() {
