@@ -61,6 +61,10 @@ public class Individual implements Cloneable{
                 recombinationMutate(currentGeneration);
                 antiRecombinationMutate(currentGeneration);
             }
+            if (currentGeneration >= ModelParameters.getDouble("START_EVOLVING_NEUTRAL_GENERATION")) {
+                neutralMutate(currentGeneration);
+                antiNeutralMutate(currentGeneration);
+            }
         }
 
 
@@ -93,6 +97,10 @@ public class Individual implements Cloneable{
             if (currentGeneration >= ModelParameters.getInt("START_EVOLVE_RECOMBINATION_RATE")) {
                 recombinationMutate(currentGeneration);
                 antiRecombinationMutate(currentGeneration);
+            }
+            if (currentGeneration >= ModelParameters.getDouble("START_EVOLVING_NEUTRAL_GENERATION")) {
+                neutralMutate(currentGeneration);
+                antiNeutralMutate(currentGeneration);
             }
         }
 
@@ -395,6 +403,12 @@ public class Individual implements Cloneable{
         // TODO: multiple all recombination strength values
         int recombinationLocusPosition = lociPattern.getRecombinationLociPositions()[0];
         return ((RecombinationLocus) getLocus(recombinationLocusPosition)).getStrength(); // refactor
+    }
+
+    public float getNeutralStrength() {
+        // TODO: multiple all recombination strength values
+        int neutralLocusPosition = lociPattern.getNeutralLociPositions()[0];
+        return ((NeutralLocus) getLocus(neutralLocusPosition)).getStrength(); // refactor
     }
 
     public double mutate(int nDeleMutation, int nBeneMutation) {
