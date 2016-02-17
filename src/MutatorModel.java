@@ -24,7 +24,8 @@ public class MutatorModel {
                                    "RecombinationRateMean\t" +
                                    "MeanDeleFitnessEffect\tMeanBeneFitnessEffect\t" +
                                    "MeanTransformedValue\tvariance\tstd\tskewness\tcorFitnessU\t" +
-                                   "FitnessSD\tMutatorStrengthSD\tRecombinationRateSD\tnDeleMutSD\tnBeneMutSD\t" +
+                                   "FitnessSD\tNeutralMean\tNeutralSD" +
+                                   "MutatorStrengthSD\tRecombinationRateSD\tnDeleMutSD\tnBeneMutSD\t" +
                                    "deleFitnessEffectSD\tbeneFitnessEffectSD\n";
             String mutMapFileOutput = "MutationID\tFitnessEffect\tMutatorStrength\tGeneration\tLocus\tParentFitnessZScore\tCorrelationBtwFitnessAndMutatorStrength\n";
             String mutStructureFileOutput = "Generation\tMutationID\tNIndividual\n";
@@ -61,7 +62,7 @@ public class MutatorModel {
                     mutStructureFileOutput = outputMutStructure(i, population);
                     Util.writeFile(mutStructureFilename, mutStructureFileOutput);
                 }
-//                System.out.println("Generation " + i);
+                System.out.println("Generation " + i);
 
 //                int reminderGen = (int) ((System.currentTimeMillis() - genStart) % (24L * 3600 * 1000));
 //                Float secondsElapsedGen = (float) reminderGen / 1000;
