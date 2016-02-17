@@ -13,7 +13,9 @@ public class Population {
     public Population(int nIndividuals) {
         // Create the founder population
         lociPattern = new LociPattern(ModelParameters.getInt("N_FITNESS_LOCI"),
-                ModelParameters.getInt("N_MUTATOR_LOCI"), ModelParameters.getInt("N_RECOMBINATION_LOCI"));
+                ModelParameters.getInt("N_MUTATOR_LOCI"),
+                ModelParameters.getInt("N_RECOMBINATION_LOCI"),
+                ModelParameters.getInt("N_NEUTRAL_LOCI"));
         individuals = new ArrayList<Individual>();
 
         for (int i = 0; i < nIndividuals; i++) {
@@ -116,16 +118,18 @@ public class Population {
         return mutatorStrengthArray;
     }
 
-    public GroupReturn getMutatorAndRecombinationStrengthArray() {
+    public GroupReturn getMutatorRecombinationAndNeutralStrengthArray() {
         double[] mutatorStrengthArray = new double[getSize()];
         double[] recombinationStrengthArray = new double[getSize()];
+        double[] neutralStrengthArray = new double[getSize()];
         int i = 0;
         while (i < getSize()) {
             mutatorStrengthArray[i] = getIndividual(i).getMutatorStrength();
             recombinationStrengthArray[i] = getIndividual(i).getRecombinationStrength();
+            neutralStrengthArray[i] = getIndividual(i).getNeutralStrength();
             i++;
         }
-        return new GroupReturn(mutatorStrengthArray, recombinationStrengthArray);
+        return new GroupReturn(mutatorStrengthArray, recombinationStrengthArray, neutralStrengthArray);
     }
 
     private void addIndividualPair(IndividualPair offspringPair, int parentSize) {
