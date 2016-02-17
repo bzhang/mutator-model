@@ -267,9 +267,32 @@ public class Individual implements Cloneable{
         }
     }
 
+    private void neutralMutate(int currentGeneration) {
+        double mutationRate = ModelParameters.getDouble("EVOLVING_NEUTRAL_MUTATION_RATE") * mutatorStrength;
+        int poissonObs = Util.getPoisson(mutationRate);
+        for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
+            NeutralLocus locus = getRandomNeutralLocus();
+            locus.increaseStrength();
+        }
+    }
+
+    private void antiNeutralMutate(int currentGeneration) {
+        double mutationRate = ModelParameters.getDouble("EVOLVING_ANTINEUTRAL_MUTATION_RATE") * mutatorStrength;
+        int poissonObs = Util.getPoisson(mutationRate);
+        for (int nMutation = 0; nMutation < poissonObs; nMutation++) {
+            NeutralLocus locus = getRandomNeutralLocus();
+            locus.decreaseStrength();
+        }
+    }
+
     private RecombinationLocus getRandomRecombinationLocus() {
         int position = lociPattern.getFirstRecombinationPosition();
         return (RecombinationLocus) getLocus(position);
+    }
+
+    private NeutralLocus getRandomNeutralLocus() {
+        int position = lociPattern.getFirstNeutralPosition();
+        return (NeutralLocus) getLocus(position);
     }
 
     // TODO: modify getRandomXXLocus to remove redundant codes; extract new methods
