@@ -230,9 +230,10 @@ public class Util {
         int[] nBeneMutArray = fitnessPropertiesArray.getnBeneMutArray();
         double[] meanDeleFitnessEffectArray = fitnessPropertiesArray.getMeanDeleFitnessEffectArray();
         double[] meanBeneFitnessEffectArray = fitnessPropertiesArray.getMeanBeneFitnessEffectArray();
-        GroupReturn mutatorAndRecombinationStrengthArray = population.getMutatorAndRecombinationStrengthArray();
-        double[] mutatorStrengthArray = mutatorAndRecombinationStrengthArray.getMutatorStrengthArray();
-        double[] recombinationStrengthArray = mutatorAndRecombinationStrengthArray.getRecombinationStrengthArray();
+        GroupReturn mutatorRecombinationAndNeutralStrengthArray = population.getMutatorRecombinationAndNeutralStrengthArray();
+        double[] mutatorStrengthArray = mutatorRecombinationAndNeutralStrengthArray.getMutatorStrengthArray();
+        double[] recombinationStrengthArray = mutatorRecombinationAndNeutralStrengthArray.getRecombinationStrengthArray();
+        double[] neutralStrengthArray = mutatorRecombinationAndNeutralStrengthArray.getNeutralStrengthArray();
         double fitness = Util.mean(fitnessArray);
         GroupReturn varianceStdSkewnessArray = Util.getVarianceStdSkewnessOfU(i, mutatorStrengthArray, mutStatFilename);
         double meanTransformedValue = varianceStdSkewnessArray.getMeanTransformedValue();
@@ -255,6 +256,8 @@ public class Util {
                 + "\t" + skewness
                 + "\t" + corFitnessMutatorStrength
                 + "\t" + Util.standardDeviation(fitnessArray)
+                + "\t" + Util.mean(neutralStrengthArray)
+                + "\t" + Util.standardDeviation(neutralStrengthArray)
                 + "\t" + Util.standardDeviation(mutatorStrengthArray)
                 + "\t" + Util.standardDeviation(recombinationStrengthArray)
                 + "\t" + Util.standardDeviation(nDeleMutArray)
