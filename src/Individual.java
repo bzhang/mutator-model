@@ -40,6 +40,8 @@ public class Individual implements Cloneable{
                 loci[i] = (MutatorLocus) clonedLocus;
             } else if (getLociPattern().getLocusType(i) == LociPattern.LocusType.Recombination) {
                 loci[i] = (RecombinationLocus) clonedLocus;
+            } else {
+                loci[i] = (NeutralLocus) clonedLocus;
             }
         }
     }
@@ -330,6 +332,11 @@ public class Individual implements Cloneable{
     public void setRecombinationLocus(int position, float strength) {
         RecombinationLocus recombinationLocus = new RecombinationLocus(strength);
         setLocus(position, recombinationLocus);
+    }
+
+    public void setNeutralLocus(int position, float strength) {
+        NeutralLocus neutralLocus = new NeutralLocus(strength);
+        setLocus(position, neutralLocus);
     }
 
     public LociPattern getLociPattern() {

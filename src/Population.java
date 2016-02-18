@@ -27,8 +27,10 @@ public class Population {
                     individual.setFitnessLocus(location);
                 } else if (lociPattern.getLocusType(location) == LociPattern.LocusType.Mutator) {
                     individual.setMutatorLocus(location, getRandomMutatorStrength());
-                } else {
+                } else if (lociPattern.getLocusType(location) == LociPattern.LocusType.Recombination){
                     individual.setRecombinationLocus(location, getRandomRecombinationStrength());
+                } else {
+                    individual.setNeutralLocus(location, getRandomNeutralStrength());
                 }
             }
         }
@@ -180,6 +182,12 @@ public class Population {
 //            strength = Rand.getFloat();
             strength = ModelParameters.getFloat("RECOMBINATION_RATE");
         }
+        return strength;
+    }
+
+    private float getRandomNeutralStrength() {
+        float strength;
+        strength = ModelParameters.getFloat("NEUTRAL_INITIAL_VALUE");
         return strength;
     }
 
