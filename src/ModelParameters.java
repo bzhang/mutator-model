@@ -79,6 +79,8 @@ public class ModelParameters {
 //                + "_NMutator" + getInt("N_MUTATOR_LOCI")
                 + "_RecombMR" + getDouble("EVOLVING_RECOMBINATION_MUTATION_RATE")
                 + "_AntiRecombMR" + getDouble("EVOLVING_ANTIRECOMBINATION_MUTATION_RATE")
+                + "_NeutralMR" + getDouble("EVOLVING_NEUTRAL_MUTATION_RATE")
+                + "_AntiNeutralMR" + getDouble("EVOLVING_ANTINEUTRAL_MUTATION_RATE")
                 + "_RecombEffect" + getDouble("RECOMBINATION_MODIFIER_EFFECT")
                 + "_AntiRecombEffect" + getDouble("ANTIRECOMBINATION_MODIFIER_EFFECT")
                 + "_BeneMR" + getDouble("BASE_BENEFICIAL_MUTATION_RATE")
