@@ -236,11 +236,11 @@ public class Util {
         GroupReturn mutatorRecombinationAndNeutralStrengthArray = population.getMutatorRecombinationAndNeutralStrengthArray();
         double[] mutatorStrengthArray = mutatorRecombinationAndNeutralStrengthArray.getMutatorStrengthArray();
         double[] uArray = new double[mutatorStrengthArray.length];
-        for (int j=0; i<mutatorStrengthArray.length; j++) {
+        for (int j=0; j<mutatorStrengthArray.length; j++) {
             uArray[j] = mutatorStrengthArray[j] * ModelParameters.getDouble("BASE_DELETERIOUS_MUTATION_RATE");
         }
         double[] lnUArray = new double[mutatorStrengthArray.length];
-        for (int j=0; i<mutatorStrengthArray.length; j++) {
+        for (int j=0; j<mutatorStrengthArray.length; j++) {
             lnUArray[j] = Math.log(uArray[j]);
         }
         double meanLnU = Util.mean(lnUArray);
@@ -249,10 +249,10 @@ public class Util {
         double[] neutralStrengthArray = mutatorRecombinationAndNeutralStrengthArray.getNeutralStrengthArray();
         double[] neutralArray = new double[neutralStrengthArray.length];
         double[] lnNeutralArray = new double[neutralStrengthArray.length];
-        for (int j=0; i<neutralStrengthArray.length; j++) {
+        for (int j=0; j<neutralStrengthArray.length; j++) {
             neutralArray[j] = neutralStrengthArray[j] * ModelParameters.getDouble("BASE_DELETERIOUS_MUTATION_RATE");
         }
-        for (int k=0; i<neutralArray.length; k++) {
+        for (int k=0; k<neutralArray.length; k++) {
             lnNeutralArray[k] = Math.log(neutralArray[k]);
         }
         double meanLnNeutral = Util.mean(lnNeutralArray);

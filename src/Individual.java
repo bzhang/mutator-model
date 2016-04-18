@@ -67,6 +67,9 @@ public class Individual implements Cloneable{
                 neutralMutate(currentGeneration);
                 antiNeutralMutate(currentGeneration);
             }
+            if (currentGeneration >= ModelParameters.getDouble("START_EVOLVING_COMPLETE_NEUTRAL_GENERATION")) {
+                completeNeutralMutate();
+            }
         }
 
 
@@ -103,6 +106,9 @@ public class Individual implements Cloneable{
             if (currentGeneration >= ModelParameters.getDouble("START_EVOLVING_NEUTRAL_GENERATION")) {
                 neutralMutate(currentGeneration);
                 antiNeutralMutate(currentGeneration);
+            }
+            if (currentGeneration >= ModelParameters.getDouble("START_EVOLVING_COMPLETE_NEUTRAL_GENERATION")) {
+                completeNeutralMutate();
             }
         }
 
@@ -295,6 +301,11 @@ public class Individual implements Cloneable{
         }
     }
 
+    private void completeNeutralMutate() {
+        CompleteNeutralLocus locus = getRandomCompleteNeutralLocus();
+        locus.mutateStrength();
+    }
+
     private RecombinationLocus getRandomRecombinationLocus() {
         int position = lociPattern.getFirstRecombinationPosition();
         return (RecombinationLocus) getLocus(position);
@@ -303,6 +314,11 @@ public class Individual implements Cloneable{
     private NeutralLocus getRandomNeutralLocus() {
         int position = lociPattern.getFirstNeutralPosition();
         return (NeutralLocus) getLocus(position);
+    }
+
+    private CompleteNeutralLocus getRandomCompleteNeutralLocus() {
+        int position = lociPattern.getFirstCompleteNeutralPosition();
+        return (CompleteNeutralLocus) getLocus(position);
     }
 
     // TODO: modify getRandomXXLocus to remove redundant codes; extract new methods
@@ -337,6 +353,11 @@ public class Individual implements Cloneable{
     public void setNeutralLocus(int position, float strength) {
         NeutralLocus neutralLocus = new NeutralLocus(strength);
         setLocus(position, neutralLocus);
+    }
+
+    public void setCompleteNeutralLocus(int position, float strength) {
+        CompleteNeutralLocus completeNeutralLocus = new CompleteNeutralLocus(strength);
+        setLocus(position, completeNeutralLocus);
     }
 
     public LociPattern getLociPattern() {

@@ -15,7 +15,8 @@ public class Population {
         lociPattern = new LociPattern(ModelParameters.getInt("N_FITNESS_LOCI"),
                 ModelParameters.getInt("N_MUTATOR_LOCI"),
                 ModelParameters.getInt("N_RECOMBINATION_LOCI"),
-                ModelParameters.getInt("N_NEUTRAL_LOCI"));
+                ModelParameters.getInt("N_NEUTRAL_LOCI"),
+                ModelParameters.getInt("N_COMPLETE_NEUTRAL_LOCI"));
         individuals = new ArrayList<Individual>();
 
         for (int i = 0; i < nIndividuals; i++) {
@@ -29,9 +30,12 @@ public class Population {
                     individual.setMutatorLocus(location, getRandomMutatorStrength());
                 } else if (lociPattern.getLocusType(location) == LociPattern.LocusType.Recombination){
                     individual.setRecombinationLocus(location, getRandomRecombinationStrength());
-                } else {
+                } else if (lociPattern.getLocusType(location) == LociPattern.LocusType.Neutral){
                     individual.setNeutralLocus(location, getRandomNeutralStrength());
+                } else {
+                    individual.setCompleteNeutralLocus(location, getRandomCompleteNeutralStrength());
                 }
+
             }
         }
     }
@@ -50,7 +54,15 @@ public class Population {
         double parentFitnessMean = Util.mean(parentFitnessArray);
         double parentFitnessSD = Util.standardDeviation(parentFitnessArray);
         double[] parentMutatorStrengthArray = parent.getMutatorStrengthArray();
-        double corFitnessMutatorStrength = Util.pearsonCorrelation(parentFitnessArray, parentMutatorStrengthArray);
+        double[] uArray = new double[parentMutatorStrengthArray.length];
+        for (int j=0; j<parentMutatorStrengthArray.length; j++) {
+            uArray[j] = parentMutatorStrengthArray[j] * ModelParameters.getDouble("BASE_DELETERIOUS_MUTATION_RATE");
+        }
+        double[] lnUArray = new double[uArray.length];
+        for (int j=0; j<uArray.length; j++) {
+            lnUArray[j] = Math.log(uArray[j]);
+        }
+        double corFitnessMutatorStrength = Util.pearsonCorrelation(parentFitnessArray, lnUArray);
 
         if (parentFitnessMean < 1e-10) {
             System.out.println("Population is extinct at generation " + currentGeneration + "!");
@@ -188,6 +200,12 @@ public class Population {
     private float getRandomNeutralStrength() {
         float strength;
         strength = ModelParameters.getFloat("NEUTRAL_INITIAL_VALUE");
+        return strength;
+    }
+
+    private float getRandomCompleteNeutralStrength() {
+        float strength;
+        strength = ModelParameters.getFloat("COMPLETE_NEUTRAL_INITIAL_VALUE");
         return strength;
     }
 
