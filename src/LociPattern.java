@@ -7,19 +7,20 @@ import java.util.Random;
 public class LociPattern {
 
     public enum LocusType {
-        Fitness, Mutator, Recombination, Neutral;
+        Fitness, Mutator, Recombination, Neutral, CompleteNeutral;
     }
     private int genomeSize;
     private LocusType[] pattern;
 
-    private int[] mutatorLociPositions, recombinationLociPositions, neutralLociPositions;
-    public LociPattern(int nFitness, int nMutator, int nRecombination, int nNeutral) {
+    private int[] mutatorLociPositions, recombinationLociPositions, neutralLociPositions, completeNeutralLociPositions;
+    public LociPattern(int nFitness, int nMutator, int nRecombination, int nNeutral, int nCompleteNeutral) {
 
-        genomeSize = nFitness + nMutator + nRecombination + nNeutral;
+        genomeSize = nFitness + nMutator + nRecombination + nNeutral + nCompleteNeutral;
         pattern = new LocusType[genomeSize];
         mutatorLociPositions = new int[nMutator];
         recombinationLociPositions = new int[nRecombination];
         neutralLociPositions = new int[nNeutral];
+        completeNeutralLociPositions = new int[nCompleteNeutral];
 
         for (int i = 0; i < genomeSize; i++) {
             pattern[i] = LocusType.Fitness;
@@ -51,6 +52,15 @@ public class LociPattern {
             pattern[position] = LocusType.Neutral;
             neutralLociPositions[i] = position;
         }
+
+        for (int i = 0; i < nCompleteNeutral; i++) {
+            int position = getRandomLocation();
+            while (pattern[position] != LocusType.Fitness) {
+                position = getRandomLocation();
+            }
+            pattern[position] = LocusType.CompleteNeutral;
+            completeNeutralLociPositions[i] = position;
+        }
     }
 
     public int getGenomeSize() {
@@ -69,6 +79,10 @@ public class LociPattern {
         return neutralLociPositions;
     }
 
+    public int[] getCompleteNeutralLociPositions() {
+        return completeNeutralLociPositions;
+    }
+
     public int[] getMutatorLociPositions() {
         return mutatorLociPositions;
     }
@@ -80,6 +94,10 @@ public class LociPattern {
 
     public int getFirstNeutralPosition() {
         return neutralLociPositions[0];
+    }
+
+    public int getFirstCompleteNeutralPosition() {
+        return completeNeutralLociPositions[0];
     }
 
     public int getFirstMutatorPosition() {
