@@ -262,6 +262,8 @@ public class Util {
         for (int k=0; k<completeNeutralStrengthArray.length; k++) {
             lnCompleteNeutralArray[k] = Math.log(completeNeutralStrengthArray[k]);
         }
+        double meanCompleteNeutral = Util.mean(completeNeutralStrengthArray);
+        double varCompleteNeutral = Util.variance(completeNeutralStrengthArray);
         double meanLnCompleteNeutral = Util.mean(lnCompleteNeutralArray);
         double varLnCompleteNeutral = Util.variance(lnCompleteNeutralArray);
         GroupReturn varianceStdSkewnessArray = Util.getVarianceStdSkewnessOfU(i, lnUArray, mutStatFilename);
@@ -288,6 +290,8 @@ public class Util {
                 + "\t" + varLnU
                 + "\t" + meanLnNeutral
                 + "\t" + varLnNeutral
+                + "\t" + meanCompleteNeutral
+                + "\t" + varCompleteNeutral
                 + "\t" + meanLnCompleteNeutral
                 + "\t" + varLnCompleteNeutral
                 + "\t" + Util.standardDeviation(fitnessArray)

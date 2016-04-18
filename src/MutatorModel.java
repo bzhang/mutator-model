@@ -26,7 +26,7 @@ public class MutatorModel {
                                    "MeanTransformedValue\tvariance\tstd\tskewness\t" +
                                    "corFitnessLnU\tmeanLnU\tvarLnU\t" +
                                    "meanLnNeutral\tvarLnNeutral\t" +
-                                   "meanLnCompleteNeutral\tvarLnCompleteNeutral\t" +
+                                   "meanCompleteNeutral\tvarCompleteNeutral\tmeanLnCompleteNeutral\tvarLnCompleteNeutral\t" +
                                    "FitnessSD\tNeutralMean\tNeutralSD\t" +
                                    "USD\tRecombinationRateSD\tnDeleMutSD\tnBeneMutSD\t" +
                                    "deleFitnessEffectSD\tbeneFitnessEffectSD\n";
