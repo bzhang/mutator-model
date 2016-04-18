@@ -439,6 +439,12 @@ public class Individual implements Cloneable{
         return ((NeutralLocus) getLocus(neutralLocusPosition)).getStrength(); // refactor
     }
 
+    public float getCompleteNeutralStrength() {
+        // TODO: multiple all recombination strength values
+        int completeNeutralLocusPosition = lociPattern.getCompleteNeutralLociPositions()[0];
+        return ((CompleteNeutralLocus) getLocus(completeNeutralLocusPosition)).getStrength(); // refactor
+    }
+
     public double mutate(int nDeleMutation, int nBeneMutation) {
         double fitnessEffect = 1;
         for (int i = 0; i < nDeleMutation; i++) {

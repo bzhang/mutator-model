@@ -257,6 +257,13 @@ public class Util {
         }
         double meanLnNeutral = Util.mean(lnNeutralArray);
         double varLnNeutral = Util.variance(lnNeutralArray);
+        double[] completeNeutralStrengthArray = mutatorRecombinationAndNeutralStrengthArray.getCompleteNeutralStrengthArray();
+        double[] lnCompleteNeutralArray = new double[completeNeutralStrengthArray.length];
+        for (int k=0; k<completeNeutralStrengthArray.length; k++) {
+            lnCompleteNeutralArray[k] = Math.log(completeNeutralStrengthArray[k]);
+        }
+        double meanLnCompleteNeutral = Util.mean(lnCompleteNeutralArray);
+        double varLnCompleteNeutral = Util.variance(lnCompleteNeutralArray);
         double fitness = Util.mean(fitnessArray);
         GroupReturn varianceStdSkewnessArray = Util.getVarianceStdSkewnessOfU(i, uArray, mutStatFilename);
         double meanTransformedValue = varianceStdSkewnessArray.getMeanTransformedValue();
@@ -282,6 +289,8 @@ public class Util {
                 + "\t" + varLnU
                 + "\t" + meanLnNeutral
                 + "\t" + varLnNeutral
+                + "\t" + meanLnCompleteNeutral
+                + "\t" + varLnCompleteNeutral
                 + "\t" + Util.standardDeviation(fitnessArray)
                 + "\t" + Util.mean(neutralStrengthArray) * ModelParameters.getDouble("BASE_DELETERIOUS_MUTATION_RATE")
                 + "\t" + Util.standardDeviation(neutralStrengthArray)

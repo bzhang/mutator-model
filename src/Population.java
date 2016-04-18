@@ -136,14 +136,16 @@ public class Population {
         double[] mutatorStrengthArray = new double[getSize()];
         double[] recombinationStrengthArray = new double[getSize()];
         double[] neutralStrengthArray = new double[getSize()];
+        double[] completeNeutralStrengthArray = new double[getSize()];
         int i = 0;
         while (i < getSize()) {
             mutatorStrengthArray[i] = getIndividual(i).getMutatorStrength();
             recombinationStrengthArray[i] = getIndividual(i).getRecombinationStrength();
             neutralStrengthArray[i] = getIndividual(i).getNeutralStrength();
+            completeNeutralStrengthArray[i] = getIndividual(i).getCompleteNeutralStrength();
             i++;
         }
-        return new GroupReturn(mutatorStrengthArray, recombinationStrengthArray, neutralStrengthArray);
+        return new GroupReturn(mutatorStrengthArray, recombinationStrengthArray, neutralStrengthArray, completeNeutralStrengthArray);
     }
 
     private void addIndividualPair(IndividualPair offspringPair, int parentSize) {

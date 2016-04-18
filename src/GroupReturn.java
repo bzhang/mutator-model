@@ -26,6 +26,7 @@ public class GroupReturn {
     private double skewness;
     private double meanTransformedValue;
     private double[] neutralStrengthArray;
+    private double[] completeNeutralStrengthArray;
     private double lnU;
     private double varLnU;
 
@@ -75,10 +76,11 @@ public class GroupReturn {
 
     }
 
-    public GroupReturn(double[] mutatorStrengthArray, double[] recombinationStrengthArray, double[] neutralStrengthArray) {
+    public GroupReturn(double[] mutatorStrengthArray, double[] recombinationStrengthArray, double[] neutralStrengthArray, double[] completeNeutralStrengthArray) {
         this.mutatorStrengthArray = mutatorStrengthArray;
         this.recombinationStrengthArray = recombinationStrengthArray;
         this.neutralStrengthArray = neutralStrengthArray;
+        this.completeNeutralStrengthArray = completeNeutralStrengthArray;
     }
 
     public GroupReturn(double meanTransformedValue, double variance, double std, double skewness) {
@@ -184,6 +186,10 @@ public class GroupReturn {
 
     public double[] getNeutralStrengthArray() {
         return neutralStrengthArray;
+    }
+
+    public double[] getCompleteNeutralStrengthArray() {
+        return completeNeutralStrengthArray;
     }
 
     public double getLnU() {
