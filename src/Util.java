@@ -209,7 +209,7 @@ public class Util {
 //            ln(U_opt) = 0.6591, tau = 0.8152
             double stat = (lnU - ModelParameters.getDouble("LN_U_OPT")) / ModelParameters.getDouble("TAU");
             statArray[i] = stat;
-            lnUArray[i] = lnU;
+//            lnUArray[i] = lnU;
 //            if ((gen >= 50000) && ((gen % 10000) == 0)) {
             if ((gen >= 60000) && ((gen % 1000) == 0)) {
 //                System.out.println(j);
@@ -237,10 +237,10 @@ public class Util {
         double[] mutatorStrengthArray = mutatorRecombinationAndNeutralStrengthArray.getMutatorStrengthArray();
         double[] uArray = new double[mutatorStrengthArray.length];
         for (int j=0; j<mutatorStrengthArray.length; j++) {
-            uArray[j] = mutatorStrengthArray[j] * ModelParameters.getDouble("BASE_DELETERIOUS_MUTATION_RATE");
+            uArray[j] = mutatorStrengthArray[j] * ModelParameters.getDouble("BASE_MUTATION_RATE");
         }
-        double[] lnUArray = new double[mutatorStrengthArray.length];
-        for (int j=0; j<mutatorStrengthArray.length; j++) {
+        double[] lnUArray = new double[uArray.length];
+        for (int j=0; j<uArray.length; j++) {
             lnUArray[j] = Math.log(uArray[j]);
         }
         double meanLnU = Util.mean(lnUArray);
@@ -250,7 +250,7 @@ public class Util {
         double[] neutralArray = new double[neutralStrengthArray.length];
         double[] lnNeutralArray = new double[neutralStrengthArray.length];
         for (int j=0; j<neutralStrengthArray.length; j++) {
-            neutralArray[j] = neutralStrengthArray[j] * ModelParameters.getDouble("BASE_DELETERIOUS_MUTATION_RATE");
+            neutralArray[j] = neutralStrengthArray[j] * ModelParameters.getDouble("BASE_MUTATION_RATE");
         }
         for (int k=0; k<neutralArray.length; k++) {
             lnNeutralArray[k] = Math.log(neutralArray[k]);
@@ -264,8 +264,7 @@ public class Util {
         }
         double meanLnCompleteNeutral = Util.mean(lnCompleteNeutralArray);
         double varLnCompleteNeutral = Util.variance(lnCompleteNeutralArray);
-        double fitness = Util.mean(fitnessArray);
-        GroupReturn varianceStdSkewnessArray = Util.getVarianceStdSkewnessOfU(i, uArray, mutStatFilename);
+        GroupReturn varianceStdSkewnessArray = Util.getVarianceStdSkewnessOfU(i, lnUArray, mutStatFilename);
         double meanTransformedValue = varianceStdSkewnessArray.getMeanTransformedValue();
         double variance = varianceStdSkewnessArray.getVariance();
         double std = varianceStdSkewnessArray.getStd();
@@ -273,8 +272,8 @@ public class Util {
         double corFitnessLnU = Util.pearsonCorrelation(fitnessArray, lnUArray);
 //        System.out.println("Fitness = " + fitness);
 
-        return i + "\t" + fitness
-                + "\t" + Util.mean(mutatorStrengthArray) * ModelParameters.getDouble("BASE_DELETERIOUS_MUTATION_RATE")
+        return i + "\t" + Util.mean(fitnessArray)
+                + "\t" + Util.mean(uArray)
                 + "\t" + Util.mean(nDeleMutArray)
                 + "\t" + Util.mean(nBeneMutArray)
                 + "\t" + Util.mean(recombinationStrengthArray)
@@ -292,9 +291,9 @@ public class Util {
                 + "\t" + meanLnCompleteNeutral
                 + "\t" + varLnCompleteNeutral
                 + "\t" + Util.standardDeviation(fitnessArray)
-                + "\t" + Util.mean(neutralStrengthArray) * ModelParameters.getDouble("BASE_DELETERIOUS_MUTATION_RATE")
-                + "\t" + Util.standardDeviation(neutralStrengthArray)
-                + "\t" + Util.standardDeviation(mutatorStrengthArray)
+                + "\t" + Util.mean(neutralArray)
+                + "\t" + Util.standardDeviation(neutralArray)
+                + "\t" + Util.standardDeviation(uArray)
                 + "\t" + Util.standardDeviation(recombinationStrengthArray)
                 + "\t" + Util.standardDeviation(nDeleMutArray)
                 + "\t" + Util.standardDeviation(nBeneMutArray)

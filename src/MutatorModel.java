@@ -20,15 +20,15 @@ public class MutatorModel {
             String mutMapFilename = resultFileNamePrefix + "_MutMap.txt";
             String mutStructureFilename = resultFileNamePrefix + "_MutStructure.txt";
             String mutStatFilename = resultFileNamePrefix + "_MutStat.txt";
-            String popFileOutput = "Generation\tFitnessMean\tMutatorStrengthMean\tnDeleMutMean\tnBeneMutMean\t" +
+            String popFileOutput = "Generation\tFitnessMean\tMeanU\tnDeleMutMean\tnBeneMutMean\t" +
                                    "RecombinationRateMean\t" +
                                    "MeanDeleFitnessEffect\tMeanBeneFitnessEffect\t" +
                                    "MeanTransformedValue\tvariance\tstd\tskewness\t" +
-                                   "corFitnessLnU\tlnU\tvarLnU\t" +
+                                   "corFitnessLnU\tmeanLnU\tvarLnU\t" +
                                    "meanLnNeutral\tvarLnNeutral\t" +
                                    "meanLnCompleteNeutral\tvarLnCompleteNeutral\t" +
                                    "FitnessSD\tNeutralMean\tNeutralSD\t" +
-                                   "MutatorStrengthSD\tRecombinationRateSD\tnDeleMutSD\tnBeneMutSD\t" +
+                                   "USD\tRecombinationRateSD\tnDeleMutSD\tnBeneMutSD\t" +
                                    "deleFitnessEffectSD\tbeneFitnessEffectSD\n";
             String mutMapFileOutput = "MutationID\tFitnessEffect\tMutatorStrength\tGeneration\tLocus\tParentFitnessZScore\tCorrelationBtwFitnessAndMutatorStrength\n";
             String mutStructureFileOutput = "Generation\tMutationID\tNIndividual\n";
