@@ -26,6 +26,8 @@ public class GroupReturn {
     private double skewness;
     private double meanTransformedValue;
     private double[] neutralStrengthArray;
+    private double lnU;
+    private double varLnU;
 
     public GroupReturn(Individual individual, int row, int column) {
         this.individual = individual;
@@ -84,6 +86,8 @@ public class GroupReturn {
         this.variance = variance;
         this.std = std;
         this.skewness = skewness;
+        this.lnU = lnU;
+        this.varLnU = varLnU;
     }
 
     public Locus getFitnessLocus() {
@@ -180,5 +184,13 @@ public class GroupReturn {
 
     public double[] getNeutralStrengthArray() {
         return neutralStrengthArray;
+    }
+
+    public double getLnU() {
+        return lnU;
+    }
+
+    public double getVarLnU() {
+        return varLnU;
     }
 }

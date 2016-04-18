@@ -23,13 +23,15 @@ public class MutatorModel {
             String popFileOutput = "Generation\tFitnessMean\tMutatorStrengthMean\tnDeleMutMean\tnBeneMutMean\t" +
                                    "RecombinationRateMean\t" +
                                    "MeanDeleFitnessEffect\tMeanBeneFitnessEffect\t" +
-                                   "MeanTransformedValue\tvariance\tstd\tskewness\tcorFitnessU\t" +
-                                   "FitnessSD\tNeutralMean\tNeutralSD" +
+                                   "MeanTransformedValue\tvariance\tstd\tskewness\t" +
+                                   "corFitnessLnU\tlnU\tvarLnU\t" +
+                                   "meanLnNeutral\tvarLnNeutral\t" +
+                                   "FitnessSD\tNeutralMean\tNeutralSD\t" +
                                    "MutatorStrengthSD\tRecombinationRateSD\tnDeleMutSD\tnBeneMutSD\t" +
                                    "deleFitnessEffectSD\tbeneFitnessEffectSD\n";
             String mutMapFileOutput = "MutationID\tFitnessEffect\tMutatorStrength\tGeneration\tLocus\tParentFitnessZScore\tCorrelationBtwFitnessAndMutatorStrength\n";
             String mutStructureFileOutput = "Generation\tMutationID\tNIndividual\n";
-            String mutStatFileOutput = "Generation\tU\n";
+            String mutStatFileOutput = "Generation\tlnU\n";
 
             // Write file header for mutStatFile
             Util.writeFile(mutStatFilename, mutStatFileOutput);
