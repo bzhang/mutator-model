@@ -40,9 +40,12 @@ public class Individual implements Cloneable{
                 loci[i] = (MutatorLocus) clonedLocus;
             } else if (getLociPattern().getLocusType(i) == LociPattern.LocusType.Recombination) {
                 loci[i] = (RecombinationLocus) clonedLocus;
-            } else {
+            } else if (getLociPattern().getLocusType(i) == LociPattern.LocusType.Neutral) {
                 loci[i] = (NeutralLocus) clonedLocus;
+            } else {
+                loci[i] = (CompleteNeutralLocus) clonedLocus;
             }
+
         }
     }
 
@@ -434,13 +437,11 @@ public class Individual implements Cloneable{
     }
 
     public float getNeutralStrength() {
-        // TODO: multiple all recombination strength values
         int neutralLocusPosition = lociPattern.getNeutralLociPositions()[0];
         return ((NeutralLocus) getLocus(neutralLocusPosition)).getStrength(); // refactor
     }
 
     public float getCompleteNeutralStrength() {
-        // TODO: multiple all recombination strength values
         int completeNeutralLocusPosition = lociPattern.getCompleteNeutralLociPositions()[0];
         return ((CompleteNeutralLocus) getLocus(completeNeutralLocusPosition)).getStrength(); // refactor
     }

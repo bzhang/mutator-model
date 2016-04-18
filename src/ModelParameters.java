@@ -61,7 +61,7 @@ public class ModelParameters {
     }
 
     public static int getGenomeSize() {
-        return getInt("N_FITNESS_LOCI") + getInt("N_MUTATOR_LOCI") + getInt("N_RECOMBINATION_LOCI") + getInt("N_NEUTRAL_LOCI");
+        return getInt("N_FITNESS_LOCI") + getInt("N_MUTATOR_LOCI") + getInt("N_RECOMBINATION_LOCI") + getInt("N_NEUTRAL_LOCI") + getInt("N_COMPLETE_NEUTRAL_LOCI");
     }
 
     public static String getDirectoryName() {
