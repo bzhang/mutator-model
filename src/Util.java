@@ -237,7 +237,7 @@ public class Util {
         double[] mutatorStrengthArray = mutatorRecombinationAndNeutralStrengthArray.getMutatorStrengthArray();
         double[] uArray = new double[mutatorStrengthArray.length];
         for (int j=0; j<mutatorStrengthArray.length; j++) {
-            uArray[j] = mutatorStrengthArray[j] * ModelParameters.getDouble("BASE_MUTATION_RATE");
+            uArray[j] = mutatorStrengthArray[j] * ModelParameters.getDouble("BASE_DELETERIOUS_MUTATION_RATE") * 2;
         }
         double[] lnUArray = new double[uArray.length];
         for (int j=0; j<uArray.length; j++) {
@@ -250,7 +250,7 @@ public class Util {
         double[] neutralArray = new double[neutralStrengthArray.length];
         double[] lnNeutralArray = new double[neutralStrengthArray.length];
         for (int j=0; j<neutralStrengthArray.length; j++) {
-            neutralArray[j] = neutralStrengthArray[j] * ModelParameters.getDouble("BASE_MUTATION_RATE");
+            neutralArray[j] = neutralStrengthArray[j] * ModelParameters.getDouble("BASE_DELETERIOUS_MUTATION_RATE") * 2;
         }
         for (int k=0; k<neutralArray.length; k++) {
             lnNeutralArray[k] = Math.log(neutralArray[k]);
